@@ -23,10 +23,14 @@ class ChatRooms extends React.Component {
 
   createRoom = () => {
     // Check if user is logged
-    // If logged show modal
-    this.setState({
-      showCreateRoomModal: !this.state.showCreateRoomModal
-    });
+    if (this.props.isLoggedIn) {
+      // If logged show modal
+      this.setState({
+        showCreateRoomModal: !this.state.showCreateRoomModal
+      });
+    } else {
+      alert("Please Sing In");
+    }
   };
 
   render() {

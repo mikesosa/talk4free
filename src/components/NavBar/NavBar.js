@@ -19,6 +19,7 @@ class NavBar extends React.Component {
         imageUrl: res.profileObj.imageUrl
       });
     }
+    this.props.isLoggedIn(this.state.isSignedIn);
   };
 
   logout = () => {
@@ -28,8 +29,13 @@ class NavBar extends React.Component {
       email: "",
       imageUrl: ""
     });
-    console.log("Logedout");
+    this.props.isLoggedIn(this.state.isSignedIn);
   };
+
+  componentDidMount() {
+    // Passing login state
+    this.props.isLoggedIn(this.state.isSignedIn);
+  }
   render() {
     const checkLogin = () => {
       if (this.state.isSignedIn) {

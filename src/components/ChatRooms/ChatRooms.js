@@ -1,61 +1,45 @@
 import React from "react";
 import { Container, Button } from "react-bootstrap";
-import apiTest from "../../apiTest";
+// import apiTest from "../../apiTest";
+import CreateRoomModal from "./CreateRoomModal/CreateRoomModal";
 import RoomsList from "./RoomsList/RoomsList";
-import CreateSession from "../../controllers/CreateSession";
-import opentok from "../../controllers/opentok";
-import { OTSession, OTPublisher, OTStreams, OTSubscriber } from "opentok-react";
+import axios from "axios";
 
 class ChatRooms extends React.Component {
   state = {
-    session_id: "",
-    user_token: ""
+    rooms: "",
+    showCreateRoomModal: false
   };
-  // Creates the user token
-  createToken = async () => {
-    // const token = opentok.generateToken(this.state.session_id);
-    // this.setState({ user_token: token });
-    let user_token = new Promise(resolve => {
-      let res = opentok.generateToken(this.state.session_id);
-      resolve(res);
+
+  componentDidMount() {
+    // Getting rooms from DB
+    axios.get("http://localhost:5000/api/rooms").then(res => {
+      this.setState({
+        rooms: res,
+        fetched: true
+      });
     });
-    user_token.then(res => {
-      this.setState({ user_token: res });
-    });
-  };
-  // Creates the sessionid
-  createSession = () => {
-    let session_id = new Promise(resolve => {
-      let res = CreateSession();
-      resolve(res);
-    });
-    session_id.then(res => {
-      this.setState({ session_id: res });
-      this.createToken();
+  }
+
+  createRoom = () => {
+    // Check if user is logged
+    // If logged show modal
+    this.setState({
+      showCreateRoomModal: !this.state.showCreateRoomModal
     });
   };
+
   render() {
-    const checkRooms = () => {
-      if (!this.state.user_token) {
-        return <RoomsList rooms={apiTest.rooms} />;
+    const fetchRooms = () => {
+      // If there are rooms render roomslist if not... show a message
+      if (
+        typeof this.state.rooms === "object" &&
+        Object.keys(this.state.rooms.data).length > 0
+      ) {
+        return <RoomsList rooms={this.state.rooms} />;
       } else {
-        console.log(process.env.REACT_APP_OPENTOK_API_KEY);
-        console.log(this.state.session_id);
-        console.log(this.state.user_token);
         return (
-          <React.Fragment>
-            <OTSession
-              apiKey={process.env.REACT_APP_OPENTOK_API_KEY}
-              sessionId={this.state.session_id}
-              token={this.state.user_token}
-            >
-              <OTPublisher />
-              <OTStreams>
-                <OTSubscriber />
-              </OTStreams>
-            </OTSession>
-            <Button>Connect</Button>
-          </React.Fragment>
+          <p className="text-center">No rooms available, please create one!</p>
         );
       }
     };
@@ -72,12 +56,16 @@ class ChatRooms extends React.Component {
             <Button
               variant="primary"
               className="ml-5"
-              onClick={this.createSession}
+              onClick={this.createRoom}
             >
               Create Room
             </Button>
+            <CreateRoomModal
+              show={this.state.showCreateRoomModal}
+              handleClose={this.createRoom}
+            />
           </div>
-          {checkRooms()}
+          {fetchRooms()}
         </Container>
       </section>
     );

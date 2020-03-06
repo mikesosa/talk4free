@@ -11,18 +11,30 @@ class ChatRooms extends React.Component {
     showCreateRoomModal: false
   };
 
+  getRooms = () => {
+    axios({
+      method: "GET",
+      headers: {
+        token: process.env.REACT_APP_ZAFRA_KEY
+      },
+      url: "http://localhost:5000/api/rooms"
+    })
+      .then(res => {
+        this.setState({
+          rooms: res,
+          fetched: true
+        });
+      })
+      .catch(err => console.log(err));
+  };
+
   componentDidMount() {
-    // Getting rooms from DB
-    axios.get("http://localhost:5000/api/rooms").then(res => {
-      this.setState({
-        rooms: res,
-        fetched: true
-      });
-    });
+    this.getRooms();
   }
 
   createRoom = () => {
     // Check if user is logged
+
     if (this.props.isLoggedIn) {
       // If logged show modal
       this.setState({
@@ -57,16 +69,14 @@ class ChatRooms extends React.Component {
               customers with this Bootstrap example. It’s built with default
               Bootstrap components and utilities with little customization.
             </p>
-            <Button
-              variant="primary"
-              className="ml-5"
-              onClick={this.createRoom}
-            >
+            <Button variant="primary" onClick={this.createRoom}>
               Create Room
             </Button>
             <CreateRoomModal
               show={this.state.showCreateRoomModal}
               handleClose={this.createRoom}
+              email={this.props.email}
+              onUpdate={this.getRooms}
             />
           </div>
           {fetchRooms()}

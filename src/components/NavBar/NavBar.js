@@ -1,5 +1,6 @@
 import React from "react";
 import { GoogleLogin, GoogleLogout } from "react-google-login";
+import "./NavBar.scss";
 import {
   Container,
   Navbar,
@@ -55,28 +56,38 @@ class NavBar extends React.Component {
                 id="dropdown-basic"
               >
                 {this.state.userName}
+                {this.state.isSignedIn ? (
+                  <Image
+                    src={this.state.imageUrl}
+                    style={{ width: "35px" }}
+                    roundedCircle
+                  />
+                ) : (
+                  ""
+                )}
               </Dropdown.Toggle>
 
-              <Dropdown.Menu>
+              <Dropdown.Menu className="ml-5">
                 <Dropdown.Item>
                   {" "}
                   <GoogleLogout
                     clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+                    render={renderProps => (
+                      <Button
+                        variant="secondary"
+                        onClick={renderProps.onClick}
+                        disabled={renderProps.disabled}
+                      >
+                        {" "}
+                        Logout
+                      </Button>
+                    )}
                     buttonText="Logout"
                     onLogoutSuccess={this.logout}
                   ></GoogleLogout>
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
-            {this.state.isSignedIn ? (
-              <Image
-                src={this.state.imageUrl}
-                style={{ width: "40px" }}
-                roundedCircle
-              />
-            ) : (
-              ""
-            )}
           </React.Fragment>
         );
       } else {

@@ -17,6 +17,9 @@ class App extends React.Component {
   checkUser = async () => {
     const result = await axios({
       method: "GET",
+      headers: {
+        token: process.env.REACT_APP_ZAFRA_KEY
+      },
       url: "http://localhost:5000/api/users"
     });
     const users = result.data;
@@ -37,6 +40,9 @@ class App extends React.Component {
         axios({
           method: "POST",
           url: "http://localhost:5000/api/users",
+          headers: {
+            token: process.env.REACT_APP_ZAFRA_KEY
+          },
           data: {
             email: this.state.email,
             username: this.state.userName,
@@ -64,7 +70,10 @@ class App extends React.Component {
           <NavBar isLoggedIn={this.updateLogin} />
         </header>
         <Jumbotron />
-        <ChatRooms isLoggedIn={this.state.isLoggedIn} />
+        <ChatRooms
+          isLoggedIn={this.state.isLoggedIn}
+          email={this.state.email}
+        />
         {/* <footer className="mt-auto">
           <Container>
             <p>Hello</p>

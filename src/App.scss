@@ -56,25 +56,3 @@
     }
   }
 }
-
-.navbar {
-  border-bottom: 1px solid #6c757c40;
-  .nav-link {
-    font-weight: 800;
-  }
-
-  .navbar-brand {
-    font-weight: 600;
-    font-size: 2rem !important;
-  }
-  button {
-    display: flex;
-    font-size: 16px;
-    padding-left: 20px;
-    padding-right: 20px;
-    font-weight: 600;
-    i {
-      margin-right: 5px;
-    }
-  }
-}

@@ -13,91 +13,102 @@ function CreateRoomModal(props) {
   const [userToken, setUserToken] = useState(null);
   const { register, handleSubmit, errors } = useForm();
 
+  /* ==================================== FUNCTIONS ============================================*/
+
+  // ===============   Get user id ==============================
+  const getUserId = async () => {
+    const result = await axios({
+      method: "GET",
+      headers: {
+        token: process.env.REACT_APP_ZAFRA_KEY
+      },
+      url: "http://localhost:5000/api/users"
+    });
+    const users = result.data;
+    if (users.length > 0) {
+      for (let index = 0; index < users.length; index++) {
+        if (users[index].email === props.email) {
+          return users[index].id;
+        }
+      }
+    }
+    return null;
+  };
+  // ============= Get room Id ====================================
+  const getRoomId = async ss_id => {
+    const result = await axios({
+      method: "GET",
+      headers: {
+        token: process.env.REACT_APP_ZAFRA_KEY
+      },
+      url: "http://localhost:5000/api/rooms"
+    });
+    const rooms = result.data;
+    if (rooms.length > 0) {
+      for (let index = 0; index < rooms.length; index++) {
+        console.log(ss_id, rooms[index].session_id);
+        if (rooms[index].session_id === ss_id) {
+          return rooms[index].id;
+        }
+      }
+    }
+    return null;
+  };
+  // =================== save room =================================
+  // Save into db
+  const saveSession = async (data, session_id, userId) => {
+    try {
+      axios({
+        method: "POST",
+        url: "http://localhost:5000/api/rooms",
+        headers: {
+          token: process.env.REACT_APP_ZAFRA_KEY
+        },
+        data: {
+          session_id: session_id,
+          lang: data.lang,
+          lvl: data.level,
+          max_user: data.maxPeople,
+          active: true,
+          created_by: userId
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // ====================== update room =============================
+
+  const updateRoomUsers = async (roomId, userId) => {
+    const url = `http://localhost:5000/api/users/join/${roomId}/${userId}`;
+    console.log(url);
+    try {
+      axios({
+        method: "PUT",
+        headers: {
+          token: process.env.REACT_APP_ZAFRA_KEY
+        },
+        url: url
+      });
+    } catch (error) {
+      console.log(error);
+    }
+    // This will update the rooms list
+    props.onUpdate();
+  };
+
+  /* ========================================== CALLING FUNCTIONS =============================================*/
   const onSubmit = async data => {
     const session_id = await CreateSession();
+    const userId = await getUserId();
     const user_token = await opentok.generateToken(session_id);
+    await saveSession(data, session_id, userId);
     setSessionId(session_id);
     setUserToken(user_token);
     setCompleted(true);
-    // Save into db
-    const saveSession = async () => {
-      try {
-        axios({
-          method: "POST",
-          url: "http://localhost:5000/api/rooms",
-          headers: {
-            token: process.env.REACT_APP_ZAFRA_KEY
-          },
-          data: {
-            session_id: session_id,
-            lang: data.lang,
-            lvl: data.level,
-            max_user: data.maxPeople,
-            active: true,
-            created_by: await getUserId()
-          }
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    // Get user id
-    const getUserId = async () => {
-      const result = await axios({
-        method: "GET",
-        headers: {
-          token: process.env.REACT_APP_ZAFRA_KEY
-        },
-        url: "http://localhost:5000/api/users"
-      });
-      const users = result.data;
-      if (users.length > 0) {
-        for (let index = 0; index < users.length; index++) {
-          if (users[index].email === props.email) {
-            return users[index].id;
-          }
-        }
-      }
-      return null;
-    };
-    // Get user id
-    const getRoomId = async () => {
-      const result = await axios({
-        method: "GET",
-        headers: {
-          token: process.env.REACT_APP_ZAFRA_KEY
-        },
-        url: "http://localhost:5000/api/rooms"
-      });
-      const rooms = result.data;
-      if (rooms.length > 0) {
-        for (let index = 0; index < rooms.length; index++) {
-          if (rooms[index].session_id === session_id) {
-            return rooms[index].id;
-          }
-        }
-      }
-      return null;
-    };
-    // Updating users in room
-    const updateRoomUsers = async () => {
-      await saveSession();
-      const url = `http://localhost:5000/api/users/join/${await getRoomId()}/${await getUserId()}`;
-      try {
-        axios({
-          method: "PUT",
-          headers: {
-            token: process.env.REACT_APP_ZAFRA_KEY
-          },
-          url: url
-        });
-      } catch (error) {
-        console.log(error);
-      }
-      // This will update the rooms list
-      props.onUpdate();
-    };
-    updateRoomUsers();
+    const roomId = await getRoomId(session_id);
+    updateRoomUsers(roomId, userId);
   };
 
   const byeUserFromRoom = () => {

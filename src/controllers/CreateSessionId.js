@@ -13,7 +13,7 @@ const getJWT = () => {
   return token;
 };
 
-const CreateSession = async () => {
+const CreateSessionId = async () => {
   const token = getJWT();
   const settings = {
     method: "POST",
@@ -39,4 +39,4 @@ const CreateSession = async () => {
   return sessionId;
 };
 
-export default CreateSession;
+export default CreateSessionId;

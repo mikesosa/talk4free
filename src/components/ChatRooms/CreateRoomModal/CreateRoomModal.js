@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { Modal, Button, Form, Col } from "react-bootstrap";
 import Languages from "../../../languages";
 import { useForm } from "react-hook-form";
-import CreateSession from "../../../controllers/CreateSession";
+import CreateSessionId from "../../../controllers/CreateSessionId";
 import opentok from "../../../controllers/opentok";
-import { OTSession, OTPublisher, OTStreams, OTSubscriber } from "opentok-react";
+import Video from "./Video";
+// import { OTSession, OTPublisher, OTStreams, OTSubscriber } from "opentok-react";
 import axios from "axios";
 
 function CreateRoomModal(props) {
@@ -134,7 +135,7 @@ function CreateRoomModal(props) {
 
   /* ========================================== CALLING FUNCTIONS =============================================*/
   const onSubmit = async data => {
-    const session_id = await CreateSession();
+    const session_id = await CreateSessionId();
     const user_token = await opentok.generateToken(session_id);
     const user_id = await getUserId();
     await saveSession(data, session_id, user_id);
@@ -156,7 +157,7 @@ function CreateRoomModal(props) {
       // setSessionId(null);
       // setUserToken(null);
       // setRoomId(null);
-      setCompleted(false);
+      // setCompleted(false);
       props.handleClose();
       props.onUpdate();
       // If no sessions just close the modal
@@ -232,18 +233,23 @@ function CreateRoomModal(props) {
       );
     } else {
       return (
-        <React.Fragment>
-          <OTSession
-            apiKey={process.env.REACT_APP_OPENTOK_API_KEY}
-            sessionId={sessionId}
-            token={userToken}
-          >
-            <OTPublisher />
-            <OTStreams>
-              <OTSubscriber />
-            </OTStreams>
-          </OTSession>
-        </React.Fragment>
+        <Video
+          apiKey={process.env.REACT_APP_OPENTOK_API_KEY}
+          sessionId={sessionId}
+          token={userToken}
+        />
+        // <React.Fragment>
+        //   <OTSession
+        //     apiKey={process.env.REACT_APP_OPENTOK_API_KEY}
+        //     sessionId={sessionId}
+        //     token={userToken}
+        //   >
+        //     <OTPublisher />
+        //     <OTStreams>
+        //       <OTSubscriber />
+        //     </OTStreams>
+        //   </OTSession>
+        // </React.Fragment>
       );
     }
   };

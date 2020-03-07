@@ -20,7 +20,7 @@ class App extends React.Component {
       headers: {
         token: process.env.REACT_APP_ZAFRA_KEY
       },
-      url: "http://localhost:5000/api/users"
+      url: "https://talk4free.live/api/users"
     });
     const users = result.data;
     if (users.length > 0) {
@@ -39,7 +39,7 @@ class App extends React.Component {
       if (!alreadyExist) {
         axios({
           method: "POST",
-          url: "http://localhost:5000/api/users",
+          url: "https://talk4free.live/api/users",
           headers: {
             token: process.env.REACT_APP_ZAFRA_KEY
           },

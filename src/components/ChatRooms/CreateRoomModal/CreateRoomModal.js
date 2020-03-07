@@ -25,7 +25,7 @@ function CreateRoomModal(props) {
       headers: {
         token: process.env.REACT_APP_ZAFRA_KEY
       },
-      url: "http://localhost:5000/api/users"
+      url: "https://talk4free.live/api/users"
     });
     const users = result.data;
     if (users.length > 0) {
@@ -45,7 +45,7 @@ function CreateRoomModal(props) {
       headers: {
         token: process.env.REACT_APP_ZAFRA_KEY
       },
-      url: "http://localhost:5000/api/rooms"
+      url: "https://talk4free.live/api/rooms"
     });
     const rooms = result.data;
     if (rooms.length > 0) {
@@ -64,7 +64,7 @@ function CreateRoomModal(props) {
     try {
       axios({
         method: "POST",
-        url: "http://localhost:5000/api/rooms",
+        url: "https://talk4free.live/api/rooms",
         headers: {
           token: process.env.REACT_APP_ZAFRA_KEY
         },
@@ -84,7 +84,7 @@ function CreateRoomModal(props) {
 
   // ====================== Add User to Room =============================
   const addUserToRoom = async (roomId, userId) => {
-    const url = `http://localhost:5000/api/users/join/${roomId}/${userId}`;
+    const url = `https://talk4free.live/api/users/join/${roomId}/${userId}`;
     try {
       axios({
         method: "PUT",
@@ -103,23 +103,7 @@ function CreateRoomModal(props) {
   // ===================== Remove User from Room ============================
   const removeUserFromRoom = async () => {
     // console.log(await getUserId());
-    const url = `http://localhost:5000/api/users/out/${roomId}/${userId}`;
-    try {
-      await axios({
-        method: "PUT",
-        headers: {
-          token: process.env.REACT_APP_ZAFRA_KEY
-        },
-        url: url
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  /* ====================== decrease one user ============================*/
-  const decreaseUserFromRoom = async () => {
-    const url = `http://localhost:5000/api/rooms/decrease/${roomId}`;
+    const url = `https://talk4free.live/api/users/out/${roomId}/${userId}`;
     try {
       await axios({
         method: "PUT",
@@ -153,13 +137,9 @@ function CreateRoomModal(props) {
     // if there is a session goin on
     if (completed) {
       await removeUserFromRoom();
-      await decreaseUserFromRoom();
-      // setSessionId(null);
-      // setUserToken(null);
-      // setRoomId(null);
-      // setCompleted(false);
+      console.log("adentro");
       props.handleClose();
-      props.onUpdate();
+      setCompleted(false);
       // If no sessions just close the modal
     } else {
       props.handleClose();
@@ -237,19 +217,9 @@ function CreateRoomModal(props) {
           apiKey={process.env.REACT_APP_OPENTOK_API_KEY}
           sessionId={sessionId}
           token={userToken}
+          roomId={roomId}
+          onUpdate={props.onUpdate}
         />
-        // <React.Fragment>
-        //   <OTSession
-        //     apiKey={process.env.REACT_APP_OPENTOK_API_KEY}
-        //     sessionId={sessionId}
-        //     token={userToken}
-        //   >
-        //     <OTPublisher />
-        //     <OTStreams>
-        //       <OTSubscriber />
-        //     </OTStreams>
-        //   </OTSession>
-        // </React.Fragment>
       );
     }
   };

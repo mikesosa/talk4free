@@ -13,6 +13,7 @@ class RoomsList extends React.Component {
                 key={index}
                 room={room}
                 isLoggedIn={this.props.isLoggedIn}
+                email={this.props.email}
               />
             );
           })}

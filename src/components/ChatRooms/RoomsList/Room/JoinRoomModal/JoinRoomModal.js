@@ -8,6 +8,7 @@ class JoinRoomModal extends React.Component {
   state = {
     joined: false,
     userId: null,
+    roomId: null,
     userToken: null
   };
 
@@ -20,8 +21,9 @@ class JoinRoomModal extends React.Component {
       headers: {
         token: process.env.REACT_APP_ZAFRA_KEY
       },
-      url: "http://localhost:5000/api/users"
+      url: "https://talk4free.live/api/users"
     });
+    console.log(this.props.email);
     const users = result.data;
     if (users.length > 0) {
       for (let index = 0; index < users.length; index++) {
@@ -33,25 +35,79 @@ class JoinRoomModal extends React.Component {
     return null;
   };
 
+  // ====================== Add User to Room =============================
+  addUserToRoom = async (roomId, userId) => {
+    let url = `https://talk4free.live/api/users/join/${roomId}/${userId}`;
+    try {
+      await axios({
+        method: "PUT",
+        headers: {
+          token: process.env.REACT_APP_ZAFRA_KEY
+        },
+        url: url
+      });
+      url = `https://talk4free.live/api/rooms/increase/${roomId}`;
+      await axios({
+        method: "PUT",
+        headers: {
+          token: process.env.REACT_APP_ZAFRA_KEY
+        },
+        url: url
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // ====================== Remove User from Room =============================
+  decreaseUserFromRoom = async () => {
+    const url = `https://talk4free.live/api/rooms/decrease/${this.state.roomId}`;
+    try {
+      await axios({
+        method: "PUT",
+        headers: {
+          token: process.env.REACT_APP_ZAFRA_KEY
+        },
+        url: url
+      });
+    } catch (error) {
+      console.log(error);
+    }
+    this.props.handleClose();
+  };
+
+  // ============= Get room Id ====================================
+  getRoomId = async ss_id => {
+    const result = await axios({
+      method: "GET",
+      headers: {
+        token: process.env.REACT_APP_ZAFRA_KEY
+      },
+      url: "https://talk4free.live/api/rooms"
+    });
+    const rooms = result.data;
+    if (rooms.length > 0) {
+      for (let index = 0; index < rooms.length; index++) {
+        if (rooms[index].session_id === ss_id) {
+          return rooms[index].id;
+        }
+      }
+    }
+    return null;
+  };
+
   onSubmit = async () => {
     console.log("Joining...");
     const user_token = await opentok.generateToken(this.props.sessionId);
     const user_id = await this.getUserId();
-    console.log(user_id);
-    // await saveSession(data, session_id, user_id);
-    // const room_id = await getRoomId(session_id);
-    // await addUserToRoom(room_id, user_id);
-    // // Setting states
-    // setSessionId(session_id);
-    // setUserToken(user_token);
-    // setUserId(user_id);
-    // setRoomId(room_id);
-    // setCompleted(true);
-
+    const roomId = await this.getRoomId(this.props.sessionId);
+    console.log("esto es lo que llega", roomId, user_id);
+    await this.addUserToRoom(roomId, user_id);
     this.setState({
       joined: true,
       userToken: user_token,
-      userId: user_id
+      userId: user_id,
+      roomId: roomId
     });
   };
 
@@ -77,7 +133,7 @@ class JoinRoomModal extends React.Component {
       }
     };
     return (
-      <Modal show={this.props.show} onHide={this.props.handleClose}>
+      <Modal show={this.props.show} onHide={this.decreaseUserFromRoom}>
         <Modal.Header closeButton>
           <Modal.Title>
             {" "}

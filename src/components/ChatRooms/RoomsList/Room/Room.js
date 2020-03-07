@@ -40,7 +40,7 @@ class Room extends React.Component {
             lang={this.props.room.lang}
             level={this.props.room.lvl}
             sessionId={this.props.room.session_id}
-            email={this.props.userEmail}
+            email={this.props.email}
           />
         </Row>
       </Col>

@@ -17,7 +17,7 @@ class ChatRooms extends React.Component {
       headers: {
         token: process.env.REACT_APP_ZAFRA_KEY
       },
-      url: "http://localhost:5000/api/rooms"
+      url: "https://talk4free.live/api/rooms"
     })
       .then(res => {
         let activerooms = res.data.filter(elem => elem.active !== 0);
@@ -58,7 +58,7 @@ class ChatRooms extends React.Component {
           <RoomsList
             rooms={this.state.rooms}
             isLoggedIn={this.props.isLoggedIn}
-            userEmail={this.props.email}
+            email={this.props.email}
           />
         );
       } else {

@@ -100,19 +100,33 @@ function CreateRoomModal(props) {
   };
 
   // ===================== Remove User from Room ============================
-  const removeUserFromRoom = () => {
-    console.log(roomId, userId);
+  const removeUserFromRoom = async () => {
     // console.log(await getUserId());
     const url = `http://localhost:5000/api/users/out/${roomId}/${userId}`;
     try {
-      axios({
+      await axios({
         method: "PUT",
         headers: {
           token: process.env.REACT_APP_ZAFRA_KEY
         },
         url: url
       });
-      console.log("r");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  /* ====================== decrease one user ============================*/
+  const decreaseUserFromRoom = async () => {
+    const url = `http://localhost:5000/api/rooms/decrease/${roomId}`;
+    try {
+      await axios({
+        method: "PUT",
+        headers: {
+          token: process.env.REACT_APP_ZAFRA_KEY
+        },
+        url: url
+      });
     } catch (error) {
       console.log(error);
     }
@@ -134,10 +148,17 @@ function CreateRoomModal(props) {
     setCompleted(true);
   };
 
-  const handleClose = () => {
+  const handleClose = async () => {
     // if there is a session goin on
     if (completed) {
-      removeUserFromRoom();
+      await removeUserFromRoom();
+      await decreaseUserFromRoom();
+      // setSessionId(null);
+      // setUserToken(null);
+      // setRoomId(null);
+      setCompleted(false);
+      props.handleClose();
+      props.onUpdate();
       // If no sessions just close the modal
     } else {
       props.handleClose();

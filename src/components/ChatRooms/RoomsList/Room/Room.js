@@ -3,16 +3,19 @@ import React from "react";
 import JoinRoomModal from "./JoinRoomModal/JoinRoomModal";
 import { Row, Col, Button, Badge } from "react-bootstrap";
 
-
 class Room extends React.Component {
   state = {
     showModal: false
   };
 
   showCreateRoomModal = () => {
-    this.setState({
-      showModal: !this.state.showModal
-    });
+    if (this.props.isLoggedIn) {
+      this.setState({
+        showModal: !this.state.showModal
+      });
+    } else {
+      alert("Please sign in");
+    }
   };
 
   render() {
@@ -36,6 +39,8 @@ class Room extends React.Component {
             handleClose={this.showCreateRoomModal}
             lang={this.props.room.lang}
             level={this.props.room.lvl}
+            sessionId={this.props.room.session_id}
+            email={this.props.userEmail}
           />
         </Row>
       </Col>

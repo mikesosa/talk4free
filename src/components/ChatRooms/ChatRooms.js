@@ -20,6 +20,8 @@ class ChatRooms extends React.Component {
       url: "http://localhost:5000/api/rooms"
     })
       .then(res => {
+        let activerooms = res.data.filter(elem => elem.active !== 0);
+        res.data = activerooms;
         this.setState({
           rooms: res,
           fetched: true
@@ -52,7 +54,13 @@ class ChatRooms extends React.Component {
         typeof this.state.rooms === "object" &&
         Object.keys(this.state.rooms.data).length > 0
       ) {
-        return <RoomsList rooms={this.state.rooms} />;
+        return (
+          <RoomsList
+            rooms={this.state.rooms}
+            isLoggedIn={this.props.isLoggedIn}
+            userEmail={this.props.email}
+          />
+        );
       } else {
         return (
           <p className="text-center">No rooms available, please create one!</p>

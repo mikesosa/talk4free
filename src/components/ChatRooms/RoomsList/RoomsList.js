@@ -8,7 +8,13 @@ class RoomsList extends React.Component {
       <React.Fragment>
         <Row className="justify-content-between">
           {this.props.rooms.data.map((room, index) => {
-            return <Room key={index} room={room} />;
+            return (
+              <Room
+                key={index}
+                room={room}
+                isLoggedIn={this.props.isLoggedIn}
+              />
+            );
           })}
         </Row>
       </React.Fragment>

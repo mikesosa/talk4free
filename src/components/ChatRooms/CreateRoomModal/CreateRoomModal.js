@@ -11,11 +11,13 @@ function CreateRoomModal(props) {
   const [completed, setCompleted] = useState(false);
   const [sessionId, setSessionId] = useState(null);
   const [userToken, setUserToken] = useState(null);
+  const [userId, setUserId] = useState("");
+  const [roomId, setRoomId] = useState("");
   const { register, handleSubmit, errors } = useForm();
 
   /* ==================================== FUNCTIONS ============================================*/
 
-  // ===============   Get user id ==============================
+  // =============== Get user Id ==============================
   const getUserId = async () => {
     const result = await axios({
       method: "GET",
@@ -34,6 +36,7 @@ function CreateRoomModal(props) {
     }
     return null;
   };
+
   // ============= Get room Id ====================================
   const getRoomId = async ss_id => {
     const result = await axios({
@@ -46,7 +49,6 @@ function CreateRoomModal(props) {
     const rooms = result.data;
     if (rooms.length > 0) {
       for (let index = 0; index < rooms.length; index++) {
-        console.log(ss_id, rooms[index].session_id);
         if (rooms[index].session_id === ss_id) {
           return rooms[index].id;
         }
@@ -54,7 +56,8 @@ function CreateRoomModal(props) {
     }
     return null;
   };
-  // =================== save room =================================
+
+  // =================== Save Room in DB =================================
   // Save into db
   const saveSession = async (data, session_id, userId) => {
     try {
@@ -78,11 +81,9 @@ function CreateRoomModal(props) {
     }
   };
 
-  // ====================== update room =============================
-
-  const updateRoomUsers = async (roomId, userId) => {
+  // ====================== Add User to Room =============================
+  const addUserToRoom = async (roomId, userId) => {
     const url = `http://localhost:5000/api/users/join/${roomId}/${userId}`;
-    console.log(url);
     try {
       axios({
         method: "PUT",
@@ -94,39 +95,55 @@ function CreateRoomModal(props) {
     } catch (error) {
       console.log(error);
     }
-    // This will update the rooms list
+    // This will update the rooms list on the frontend
     props.onUpdate();
+  };
+
+  // ===================== Remove User from Room ============================
+  const removeUserFromRoom = () => {
+    console.log(roomId, userId);
+    // console.log(await getUserId());
+    const url = `http://localhost:5000/api/users/out/${roomId}/${userId}`;
+    try {
+      axios({
+        method: "PUT",
+        headers: {
+          token: process.env.REACT_APP_ZAFRA_KEY
+        },
+        url: url
+      });
+      console.log("r");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   /* ========================================== CALLING FUNCTIONS =============================================*/
   const onSubmit = async data => {
     const session_id = await CreateSession();
-    const userId = await getUserId();
     const user_token = await opentok.generateToken(session_id);
-    await saveSession(data, session_id, userId);
+    const user_id = await getUserId();
+    await saveSession(data, session_id, user_id);
+    const room_id = await getRoomId(session_id);
+    await addUserToRoom(room_id, user_id);
+    // Setting states
     setSessionId(session_id);
     setUserToken(user_token);
+    setUserId(user_id);
+    setRoomId(room_id);
     setCompleted(true);
-    const roomId = await getRoomId(session_id);
-    updateRoomUsers(roomId, userId);
-  };
-
-  const byeUserFromRoom = () => {
-    // console.log(await getUserId());
   };
 
   const handleClose = () => {
     // if there is a session goin on
     if (completed) {
-      console.log("Colgando...");
-      byeUserFromRoom();
-
+      removeUserFromRoom();
       // If no sessions just close the modal
     } else {
       props.handleClose();
     }
   };
-  // FORM OR VIDEO?
+  // Rendering the form or video in the modal
   const checkStatus = () => {
     if (!completed) {
       return (

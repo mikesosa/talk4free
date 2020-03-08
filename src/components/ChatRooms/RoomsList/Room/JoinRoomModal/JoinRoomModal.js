@@ -23,7 +23,7 @@ class JoinRoomModal extends React.Component {
       },
       url: "https://talk4free.live/api/users"
     });
-    console.log(this.props.email);
+
     const users = result.data;
     if (users.length > 0) {
       for (let index = 0; index < users.length; index++) {
@@ -101,7 +101,6 @@ class JoinRoomModal extends React.Component {
     const user_token = await opentok.generateToken(this.props.sessionId);
     const user_id = await this.getUserId();
     const roomId = await this.getRoomId(this.props.sessionId);
-    console.log("esto es lo que llega", roomId, user_id);
     await this.addUserToRoom(roomId, user_id);
     this.setState({
       joined: true,

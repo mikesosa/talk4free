@@ -19,7 +19,6 @@ class NavBar extends React.Component {
   };
 
   responseGoogle = res => {
-    console.log(res);
     if (res.profileObj.name) {
       this.setState({
         isSignedIn: true,

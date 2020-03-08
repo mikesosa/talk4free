@@ -17,7 +17,7 @@ class ChatRooms extends React.Component {
       headers: {
         token: process.env.REACT_APP_ZAFRA_KEY
       },
-      url: "https://talk4free.live/api/rooms"
+      url: `${process.env.REACT_APP_API_URL}/api/rooms`
     })
       .then(res => {
         let activerooms = res.data.filter(elem => elem.active !== 0);

@@ -16,7 +16,7 @@ export default class Video extends React.Component {
 
   /* ====================== decrease one user ============================*/
   decreaseUserFromRoom = async roomId => {
-    const url = `https://talk4free.live/api/rooms/decrease/${roomId}`;
+    const url = `${process.env.REACT_APP_API_URL}/api/rooms/decrease/${roomId}`;
     try {
       await axios({
         method: "PUT",

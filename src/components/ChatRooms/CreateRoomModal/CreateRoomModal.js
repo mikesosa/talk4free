@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Modal, Button, Form, Col } from "react-bootstrap";
-import Languages from "../../../languages";
+import Languages from "../../../languagesEmojis";
 import { useForm } from "react-hook-form";
 import CreateSessionId from "../../../controllers/CreateSessionId";
 import opentok from "../../../controllers/opentok";
@@ -25,7 +25,7 @@ function CreateRoomModal(props) {
       headers: {
         token: process.env.REACT_APP_ZAFRA_KEY
       },
-      url: "https://talk4free.live/api/users"
+      url: `${process.env.REACT_APP_API_URL}/api/users`
     });
     const users = result.data;
     if (users.length > 0) {
@@ -45,7 +45,7 @@ function CreateRoomModal(props) {
       headers: {
         token: process.env.REACT_APP_ZAFRA_KEY
       },
-      url: "https://talk4free.live/api/rooms"
+      url: `${process.env.REACT_APP_API_URL}/api/rooms`
     });
     const rooms = result.data;
     if (rooms.length > 0) {
@@ -64,7 +64,7 @@ function CreateRoomModal(props) {
     try {
       axios({
         method: "POST",
-        url: "https://talk4free.live/api/rooms",
+        url: `${process.env.REACT_APP_API_URL}/api/rooms`,
         headers: {
           token: process.env.REACT_APP_ZAFRA_KEY
         },
@@ -84,7 +84,7 @@ function CreateRoomModal(props) {
 
   // ====================== Add User to Room =============================
   const addUserToRoom = async (roomId, userId) => {
-    const url = `https://talk4free.live/api/users/join/${roomId}/${userId}`;
+    const url = `${process.env.REACT_APP_API_URL}/api/users/join/${roomId}/${userId}`;
     try {
       axios({
         method: "PUT",
@@ -103,7 +103,7 @@ function CreateRoomModal(props) {
   // ===================== Remove User from Room ============================
   const removeUserFromRoom = async () => {
     // console.log(await getUserId());
-    const url = `https://talk4free.live/api/users/out/${roomId}/${userId}`;
+    const url = `${process.env.REACT_APP_API_URL}/api/users/out/${roomId}/${userId}`;
     try {
       await axios({
         method: "PUT",
@@ -137,7 +137,6 @@ function CreateRoomModal(props) {
     // if there is a session goin on
     if (completed) {
       await removeUserFromRoom();
-      console.log("adentro");
       props.handleClose();
       setCompleted(false);
       // If no sessions just close the modal

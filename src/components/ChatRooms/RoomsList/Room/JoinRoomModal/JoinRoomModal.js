@@ -21,7 +21,7 @@ class JoinRoomModal extends React.Component {
       headers: {
         token: process.env.REACT_APP_ZAFRA_KEY
       },
-      url: "https://talk4free.live/api/users"
+      url: `${process.env.REACT_APP_API_URL}/api/users`
     });
 
     const users = result.data;
@@ -37,7 +37,7 @@ class JoinRoomModal extends React.Component {
 
   // ====================== Add User to Room =============================
   addUserToRoom = async (roomId, userId) => {
-    let url = `https://talk4free.live/api/users/join/${roomId}/${userId}`;
+    let url = `process.env.REACT_APP_API_URL/api/users/join/${roomId}/${userId}`;
     try {
       await axios({
         method: "PUT",
@@ -46,7 +46,7 @@ class JoinRoomModal extends React.Component {
         },
         url: url
       });
-      url = `https://talk4free.live/api/rooms/increase/${roomId}`;
+      url = `process.env.REACT_APP_API_URL/api/rooms/increase/${roomId}`;
       await axios({
         method: "PUT",
         headers: {
@@ -61,7 +61,7 @@ class JoinRoomModal extends React.Component {
 
   // ====================== Remove User from Room =============================
   decreaseUserFromRoom = async () => {
-    const url = `https://talk4free.live/api/rooms/decrease/${this.state.roomId}`;
+    const url = `process.env.REACT_APP_API_URL/api/rooms/decrease/${this.state.roomId}`;
     try {
       await axios({
         method: "PUT",
@@ -83,7 +83,7 @@ class JoinRoomModal extends React.Component {
       headers: {
         token: process.env.REACT_APP_ZAFRA_KEY
       },
-      url: "https://talk4free.live/api/rooms"
+      url: `${process.env.REACT_APP_API_URL}/api/rooms`
     });
     const rooms = result.data;
     if (rooms.length > 0) {

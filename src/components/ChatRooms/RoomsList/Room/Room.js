@@ -2,6 +2,7 @@ import React from "react";
 import ParticipantsList from "./ParticipantsList/ParticipantsList";
 import JoinRoomModal from "./JoinRoomModal/JoinRoomModal";
 import { Row, Col, Button, Badge } from "react-bootstrap";
+import "./Room.scss";
 
 class Room extends React.Component {
   state = {

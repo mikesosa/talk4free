@@ -26,7 +26,7 @@ class App extends React.Component {
       headers: {
         token: process.env.REACT_APP_ZAFRA_KEY
       },
-      url: "https://talk4free.live/api/users"
+      url: `${process.env.REACT_APP_API_URL}/api/users`
     });
     const users = result.data;
     if (users.length > 0) {
@@ -45,7 +45,7 @@ class App extends React.Component {
       if (!alreadyExist) {
         axios({
           method: "POST",
-          url: "https://talk4free.live/api/users",
+          url: `${process.env.REACT_APP_API_URL}/api/users`,
           headers: {
             token: process.env.REACT_APP_ZAFRA_KEY
           },
@@ -77,7 +77,7 @@ class App extends React.Component {
       headers: {
         token: process.env.REACT_APP_ZAFRA_KEY
       },
-      url: "https://talk4free.live/api/users"
+      url: `${process.env.REACT_APP_API_URL}/api/users`
     })
       .then(res => {
         let users = res.data.filter(user => user.room_id !== null);

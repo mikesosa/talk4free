@@ -180,7 +180,7 @@ function CreateRoomModal(props) {
               >
                 <option value="">Choose...</option>
                 <option value="Beginner">Beginner</option>
-                <option value="Intermidiate">Intermediate</option>
+                <option value="Intermediate">Intermediate</option>
                 <option value="Advanced">Advanced</option>
               </Form.Control>
               {errors.level && <small>Please choose a level</small>}

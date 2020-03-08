@@ -1,5 +1,5 @@
 import React from "react";
-// import ParticipantsList from "./ParticipantsList/ParticipantsList";
+import ParticipantsList from "./ParticipantsList/ParticipantsList";
 import JoinRoomModal from "./JoinRoomModal/JoinRoomModal";
 import { Row, Col, Button, Badge } from "react-bootstrap";
 
@@ -28,7 +28,7 @@ class Room extends React.Component {
           </p>
         </Row>
         <Row className="room-box-body">
-          {/* <ParticipantsList participants={this.props.room.max_user} /> */}
+          <ParticipantsList participants={this.props.users} />
         </Row>
         <Row className="room-box-footer">
           <Button variant="primary" onClick={this.showCreateRoomModal}>

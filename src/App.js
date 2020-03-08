@@ -8,10 +8,16 @@ import "./App.scss";
 
 class App extends React.Component {
   state = {
+    // Current user loggedin?
     isLoggedIn: false,
+    // Current user
     userName: "",
+    // Current user
     email: "",
-    imageUrl: ""
+    // Current user
+    imageUrl: "",
+    // All the users with active rooms
+    users: []
   };
 
   checkUser = async () => {
@@ -63,6 +69,30 @@ class App extends React.Component {
     });
     this.saveUser();
   };
+
+  getAllUsers = async () => {
+    // This will get all the users with an active room
+    await axios({
+      method: "GET",
+      headers: {
+        token: process.env.REACT_APP_ZAFRA_KEY
+      },
+      url: "https://talk4free.live/api/users"
+    })
+      .then(res => {
+        let users = res.data.filter(user => user.room_id !== null);
+        res.data = users;
+        this.setState({
+          users: res.data
+        });
+      })
+      .catch(err => console.log(err));
+  };
+
+  componentDidMount() {
+    // This will get all the users with an active room
+    this.getAllUsers();
+  }
   render() {
     return (
       <React.Fragment>
@@ -73,6 +103,7 @@ class App extends React.Component {
         <ChatRooms
           isLoggedIn={this.state.isLoggedIn}
           email={this.state.email}
+          users={this.state.users}
         />
         {/* <footer className="mt-auto">
           <Container>

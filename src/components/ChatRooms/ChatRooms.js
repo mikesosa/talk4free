@@ -11,8 +11,8 @@ class ChatRooms extends React.Component {
     showCreateRoomModal: false
   };
 
-  getRooms = () => {
-    axios({
+  getRooms = async () => {
+    await axios({
       method: "GET",
       headers: {
         token: process.env.REACT_APP_ZAFRA_KEY
@@ -59,6 +59,7 @@ class ChatRooms extends React.Component {
             rooms={this.state.rooms}
             isLoggedIn={this.props.isLoggedIn}
             email={this.props.email}
+            users={this.props.users}
           />
         );
       } else {

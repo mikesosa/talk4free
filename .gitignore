@@ -1,1 +1,6 @@
 node_modules
+build
+setup-work-env.sh
+.env
+.pretierrc
+eslint.json

@@ -5,6 +5,7 @@ import Video from "./Video/Video";
 const ModalVideo = props => {
   const [show, setShow] = useState(true);
   const [published, setPublished] = useState(false);
+  const [publisherVideo, setPublisherVideo] = useState(false);
 
   const handlePublished = value => setPublished(value);
 
@@ -12,13 +13,16 @@ const ModalVideo = props => {
     // Check if session is conected
     if (published) {
       setShow(false);
-      console.log("About to handleClose");
       props.handleClose();
     } else {
       console.log("No published yet, please wait");
     }
   };
   const handleShow = () => setShow(true);
+  const handleVideo = () => {
+    console.log("handlinf vide");
+    setPublisherVideo(!publisherVideo);
+  };
 
   return (
     <Modal
@@ -37,9 +41,10 @@ const ModalVideo = props => {
             roomId={props.roomId}
             onPublished={handlePublished}
             onUpdate={props.onUpdate}
+            publisherVideo={publisherVideo}
           />
           <Modal.Footer>
-            <Button variant="secondary" onClick={handleShow}>
+            <Button variant="secondary" onClick={handleVideo}>
               Video
             </Button>
             <Button variant="secondary" onClick={handleShow}>

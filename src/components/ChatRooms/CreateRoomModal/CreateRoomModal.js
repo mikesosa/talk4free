@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./CreateRoomModal.scss";
 import { Modal, Button, Form, Col, Row } from "react-bootstrap";
 import ModalVideo from "../../ModalVideo/ModalVideo";
-import Languages from "../../../languages";
+import Languages from "../../../languagesEmojis";
 import { useForm } from "react-hook-form";
 import CreateSessionId from "../../../controllers/CreateSessionId";
 import opentok from "../../../controllers/opentok";

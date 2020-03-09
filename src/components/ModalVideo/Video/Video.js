@@ -1,34 +1,32 @@
 import React from "react";
-import { OTSession, OTPublisher, OTStreams, OTSubscriber } from "opentok-react";
-import { Button } from "react-bootstrap";
+import ConnectionStatus from "./ConnectionStatus";
+import Publisher from "./Publisher";
+import Subscriber from "./Subscriber";
+import { OTSession, OTStreams } from "opentok-react";
+// import { Button } from "react-bootstrap";
 import axios from "axios";
 import "./Video.scss";
 
 export default class Video extends React.Component {
   state = {
+    error: null,
+    connected: false,
     apiKey: this.props.apiKey,
     sessionId: this.props.sessionId,
-    token: this.props.token,
-    otPublisher: React.createRef()
-    // publisherVideo: false
-    // streamCreated: false
+    token: this.props.token
+  };
+  sessionEvents = {
+    sessionConnected: () => {
+      this.setState({ connected: true });
+    },
+    sessionDisconnected: () => {
+      this.setState({ connected: false });
+    }
+  };
+  onError = err => {
+    this.setState({ error: `Failed to connect: ${err.message}` });
   };
 
-  publisherProperties = {
-    // audioFallbackEnabled: false,
-    // insertDefaultUI: true,
-    // showControls: true,
-    // style: {
-    //   audioLevelDisplayMode: "on",
-    //   buttonDisplayMode: "off"
-    // },
-    publishVideo: this.props.publisherVideo
-  };
-
-  subscriberProperties = {
-    subscribeToAudio: true,
-    subscribeToVideo: false
-  };
   /* ====================== decrease one user ============================*/
   decreaseUserFromRoom = async roomId => {
     const url = `${process.env.REACT_APP_API_URL}/api/rooms/decrease/${roomId}`;
@@ -45,58 +43,23 @@ export default class Video extends React.Component {
     }
   };
 
-  publisherEventHandlers = {
-    streamCreated: event => {
-      this.props.onPublished(true);
-      console.log("Publisher stream created!");
-    },
-    streamDestroyed: async event => {
-      await this.decreaseUserFromRoom(this.props.roomId);
-      this.props.onUpdate();
-      console.log("Publisher stream destroyed!");
-    }
-    // videoDisabled: event => {
-    //   console.log("Subscriber video disabled!");
-    // },
-    // videoEnabled: event => {
-    //   console.log("Subscriber video enabled!");
-    // }
-  };
-
-  getPublisherStats() {
-    this.otPublisher
-      .getPublisher()
-      .getStats((err, stats) => console.log(err, stats));
-  }
-  handleVideo = () => {
-    this.setState({
-      publisherVideo: !this.state.publisherVideo
-    });
-    // this.getPublisherStats();
-  };
-
   render() {
     return (
       <React.Fragment>
         <OTSession
-          apiKey={this.state.apiKey}
-          sessionId={this.state.sessionId}
-          token={this.state.token}
+          apiKey={this.props.apiKey}
+          sessionId={this.props.sessionId}
+          token={this.props.token}
+          eventHandlers={this.sessionEvents}
+          onError={this.onError}
         >
-          <OTPublisher
-            properties={this.publisherProperties}
-            eventHandlers={this.publisherEventHandlers}
-          />
+          {this.state.error ? <div id="error">{this.state.error}</div> : null}
+          <ConnectionStatus connected={this.state.connected} />
+          <Publisher />
           <OTStreams>
-            <OTSubscriber
-              ref={this.otPublisher}
-              properties={this.publisherProperties}
-            />
+            <Subscriber />
           </OTStreams>
         </OTSession>
-        <Button variant="secondary" onClick={this.handleVideo}>
-          Video
-        </Button>
       </React.Fragment>
     );
   }

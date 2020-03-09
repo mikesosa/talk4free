@@ -1,12 +1,14 @@
 import React from "react";
 import { OTSession, OTPublisher } from "opentok-react";
 import axios from "axios";
+import "./Video.scss";
 
 export default class Video extends React.Component {
   state = {
     apiKey: this.props.apiKey,
     sessionId: this.props.sessionId,
     token: this.props.token
+    // streamCreated: false
   };
 
   publisherProperties = {
@@ -32,10 +34,10 @@ export default class Video extends React.Component {
 
   publisherEventHandlers = {
     streamCreated: event => {
+      this.props.onPublished(true);
       console.log("Publisher stream created!");
     },
     streamDestroyed: async event => {
-      // console.log(this.props);
       await this.decreaseUserFromRoom(this.props.roomId);
       this.props.onUpdate();
       console.log("Publisher stream destroyed!");

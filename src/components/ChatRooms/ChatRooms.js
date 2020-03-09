@@ -79,12 +79,14 @@ class ChatRooms extends React.Component {
               Bootstrap components and utilities with little customization.
             </p>
             <Button variant="primary" onClick={this.createRoom}>
-              Create Room
+              Create a Room
             </Button>
             <CreateRoomModal
               show={this.state.showCreateRoomModal}
               handleClose={this.createRoom}
               email={this.props.email}
+              username={this.props.username}
+              img={this.props.img}
               onUpdate={this.getRooms}
             />
           </div>

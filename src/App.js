@@ -102,6 +102,8 @@ class App extends React.Component {
         <Jumbotron />
         <ChatRooms
           isLoggedIn={this.state.isLoggedIn}
+          username={this.state.userName}
+          img={this.state.imageUrl}
           email={this.state.email}
           users={this.state.users}
         />

@@ -1,5 +1,5 @@
 import React from "react";
-import { OTSession, OTPublisher } from "opentok-react";
+import { OTSession, OTPublisher, OTStreams, OTSubscriber } from "opentok-react";
 import axios from "axios";
 import "./Video.scss";
 
@@ -55,6 +55,9 @@ export default class Video extends React.Component {
           properties={this.publisherProperties}
           eventHandlers={this.publisherEventHandlers}
         />
+        <OTStreams>
+          <OTSubscriber />
+        </OTStreams>
       </OTSession>
     );
   }

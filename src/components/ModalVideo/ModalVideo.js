@@ -12,6 +12,8 @@ const ModalVideo = props => {
     // Check if session is conected
     if (published) {
       setShow(false);
+      console.log("About to handleClose");
+      props.handleClose();
     } else {
       console.log("No published yet, please wait");
     }

@@ -36,7 +36,6 @@ class ChatRooms extends React.Component {
 
   createRoom = () => {
     // Check if user is logged
-
     if (this.props.isLoggedIn) {
       // If logged show modal
       this.setState({
@@ -60,6 +59,7 @@ class ChatRooms extends React.Component {
             isLoggedIn={this.props.isLoggedIn}
             email={this.props.email}
             users={this.props.users}
+            onUpdate={this.getRooms}
           />
         );
       } else {

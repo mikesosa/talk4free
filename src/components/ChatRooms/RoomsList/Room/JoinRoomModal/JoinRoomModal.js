@@ -1,6 +1,8 @@
 import React from "react";
 import { Modal, Button, Badge } from "react-bootstrap";
-import { OTSession, OTPublisher, OTStreams, OTSubscriber } from "opentok-react";
+import ModalVideo from "../../../../ModalVideo/ModalVideo";
+
+// import { OTSession, OTPublisher, OTStreams, OTSubscriber } from "opentok-react";
 import opentok from "../../../../../controllers/opentok";
 import axios from "axios";
 
@@ -110,49 +112,55 @@ class JoinRoomModal extends React.Component {
     });
   };
 
+  handleClose = async () => {
+    // if there is a session goin on
+    // if (completed) {
+    // await removeUserFromRoom();
+    // this.props.handleClose();
+    // setCompleted(false);
+    // If no sessions just close the modal
+    // } else {
+    this.props.handleClose();
+    // }
+  };
   render() {
-    const handleRender = () => {
-      if (this.state.joined) {
-        return (
-          <React.Fragment>
-            <OTSession
-              apiKey={process.env.REACT_APP_OPENTOK_API_KEY}
-              sessionId={this.props.sessionId}
-              token={this.state.userToken}
-            >
-              <OTPublisher />
-              <OTStreams>
-                <OTSubscriber />
-              </OTStreams>
-            </OTSession>
-          </React.Fragment>
-        );
-      } else {
-        return <p>Woohoo, you're aboout to join this call!</p>;
-      }
-    };
-    return (
-      <Modal show={this.props.show} onHide={this.decreaseUserFromRoom}>
-        <Modal.Header closeButton>
-          <Modal.Title>
-            {" "}
-            <p>
-              <Badge variant="warning">{this.props.lang}</Badge>
-              {this.props.level}
-            </p>
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>{handleRender()}</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={this.props.handleClose}>
-            Cancel
-          </Button>
-          <Button variant="primary" onClick={this.onSubmit}>
-            Join Call
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    );
+    if (!this.state.joined) {
+      return (
+        <Modal show={this.props.show} onHide={this.decreaseUserFromRoom}>
+          <Modal.Header closeButton>
+            <Modal.Title>
+              {" "}
+              <p>
+                <Badge variant="warning">{this.props.lang}</Badge>
+                {this.props.level}
+              </p>
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <p>Woohoo, you're aboout to join this call!</p>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={this.props.handleClose}>
+              Cancel
+            </Button>
+            <Button variant="primary" onClick={this.onSubmit}>
+              Join Call
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      );
+    } else {
+      return (
+        <ModalVideo
+          show={true}
+          sessionId={this.props.sessionId}
+          token={this.state.userToken}
+          roomId={this.state.roomId}
+          onUpdate={this.props.onUpdate}
+          handleClose={this.handleClose}
+        />
+      );
+    }
   }
 }
 

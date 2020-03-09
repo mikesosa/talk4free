@@ -18,6 +18,7 @@ class RoomsList extends React.Component {
                 users={users}
                 isLoggedIn={this.props.isLoggedIn}
                 email={this.props.email}
+                onUpdate={this.props.onUpdate}
               />
             );
           })}

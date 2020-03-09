@@ -103,7 +103,6 @@ function CreateRoomModal(props) {
 
   // ===================== Remove User from Room ============================
   const removeUserFromRoom = async () => {
-    // console.log(await getUserId());
     const url = `${process.env.REACT_APP_API_URL}/api/users/out/${roomId}/${userId}`;
     try {
       await axios({
@@ -249,6 +248,7 @@ function CreateRoomModal(props) {
         token={userToken}
         roomId={roomId}
         onUpdate={props.onUpdate}
+        handleClose={handleClose}
       />
     );
   }

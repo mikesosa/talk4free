@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Modal, Row, Col } from "react-bootstrap";
 import Video from "./Video/Video";
 import axios from "axios";
+import socketIOClient from "socket.io-client";
 
 const ModalVideo = props => {
   const [show, setShow] = useState(true);
@@ -25,6 +26,8 @@ const ModalVideo = props => {
   const handleClose = () => {
     // Delete one user from the room
     decreaseUserFromRoom(props.roomId);
+    const socket = socketIOClient("http://localhost:5000");
+    socket.emit("closeUserSignal", true);
     // Check if session is conected
     setShow(false);
     props.handleClose();

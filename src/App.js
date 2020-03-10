@@ -2,6 +2,7 @@ import React from "react";
 import NavBar from "../src/components/NavBar/NavBar";
 import ChatRooms from "./components/ChatRooms/ChatRooms";
 import Jumbotron from "./components/Jumbotron/Jumbotron";
+import socketIOClient from "socket.io-client";
 // import { Container } from "react-bootstrap";
 import axios from "axios";
 import "./App.scss";
@@ -90,8 +91,21 @@ class App extends React.Component {
   };
 
   componentDidMount() {
+    // user connected to server
+    const socket = socketIOClient("http://localhost:5000");
+    socket.on("connect", () => {
+      console.log("conectado al server");
+      this.getAllUsers();
+    });
+    // real users in room
+    socket.on("closeUserresp", resp => {
+      if (resp) this.getAllUsers();
+    });
+
+    socket.on("renderRoom", resp => {
+      if (resp) this.getAllUsers();
+    });
     // This will get all the users with an active room
-    this.getAllUsers();
   }
   render() {
     return (

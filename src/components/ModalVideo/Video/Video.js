@@ -8,7 +8,7 @@ import { FaPhone } from "react-icons/fa";
 
 import { OTSession, OTStreams, OTSubscriber } from "opentok-react";
 // import { Button } from "react-bootstrap";
-import axios from "axios";
+// import axios from "axios";
 import "./Video.scss";
 
 export default class Video extends React.Component {
@@ -60,20 +60,20 @@ export default class Video extends React.Component {
   };
 
   /* ====================== decrease one user ============================*/
-  decreaseUserFromRoom = async roomId => {
-    const url = `${process.env.REACT_APP_API_URL}/api/rooms/decrease/${roomId}`;
-    try {
-      await axios({
-        method: "PUT",
-        headers: {
-          token: process.env.REACT_APP_ZAFRA_KEY
-        },
-        url: url
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // decreaseUserFromRoom = async roomId => {
+  //   const url = `${process.env.REACT_APP_API_URL}/api/rooms/decrease/${roomId}`;
+  //   try {
+  //     await axios({
+  //       method: "PUT",
+  //       headers: {
+  //         token: process.env.REACT_APP_ZAFRA_KEY
+  //       },
+  //       url: url
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   render() {
     return (

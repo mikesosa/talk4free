@@ -6,10 +6,13 @@ import Languages from "../../../languagesEmojis";
 import { useForm } from "react-hook-form";
 import CreateSessionId from "../../../controllers/CreateSessionId";
 import opentok from "../../../controllers/opentok";
+import socketIOClient from "socket.io-client";
 // import { OTSession, OTPublisher, OTStreams, OTSubscriber } from "opentok-react";
 import axios from "axios";
 
 function CreateRoomModal(props) {
+  const socket = socketIOClient("http://localhost:5000");
+
   const [completed, setCompleted] = useState(false);
   const [sessionId, setSessionId] = useState(null);
   const [userToken, setUserToken] = useState(null);
@@ -131,6 +134,7 @@ function CreateRoomModal(props) {
     setUserId(user_id);
     setRoomId(room_id);
     setCompleted(true);
+    socket.emit("createRoom", true);
     props.handleClose();
   };
 
@@ -138,6 +142,9 @@ function CreateRoomModal(props) {
     // if there is a session goin on
     if (completed) {
       await removeUserFromRoom();
+      //
+      socket.emit("closeRoom", true);
+      //
       props.handleClose();
       setCompleted(false);
       // If no sessions just close the modal

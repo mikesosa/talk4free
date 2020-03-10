@@ -4,6 +4,7 @@ import { Container, Button } from "react-bootstrap";
 import CreateRoomModal from "./CreateRoomModal/CreateRoomModal";
 import RoomsList from "./RoomsList/RoomsList";
 import axios from "axios";
+import socketIOClient from "socket.io-client";
 
 class ChatRooms extends React.Component {
   state = {
@@ -31,7 +32,18 @@ class ChatRooms extends React.Component {
   };
 
   componentDidMount() {
-    this.getRooms();
+    const socket = socketIOClient("http://localhost:5000");
+    socket.on("connect", () => {
+      this.getRooms();
+    });
+    // remove room from all users
+    socket.on("closeRoomResp", resp => {
+      if (resp) this.getRooms();
+    });
+    // create room for all users
+    socket.on("renderRoom", resp => {
+      if (resp) this.getRooms();
+    });
   }
 
   createRoom = () => {

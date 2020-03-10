@@ -1,6 +1,8 @@
 import React from "react";
 import { OTSubscriber } from "opentok-react";
 import CheckBox from "./CheckBox";
+import { Button } from "react-bootstrap";
+import { FaPhone } from "react-icons/fa";
 
 class Subscriber extends React.Component {
   state = {
@@ -33,16 +35,21 @@ class Subscriber extends React.Component {
           }}
           onError={this.onError}
         />
-        <CheckBox
-          label="Subscribe to Audio"
-          initialChecked={this.state.audio}
-          onChange={this.setAudio}
-        />
-        <CheckBox
-          label="Subscribe to Video"
-          initialChecked={this.state.video}
-          onChange={this.setVideo}
-        />
+        <div className="controls">
+          <CheckBox
+            label="Audio"
+            initialChecked={this.state.audio}
+            onChange={this.setAudio}
+          />
+          <CheckBox
+            label="Video"
+            initialChecked={this.state.video}
+            onChange={this.setVideo}
+          />
+          <Button onClick={this.props.onHangUp}>
+            <FaPhone />
+          </Button>
+        </div>
       </div>
     );
   }

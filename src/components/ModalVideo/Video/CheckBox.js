@@ -1,5 +1,6 @@
 import React from "react";
 import { uniqueId } from "lodash";
+import { FaVideo, FaMicrophone, FaLaptop } from "react-icons/fa";
 
 class CheckBox extends React.Component {
   state = {
@@ -21,16 +22,35 @@ class CheckBox extends React.Component {
     }
   }
 
+  checkLabel = () => {
+    switch (this.props.label) {
+      case "Audio":
+        return <FaMicrophone />;
+      // break;
+      case "Video":
+        return <FaVideo />;
+      // break;
+      case "Screen":
+        return <FaLaptop />;
+      // break;
+      default:
+        return "none";
+    }
+  };
+
   render() {
     return (
-      <div>
-        <label htmlFor={this.state.id}>{this.props.label}</label>
-        <input
-          type="checkbox"
-          checked={this.state.isChecked}
-          id={this.state.id}
-          onChange={this.onChange}
-        />
+      <div className="controlsBtn">
+        {/* <label htmlFor={this.state.id}>{this.props.label}</label> */}
+        <label>
+          <input
+            type="checkbox"
+            checked={this.state.isChecked}
+            id={this.state.id}
+            onChange={this.onChange}
+          />
+          <span>{this.checkLabel()}</span>
+        </label>
       </div>
     );
   }

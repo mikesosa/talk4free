@@ -1,12 +1,14 @@
 import React from "react";
 import { OTPublisher } from "opentok-react";
+import { Button } from "react-bootstrap";
 import CheckBox from "./CheckBox";
+import { FaPhone } from "react-icons/fa";
 
 class Publisher extends React.Component {
   state = {
     error: null,
     audio: true,
-    video: true,
+    video: false,
     videoSource: "camera"
   };
 
@@ -39,6 +41,11 @@ class Publisher extends React.Component {
         {this.state.error ? <div id="error">{this.state.error}</div> : null}
         <OTPublisher
           properties={{
+            // insertDefaultUI: false,
+            style: {
+              audioLevelDisplayMode: "on",
+              buttonDisplayMode: "off"
+            },
             publishAudio: this.state.audio,
             publishVideo: this.state.video,
             videoSource:
@@ -46,17 +53,22 @@ class Publisher extends React.Component {
           }}
           onError={this.onError}
         />
-        <CheckBox label="Share Screen" onChange={this.changeVideoSource} />
-        <CheckBox
-          label="Publish Audio"
-          initialChecked={this.state.audio}
-          onChange={this.setAudio}
-        />
-        <CheckBox
-          label="Publish Video"
-          initialChecked={this.state.video}
-          onChange={this.setVideo}
-        />
+        <div className="controls">
+          <CheckBox label="Screen" onChange={this.changeVideoSource} />
+          <CheckBox
+            label="Audio"
+            initialChecked={this.state.audio}
+            onChange={this.setAudio}
+          />
+          <CheckBox
+            label="Video"
+            initialChecked={this.state.video}
+            onChange={this.setVideo}
+          />
+          <Button onClick={this.props.onHangUp}>
+            <FaPhone />
+          </Button>
+        </div>
       </div>
     );
   }

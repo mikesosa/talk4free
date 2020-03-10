@@ -1,27 +1,44 @@
 import React, { useState } from "react";
-import { Modal, Button, Row, Col } from "react-bootstrap";
+import { Modal, Row, Col } from "react-bootstrap";
 import Video from "./Video/Video";
 
 const ModalVideo = props => {
   const [show, setShow] = useState(true);
-  const [published, setPublished] = useState(false);
-  const [publisherVideo, setPublisherVideo] = useState(false);
+  const [published, setPublished] = useState(true);
+  // const [publisherVideo, setPublisherVideo] = useState(false);
 
-  const handlePublished = value => setPublished(value);
+  // const handlePublished = value => setPublished(value);
 
   const handleClose = () => {
     // Check if session is conected
-    if (published) {
-      setShow(false);
-      props.handleClose();
-    } else {
-      console.log("No published yet, please wait");
-    }
+    setPublished(false);
+    setShow(false);
+    props.handleClose();
   };
-  const handleShow = () => setShow(true);
-  const handleVideo = () => {
-    console.log("handlinf vide");
-    setPublisherVideo(!publisherVideo);
+  // const handleShow = () => setShow(true);
+  // const handleVideo = () => {
+  //   console.log("handlinf vide0");
+  //   setPublisherVideo(!publisherVideo);
+  // };
+
+  const handleOTSession = () => {
+    if (published) {
+      //If not published, make it published.
+      return (
+        <Video
+          apiKey={process.env.REACT_APP_OPENTOK_API_KEY}
+          sessionId={props.sessionId}
+          token={props.token}
+          roomId={props.roomId}
+          onHangUp={handleClose}
+          // onPublished={handlePublished}
+          // onUpdate={props.onUpdate}
+          // publisherVideo={publisherVideo}
+        />
+      );
+    } else {
+      return <p>Loading...</p>;
+    }
   };
 
   return (
@@ -34,17 +51,9 @@ const ModalVideo = props => {
     >
       <Row>
         <Col md={8} className="video">
-          <Video
-            apiKey={process.env.REACT_APP_OPENTOK_API_KEY}
-            sessionId={props.sessionId}
-            token={props.token}
-            roomId={props.roomId}
-            onPublished={handlePublished}
-            onUpdate={props.onUpdate}
-            publisherVideo={publisherVideo}
-          />
+          {handleOTSession()}
           <Modal.Footer>
-            <Button variant="secondary" onClick={handleVideo}>
+            {/* <Button variant="secondary" onClick={handleVideo}>
               Video
             </Button>
             <Button variant="secondary" onClick={handleShow}>
@@ -52,7 +61,7 @@ const ModalVideo = props => {
             </Button>
             <Button variant="primary" onClick={handleClose}>
               Hang Up
-            </Button>
+            </Button> */}
           </Modal.Footer>
         </Col>
         <Col md={4} className="chat">

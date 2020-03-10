@@ -21,11 +21,21 @@ export default class Video extends React.Component {
     },
     sessionDisconnected: () => {
       this.setState({ connected: false });
+    },
+    streamCreated: event => {
+      console.log("Stream created!", event);
+    },
+    streamDestroyed: event => {
+      console.log("Stream destroyed!", event);
     }
   };
   onError = err => {
     this.setState({ error: `Failed to connect: ${err.message}` });
   };
+
+  componentWillUnmount() {
+    console.log("Session unmounted!");
+  }
 
   /* ====================== decrease one user ============================*/
   decreaseUserFromRoom = async roomId => {
@@ -55,7 +65,7 @@ export default class Video extends React.Component {
         >
           {this.state.error ? <div id="error">{this.state.error}</div> : null}
           <ConnectionStatus connected={this.state.connected} />
-          <Publisher />
+          <Publisher onHangUp={this.props.onHangUp} />
           <OTStreams>
             <Subscriber />
           </OTStreams>

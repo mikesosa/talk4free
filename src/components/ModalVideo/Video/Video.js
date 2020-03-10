@@ -1,8 +1,12 @@
 import React from "react";
 import ConnectionStatus from "./ConnectionStatus";
 import Publisher from "./Publisher";
-import Subscriber from "./Subscriber";
-import { OTSession, OTStreams } from "opentok-react";
+// import Subscriber from "./Subscriber";
+import CheckBox from "./CheckBox";
+import { Button } from "react-bootstrap";
+import { FaPhone } from "react-icons/fa";
+
+import { OTSession, OTStreams, OTSubscriber } from "opentok-react";
 // import { Button } from "react-bootstrap";
 import axios from "axios";
 import "./Video.scss";
@@ -13,7 +17,11 @@ export default class Video extends React.Component {
     connected: false,
     apiKey: this.props.apiKey,
     sessionId: this.props.sessionId,
-    token: this.props.token
+    token: this.props.token,
+    // Child Components
+    audio: true,
+    video: false,
+    videoSource: "camera"
   };
   sessionEvents = {
     sessionConnected: () => {
@@ -36,6 +44,20 @@ export default class Video extends React.Component {
   componentWillUnmount() {
     console.log("Session unmounted!");
   }
+
+  setAudio = audio => {
+    this.setState({ audio });
+  };
+
+  setVideo = video => {
+    this.setState({ video });
+  };
+
+  changeVideoSource = videoSource => {
+    this.state.videoSource !== "camera"
+      ? this.setState({ videoSource: "camera" })
+      : this.setState({ videoSource: "screen" });
+  };
 
   /* ====================== decrease one user ============================*/
   decreaseUserFromRoom = async roomId => {
@@ -65,10 +87,39 @@ export default class Video extends React.Component {
         >
           {this.state.error ? <div id="error">{this.state.error}</div> : null}
           <ConnectionStatus connected={this.state.connected} />
-          <Publisher onHangUp={this.props.onHangUp} />
+          <Publisher
+            error={this.state.error}
+            audio={this.state.audio}
+            video={this.state.video}
+            videoSource={this.state.videoSource}
+          />
           <OTStreams>
-            <Subscriber />
+            {/* <Subscriber
+              error={this.state.error}
+              audio={this.state.audio}
+              video={this.state.video}
+              videoSource={this.state.videoSource}
+            /> */}
+            <OTSubscriber />
           </OTStreams>
+
+          {/* Take out the buttons so they will be only for one component */}
+          <div className="controls">
+            <CheckBox label="Screen" onChange={this.changeVideoSource} />
+            <CheckBox
+              label="Audio"
+              initialChecked={this.state.audio}
+              onChange={this.setAudio}
+            />
+            <CheckBox
+              label="Video"
+              initialChecked={this.state.video}
+              onChange={this.setVideo}
+            />
+            <Button onClick={this.props.onHangUp}>
+              <FaPhone />
+            </Button>
+          </div>
         </OTSession>
       </React.Fragment>
     );

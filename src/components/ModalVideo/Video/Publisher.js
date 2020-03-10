@@ -1,29 +1,12 @@
 import React from "react";
 import { OTPublisher } from "opentok-react";
-import { Button } from "react-bootstrap";
-import CheckBox from "./CheckBox";
-import { FaPhone } from "react-icons/fa";
+// import { Button } from "react-bootstrap";
+// import CheckBox from "./CheckBox";
+// import { FaPhone } from "react-icons/fa";
 
 class Publisher extends React.Component {
   state = {
-    error: null,
-    audio: true,
-    video: false,
-    videoSource: "camera"
-  };
-
-  setAudio = audio => {
-    this.setState({ audio });
-  };
-
-  setVideo = video => {
-    this.setState({ video });
-  };
-
-  changeVideoSource = videoSource => {
-    this.state.videoSource !== "camera"
-      ? this.setState({ videoSource: "camera" })
-      : this.setState({ videoSource: "screen" });
+    error: null
   };
 
   onError = err => {
@@ -38,22 +21,21 @@ class Publisher extends React.Component {
     return (
       <div className="publisher">
         Publisher
-        {this.state.error ? <div id="error">{this.state.error}</div> : null}
+        {this.props.error ? <div id="error">{this.props.error}</div> : null}
         <OTPublisher
           properties={{
-            // insertDefaultUI: false,
             style: {
               audioLevelDisplayMode: "on",
               buttonDisplayMode: "off"
             },
-            publishAudio: this.state.audio,
-            publishVideo: this.state.video,
+            publishAudio: this.props.audio,
+            publishVideo: this.props.video,
             videoSource:
-              this.state.videoSource === "screen" ? "screen" : undefined
+              this.props.videoSource === "screen" ? "screen" : undefined
           }}
           onError={this.onError}
         />
-        <div className="controls">
+        {/* <div className="controls">
           <CheckBox label="Screen" onChange={this.changeVideoSource} />
           <CheckBox
             label="Audio"
@@ -68,7 +50,7 @@ class Publisher extends React.Component {
           <Button onClick={this.props.onHangUp}>
             <FaPhone />
           </Button>
-        </div>
+        </div> */}
       </div>
     );
   }

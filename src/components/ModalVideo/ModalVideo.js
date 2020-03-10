@@ -5,7 +5,6 @@ import axios from "axios";
 
 const ModalVideo = props => {
   const [show, setShow] = useState(true);
-  const [published, setPublished] = useState(true);
 
   /* ====================== decrease one user ============================*/
   const decreaseUserFromRoom = async roomId => {
@@ -27,18 +26,12 @@ const ModalVideo = props => {
     // Delete one user from the room
     decreaseUserFromRoom(props.roomId);
     // Check if session is conected
-    setPublished(false);
     setShow(false);
     props.handleClose();
   };
-  // const handleShow = () => setShow(true);
-  // const handleVideo = () => {
-  //   console.log("handlinf vide0");
-  //   setPublisherVideo(!publisherVideo);
-  // };
 
   const handleOTSession = () => {
-    if (published) {
+    if (show) {
       //If not published, make it published.
       return (
         <Video
@@ -53,6 +46,7 @@ const ModalVideo = props => {
         />
       );
     } else {
+      // I do this to unmount the session so it can be disconnected
       return <p>Loading...</p>;
     }
   };

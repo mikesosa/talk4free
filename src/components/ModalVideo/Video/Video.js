@@ -43,6 +43,7 @@ export default class Video extends React.Component {
 
   componentWillUnmount() {
     console.log("Session unmounted!");
+    // aqui es dinde se rreeferesci y to ca llamar oa a q se borre todo
   }
 
   setAudio = audio => {

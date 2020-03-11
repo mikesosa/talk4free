@@ -3,6 +3,7 @@ import { Modal, Button, Badge } from "react-bootstrap";
 import ModalVideo from "../../../../ModalVideo/ModalVideo";
 import opentok from "../../../../../controllers/opentok";
 import axios from "axios";
+import socketIOClient from "socket.io-client";
 
 class JoinRoomModal extends React.Component {
   state = {
@@ -116,6 +117,7 @@ class JoinRoomModal extends React.Component {
 
   onSubmit = async () => {
     console.log("Joining...");
+    const socket = socketIOClient(`${process.env.REACT_APP_SOCKECT_URL}`);
     const user_token = await opentok.generateToken(this.props.sessionId);
     const user_id = await this.getUserId();
     const roomId = await this.getRoomId(this.props.sessionId);
@@ -126,11 +128,12 @@ class JoinRoomModal extends React.Component {
       userId: user_id,
       roomId: roomId
     });
+    socket.emit("closeUserSignal", true);
   };
 
   handleClose = async () => {
     // Do we need sockets??
-    await this.decreaseUserFromRoom();
+    // await this.decreaseUserFromRoom();
     await this.removeUserFromRoom();
     this.props.handleClose();
   };

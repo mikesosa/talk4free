@@ -139,9 +139,6 @@ function CreateRoomModal(props) {
     // if there is a session goin on
     if (completed) {
       await removeUserFromRoom();
-      //
-      socket.emit("closeRoom", true);
-      //
       props.handleClose();
       setCompleted(false);
       // If no sessions just close the modal

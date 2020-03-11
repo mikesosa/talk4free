@@ -28,6 +28,7 @@ const ModalVideo = props => {
     decreaseUserFromRoom(props.roomId);
     const socket = socketIOClient(`${process.env.REACT_APP_SOCKECT_URL}`);
     socket.emit("closeUserSignal", true);
+    socket.emit("closeRoom", true);
     // Check if session is conected
     setShow(false);
     props.handleClose();

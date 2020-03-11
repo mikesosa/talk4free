@@ -4,6 +4,11 @@
     .publisher {
       text-align: center;
       .OTPublisherContainer {
+        .OT_name {
+          margin-left: 24px;
+          display: flex;
+          justify-content: center;
+        }
         // width: 20rem !important;
         // height: 20rem !important;
         // margin: auto;

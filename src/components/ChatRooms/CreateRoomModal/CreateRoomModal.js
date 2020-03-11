@@ -7,21 +7,19 @@ import { useForm } from "react-hook-form";
 import CreateSessionId from "../../../controllers/CreateSessionId";
 import opentok from "../../../controllers/opentok";
 import socketIOClient from "socket.io-client";
-// import { OTSession, OTPublisher, OTStreams, OTSubscriber } from "opentok-react";
 import axios from "axios";
 
 function CreateRoomModal(props) {
-  const socket = socketIOClient("http://localhost:5000");
-
+  const socket = socketIOClient(`${process.env.REACT_APP_SOCKECT_URL}`);
   const [completed, setCompleted] = useState(false);
   const [sessionId, setSessionId] = useState(null);
   const [userToken, setUserToken] = useState(null);
   const [userId, setUserId] = useState("");
   const [roomId, setRoomId] = useState("");
+
   const { register, handleSubmit, errors } = useForm();
 
   /* ==================================== FUNCTIONS ============================================*/
-
   // =============== Get user Id ==============================
   const getUserId = async () => {
     const result = await axios({
@@ -42,6 +40,39 @@ function CreateRoomModal(props) {
     return null;
   };
 
+  // ====================== Add User to Room =============================
+  const addUserToRoom = async (roomId, userId) => {
+    const url = `${process.env.REACT_APP_API_URL}/api/users/join/${roomId}/${userId}`;
+    try {
+      axios({
+        method: "PUT",
+        headers: {
+          token: process.env.REACT_APP_ZAFRA_KEY
+        },
+        url: url
+      });
+    } catch (error) {
+      console.log(error);
+    }
+    // This will update the rooms list on the frontend
+    props.onUpdate();
+  };
+
+  // ===================== Remove User from Room ============================
+  const removeUserFromRoom = async () => {
+    const url = `${process.env.REACT_APP_API_URL}/api/users/out/${roomId}/${userId}`;
+    try {
+      await axios({
+        method: "PUT",
+        headers: {
+          token: process.env.REACT_APP_ZAFRA_KEY
+        },
+        url: url
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
   // ============= Get room Id ====================================
   const getRoomId = async ss_id => {
     const result = await axios({
@@ -80,40 +111,6 @@ function CreateRoomModal(props) {
           active: true,
           created_by: userId
         }
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  // ====================== Add User to Room =============================
-  const addUserToRoom = async (roomId, userId) => {
-    const url = `${process.env.REACT_APP_API_URL}/api/users/join/${roomId}/${userId}`;
-    try {
-      axios({
-        method: "PUT",
-        headers: {
-          token: process.env.REACT_APP_ZAFRA_KEY
-        },
-        url: url
-      });
-    } catch (error) {
-      console.log(error);
-    }
-    // This will update the rooms list on the frontend
-    props.onUpdate();
-  };
-
-  // ===================== Remove User from Room ============================
-  const removeUserFromRoom = async () => {
-    const url = `${process.env.REACT_APP_API_URL}/api/users/out/${roomId}/${userId}`;
-    try {
-      await axios({
-        method: "PUT",
-        headers: {
-          token: process.env.REACT_APP_ZAFRA_KEY
-        },
-        url: url
       });
     } catch (error) {
       console.log(error);

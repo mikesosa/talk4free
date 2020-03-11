@@ -32,7 +32,7 @@ class ChatRooms extends React.Component {
   };
 
   componentDidMount() {
-    const socket = socketIOClient("http://localhost:5000");
+    const socket = socketIOClient(`${process.env.REACT_APP_SOCKECT_URL}`);
     socket.on("connect", () => {
       this.getRooms();
     });

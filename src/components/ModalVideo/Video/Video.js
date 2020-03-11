@@ -59,68 +59,63 @@ export default class Video extends React.Component {
       : this.setState({ videoSource: "screen" });
   };
 
-  /* ====================== decrease one user ============================*/
-  // decreaseUserFromRoom = async roomId => {
-  //   const url = `${process.env.REACT_APP_API_URL}/api/rooms/decrease/${roomId}`;
-  //   try {
-  //     await axios({
-  //       method: "PUT",
-  //       headers: {
-  //         token: process.env.REACT_APP_ZAFRA_KEY
-  //       },
-  //       url: url
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
   render() {
     return (
       <React.Fragment>
+        <ConnectionStatus connected={this.state.connected} />
         <OTSession
           apiKey={this.props.apiKey}
           sessionId={this.props.sessionId}
           token={this.props.token}
           eventHandlers={this.sessionEvents}
           onError={this.onError}
+          style={{ diplay: "flex", flexDirection: "column" }}
         >
           {this.state.error ? <div id="error">{this.state.error}</div> : null}
-          <ConnectionStatus connected={this.state.connected} />
           <Publisher
             error={this.state.error}
             audio={this.state.audio}
             video={this.state.video}
             videoSource={this.state.videoSource}
           />
-          <OTStreams>
+          <OTStreams style={{ display: "flex" }}>
             {/* <Subscriber
               error={this.state.error}
               audio={this.state.audio}
               video={this.state.video}
               videoSource={this.state.videoSource}
             /> */}
-            <OTSubscriber />
+            <OTSubscriber
+              properties={{
+                name: this.props.name,
+                style: {
+                  audioLevelDisplayMode: "on",
+                  buttonDisplayMode: "off",
+                  nameDisplayMode: "on",
+                  backgroundImageURI: this.props.imgUrl
+                },
+                inserMode: "after"
+              }}
+            />
           </OTStreams>
-
-          {/* Take out the buttons so they will be only for one component */}
-          <div className="controls">
-            <CheckBox label="Screen" onChange={this.changeVideoSource} />
-            <CheckBox
-              label="Audio"
-              initialChecked={this.state.audio}
-              onChange={this.setAudio}
-            />
-            <CheckBox
-              label="Video"
-              initialChecked={this.state.video}
-              onChange={this.setVideo}
-            />
-            <Button onClick={this.props.onHangUp}>
-              <FaPhone />
-            </Button>
-          </div>
         </OTSession>
+        {/* Take out the buttons so they will be only for one component */}
+        <div className="controls">
+          <CheckBox label="Screen" onChange={this.changeVideoSource} />
+          <CheckBox
+            label="Audio"
+            initialChecked={this.state.audio}
+            onChange={this.setAudio}
+          />
+          <CheckBox
+            label="Video"
+            initialChecked={this.state.video}
+            onChange={this.setVideo}
+          />
+          <Button onClick={this.props.onHangUp}>
+            <FaPhone />
+          </Button>
+        </div>
       </React.Fragment>
     );
   }

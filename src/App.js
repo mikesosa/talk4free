@@ -92,7 +92,8 @@ class App extends React.Component {
 
   componentDidMount() {
     // user connected to server
-    const socket = socketIOClient("http://localhost:5000");
+    console.log("Url es:", process.env.REACT_APP_SOCKECT_URL);
+    const socket = socketIOClient(`${process.env.REACT_APP_SOCKECT_URL}`);
     socket.on("connect", () => {
       console.log("conectado al server");
       this.getAllUsers();

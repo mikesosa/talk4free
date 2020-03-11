@@ -1,8 +1,6 @@
 import React from "react";
 import { Modal, Button, Badge } from "react-bootstrap";
 import ModalVideo from "../../../../ModalVideo/ModalVideo";
-
-// import { OTSession, OTPublisher, OTStreams, OTSubscriber } from "opentok-react";
 import opentok from "../../../../../controllers/opentok";
 import axios from "axios";
 
@@ -59,9 +57,27 @@ class JoinRoomModal extends React.Component {
     } catch (error) {
       console.log(error);
     }
+    // This will update the rooms list on the frontend
+    this.props.onUpdate();
   };
 
-  // ====================== Remove User from Room =============================
+  // ===================== Remove User from Room ============================
+  removeUserFromRoom = async () => {
+    const url = `${process.env.REACT_APP_API_URL}/api/users/out/${this.state.roomId}/${this.state.userId}`;
+    try {
+      await axios({
+        method: "PUT",
+        headers: {
+          token: process.env.REACT_APP_ZAFRA_KEY
+        },
+        url: url
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // ====================== Decrease one user from Room =============================
   decreaseUserFromRoom = async () => {
     const url = `${process.env.REACT_APP_API_URL}/api/rooms/decrease/${this.state.roomId}`;
     try {
@@ -113,20 +129,15 @@ class JoinRoomModal extends React.Component {
   };
 
   handleClose = async () => {
-    // if there is a session goin on
-    // if (completed) {
-    // await removeUserFromRoom();
-    // this.props.handleClose();
-    // setCompleted(false);
-    // If no sessions just close the modal
-    // } else {
+    // Do we need sockets??
+    await this.decreaseUserFromRoom();
+    await this.removeUserFromRoom();
     this.props.handleClose();
-    // }
   };
   render() {
     if (!this.state.joined) {
       return (
-        <Modal show={this.props.show} onHide={this.decreaseUserFromRoom}>
+        <Modal show={this.props.show} onHide={this.handleClose}>
           <Modal.Header closeButton>
             <Modal.Title>
               {" "}

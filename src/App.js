@@ -3,8 +3,6 @@ import NavBar from "../src/components/NavBar/NavBar";
 import ChatRooms from "./components/ChatRooms/ChatRooms";
 import Jumbotron from "./components/Jumbotron/Jumbotron";
 import socketIOClient from "socket.io-client";
-// import { Container } from "react-bootstrap";
-// import axios from "axios";
 import "./App.scss";
 import { Users, AddUserinDb, CheckIfUser } from "./controllers/ApiRequests";
 
@@ -54,7 +52,6 @@ class App extends React.Component {
   };
 
   getAllUsers = async () => {
-    console.log(this.state.users);
     let response = await Users();
     this.setState({
       users: response

@@ -8,6 +8,7 @@ import CreateSessionId from "../../../controllers/CreateSessionId";
 import opentok from "../../../controllers/opentok";
 import socketIOClient from "socket.io-client";
 import axios from "axios";
+import { UserId } from "../../../controllers/ApiRequests";
 
 function CreateRoomModal(props) {
   const socket = socketIOClient(`${process.env.REACT_APP_SOCKECT_URL}`);
@@ -18,27 +19,6 @@ function CreateRoomModal(props) {
   const [roomId, setRoomId] = useState("");
 
   const { register, handleSubmit, errors } = useForm();
-
-  /* ==================================== FUNCTIONS ============================================*/
-  // =============== Get user Id ==============================
-  const getUserId = async () => {
-    const result = await axios({
-      method: "GET",
-      headers: {
-        token: process.env.REACT_APP_ZAFRA_KEY
-      },
-      url: `${process.env.REACT_APP_API_URL}/api/users`
-    });
-    const users = result.data;
-    if (users.length > 0) {
-      for (let index = 0; index < users.length; index++) {
-        if (users[index].email === props.email) {
-          return users[index].id;
-        }
-      }
-    }
-    return null;
-  };
 
   // ====================== Add User to Room =============================
   const addUserToRoom = async (roomId, userId) => {
@@ -121,7 +101,8 @@ function CreateRoomModal(props) {
   const onSubmit = async data => {
     const session_id = await CreateSessionId();
     const user_token = await opentok.generateToken(session_id);
-    const user_id = await getUserId();
+    const user_id = await UserId(props.email);
+    console.log("mi user id es: ", user_id);
     await saveSession(data, session_id, user_id);
     const room_id = await getRoomId(session_id);
     await addUserToRoom(room_id, user_id);

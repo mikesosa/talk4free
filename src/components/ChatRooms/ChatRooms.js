@@ -1,10 +1,9 @@
 import React from "react";
 import { Container, Button } from "react-bootstrap";
-// import apiTest from "../../apiTest";
 import CreateRoomModal from "./CreateRoomModal/CreateRoomModal";
 import RoomsList from "./RoomsList/RoomsList";
-import axios from "axios";
 import socketIOClient from "socket.io-client";
+import { Rooms } from "../../controllers/ApiRequests";
 
 class ChatRooms extends React.Component {
   state = {
@@ -13,22 +12,12 @@ class ChatRooms extends React.Component {
   };
 
   getRooms = async () => {
-    await axios({
-      method: "GET",
-      headers: {
-        token: process.env.REACT_APP_ZAFRA_KEY
-      },
-      url: `${process.env.REACT_APP_API_URL}/api/rooms`
-    })
-      .then(res => {
-        let activerooms = res.data.filter(elem => elem.active !== 0);
-        res.data = activerooms;
-        this.setState({
-          rooms: res,
-          fetched: true
-        });
-      })
-      .catch(err => console.log(err));
+    console.log(this.state.rooms);
+    let res = await Rooms();
+    this.setState({
+      rooms: res,
+      fetched: true
+    });
   };
 
   componentDidMount() {

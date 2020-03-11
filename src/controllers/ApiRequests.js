@@ -50,4 +50,40 @@ let CheckIfUser = async email => {
   return false;
 };
 
-export { Users, AddUserinDb, CheckIfUser };
+/*================================================   get all active rooms   ========================================================== */
+
+let Rooms = async () => {
+  let res = await axios({
+    method: "GET",
+    headers: {
+      token: process.env.REACT_APP_ZAFRA_KEY
+    },
+    url: `${process.env.REACT_APP_API_URL}/api/rooms`
+  });
+  let activerooms = res.data.filter(elem => elem.active !== 0);
+  res.data = activerooms;
+  return res;
+};
+
+/*================================================   get User ID  ========================================================== */
+
+let UserId = async email => {
+  const result = await axios({
+    method: "GET",
+    headers: {
+      token: process.env.REACT_APP_ZAFRA_KEY
+    },
+    url: `${process.env.REACT_APP_API_URL}/api/users`
+  });
+  const users = result.data;
+  if (users.length > 0) {
+    for (let index = 0; index < users.length; index++) {
+      if (users[index].email === email) {
+        return users[index].id;
+      }
+    }
+  }
+  return null;
+};
+
+export { Users, AddUserinDb, CheckIfUser, Rooms, UserId };

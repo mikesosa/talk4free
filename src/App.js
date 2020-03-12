@@ -8,7 +8,7 @@ import { Users, AddUserinDb, CheckIfUser } from "./controllers/ApiRequests";
 
 const App = props => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState({});
   const [userInfo, setUserInfo] = useState({
     userName: "",
     email: "",
@@ -50,11 +50,11 @@ const App = props => {
     const socket = socketIOClient(`${process.env.REACT_APP_SOCKECT_URL}`);
     const getAllUsers = async () => {
       let response = await Users();
-      setUsers({ ...users, users: response });
+      setUsers({ users: response });
     };
     // user connected to server
     socket.on("connect", () => {
-      console.log("conectado al server");
+      console.log("Connected to Server");
       getAllUsers();
     });
     // real users in room
@@ -65,8 +65,21 @@ const App = props => {
     socket.on("renderRoom", resp => {
       if (resp) getAllUsers();
     });
-    getAllUsers();
-  }, [users]);
+  }, []);
+
+  const renderChats = () => {
+    if (Object.keys(users).length !== 0) {
+      return (
+        <ChatRooms
+          isLoggedIn={isLoggedIn}
+          username={userInfo.userName}
+          img={userInfo.imageUrl}
+          email={userInfo.email}
+          users={users.users}
+        />
+      );
+    }
+  };
 
   return (
     <React.Fragment>
@@ -74,13 +87,7 @@ const App = props => {
         <NavBar isLoggedIn={updateLogin} />
       </header>
       <Jumbotron />
-      <ChatRooms
-        isLoggedIn={isLoggedIn}
-        username={userInfo.userName}
-        img={userInfo.imageUrl}
-        email={userInfo.email}
-        users={users}
-      />
+      {renderChats()}
     </React.Fragment>
   );
 };

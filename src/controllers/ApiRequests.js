@@ -195,6 +195,20 @@ const increaseUserFromRoom = async roomId => {
   }
 };
 
+/*==================================== Check if a user can join in the room ============================= */
+const joinInRoomId = async roomId => {
+  const result = await axios({
+    method: "GET",
+    headers: {
+      token: process.env.REACT_APP_ZAFRA_KEY
+    },
+    url: `${process.env.REACT_APP_API_URL}/api/rooms/${roomId}`
+  });
+  const roominfo = result.data[0];
+  if (roominfo.max_user > roominfo.active_users) return true;
+  return false;
+};
+
 export {
   Users,
   AddUserinDb,
@@ -206,5 +220,6 @@ export {
   getRoomId,
   saveSession,
   decreaseUserFromRoom,
-  increaseUserFromRoom
+  increaseUserFromRoom,
+  joinInRoomId
 };

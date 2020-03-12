@@ -8,7 +8,8 @@ import {
   addUserToRoom,
   removeUserFromRoom,
   getRoomId,
-  increaseUserFromRoom
+  increaseUserFromRoom,
+  joinInRoomId
 } from "../../../../../controllers/ApiRequests";
 
 class JoinRoomModal extends React.Component {
@@ -20,22 +21,28 @@ class JoinRoomModal extends React.Component {
   };
 
   onSubmit = async () => {
-    console.log("Joining...");
-    const socket = socketIOClient(`${process.env.REACT_APP_SOCKECT_URL}`);
-    const user_token = await opentok.generateToken(this.props.sessionId);
+    // verify if user can join
     const user_id = await UserId(this.props.email);
     const roomId = await getRoomId(this.props.sessionId);
-    await addUserToRoom(roomId, user_id);
-    await increaseUserFromRoom(roomId);
+    const is_able = await joinInRoomId(roomId);
+    if (is_able) {
+      console.log("Joining...");
+      const socket = socketIOClient(`${process.env.REACT_APP_SOCKECT_URL}`);
+      const user_token = await opentok.generateToken(this.props.sessionId);
+      await addUserToRoom(roomId, user_id);
+      await increaseUserFromRoom(roomId);
 
-    this.setState({
-      joined: true,
-      userToken: user_token,
-      userId: user_id,
-      roomId: roomId
-    });
-    socket.emit("closeUserSignal", true);
-    this.props.onUpdate();
+      this.setState({
+        joined: true,
+        userToken: user_token,
+        userId: user_id,
+        roomId: roomId
+      });
+      socket.emit("closeUserSignal", true);
+      this.props.onUpdate();
+    } else {
+      console.log("Room is full ... sorry pick anotherone");
+    }
   };
 
   handleClose = async () => {

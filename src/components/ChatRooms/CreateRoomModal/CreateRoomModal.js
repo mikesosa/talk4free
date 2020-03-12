@@ -41,7 +41,6 @@ function CreateRoomModal(props) {
     setCompleted(true);
     socket.emit("createRoom", true);
     props.onUpdate();
-    // props.handleClose();
   };
 
   const handleClose = async () => {

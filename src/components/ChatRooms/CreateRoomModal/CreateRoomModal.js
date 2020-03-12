@@ -156,6 +156,7 @@ function CreateRoomModal(props) {
         sessionId={sessionId}
         token={userToken}
         roomId={roomId}
+        userId={userId}
         onUpdate={props.onUpdate}
         handleClose={handleClose}
       />

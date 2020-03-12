@@ -40,8 +40,6 @@ class JoinRoomModal extends React.Component {
       });
       socket.emit("closeUserSignal", true);
       this.props.onUpdate();
-    } else {
-      console.log("Room is full ... sorry pick anotherone");
     }
   };
 

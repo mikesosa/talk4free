@@ -27,10 +27,8 @@ const ModalVideo = props => {
           sessionId={props.sessionId}
           token={props.token}
           roomId={props.roomId}
+          userId={props.userId}
           onHangUp={handleClose}
-          // onPublished={handlePublished}
-          // onUpdate={props.onUpdate}
-          // publisherVideo={publisherVideo}
         />
       );
     } else {

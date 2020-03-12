@@ -5,8 +5,11 @@ import CheckBox from "./CheckBox";
 import { Button } from "react-bootstrap";
 import { FaPhone } from "react-icons/fa";
 import { OTSession, OTStreams, OTSubscriber } from "opentok-react";
-import socketIOClient from "socket.io-client";
 import "./Video.scss";
+import {
+  removeUserFromRoom,
+  decreaseUserFromRoom
+} from "../../../controllers/ApiRequests";
 
 export default class Video extends React.Component {
   state = {
@@ -15,6 +18,8 @@ export default class Video extends React.Component {
     apiKey: this.props.apiKey,
     sessionId: this.props.sessionId,
     token: this.props.token,
+    userId: this.props.userId,
+    roomId: this.props.roomId,
     // Child Components
     audio: true,
     video: false,
@@ -38,10 +43,12 @@ export default class Video extends React.Component {
     this.setState({ error: `Failed to connect: ${err.message}` });
   };
 
-  onUnload = e => {
+  onUnload = async e => {
     // the method that will be used for both add and remove event
     e.preventDefault();
     e.returnValue = "TEST";
+    await removeUserFromRoom(this.state.roomId, this.state.userId);
+    await decreaseUserFromRoom(this.state.roomId);
   };
 
   componentDidMount() {
@@ -86,12 +93,6 @@ export default class Video extends React.Component {
             videoSource={this.state.videoSource}
           />
           <OTStreams style={{ display: "flex" }}>
-            {/* <Subscriber
-              error={this.state.error}
-              audio={this.state.audio}
-              video={this.state.video}
-              videoSource={this.state.videoSource}
-            /> */}
             <OTSubscriber
               properties={{
                 name: this.props.name,

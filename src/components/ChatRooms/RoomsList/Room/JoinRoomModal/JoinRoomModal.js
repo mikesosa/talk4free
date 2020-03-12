@@ -27,7 +27,6 @@ class JoinRoomModal extends React.Component {
     const roomId = await getRoomId(this.props.sessionId);
     await addUserToRoom(roomId, user_id);
     await increaseUserFromRoom(roomId);
-    this.props.onUpdate();
 
     this.setState({
       joined: true,
@@ -36,6 +35,7 @@ class JoinRoomModal extends React.Component {
       roomId: roomId
     });
     socket.emit("closeUserSignal", true);
+    this.props.onUpdate();
   };
 
   handleClose = async () => {

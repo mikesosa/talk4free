@@ -32,7 +32,6 @@ function CreateRoomModal(props) {
     await saveSession(data, session_id, user_id);
     const room_id = await getRoomId(session_id);
     await addUserToRoom(room_id, user_id);
-    props.onUpdate();
 
     // Setting states
     setSessionId(session_id);
@@ -41,7 +40,8 @@ function CreateRoomModal(props) {
     setRoomId(room_id);
     setCompleted(true);
     socket.emit("createRoom", true);
-    props.handleClose();
+    props.onUpdate();
+    // props.handleClose();
   };
 
   const handleClose = async () => {

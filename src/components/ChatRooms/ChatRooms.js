@@ -12,7 +12,7 @@ class ChatRooms extends React.Component {
   };
 
   getRooms = async () => {
-    console.log(this.state.rooms);
+    // console.log(this.state.rooms);
     let res = await Rooms();
     this.setState({
       rooms: res,

@@ -29,7 +29,7 @@ const App = props => {
   };
 
   const updateLogin = res => {
-    setIsLoggedIn(res.isLoggedIn);
+    setIsLoggedIn(res.isSignedIn);
     setUserInfo({
       userName: res.userName,
       email: res.email,

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import NavBar from "../src/components/NavBar/NavBar";
 import ChatRooms from "./components/ChatRooms/ChatRooms";
 import Jumbotron from "./components/Jumbotron/Jumbotron";
@@ -6,93 +6,83 @@ import socketIOClient from "socket.io-client";
 import "./App.scss";
 import { Users, AddUserinDb, CheckIfUser } from "./controllers/ApiRequests";
 
-class App extends React.Component {
-  state = {
-    // Current user loggedin?
-    isLoggedIn: false,
-    // Current user
+const App = props => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [users, setUsers] = useState([]);
+  const [userInfo, setUserInfo] = useState({
     userName: "",
-    // Current user
     email: "",
-    // Current user
-    imageUrl: "",
-    // All the users with active rooms
-    users: []
-  };
+    imageUrl: ""
+  });
 
-  checkUser = async email => {
+  const checkUser = async email => {
     return CheckIfUser(email);
   };
 
-  saveUser = async data => {
+  const saveUser = async data => {
     if (data.email !== "") {
-      const alreadyExist = await this.checkUser(this.state.email);
+      const alreadyExist = await checkUser(userInfo.email);
       if (!alreadyExist) {
         await AddUserinDb(data);
       }
     }
   };
 
-  updateLogin = res => {
-    this.setState({
-      isLoggedIn: res.isSignedIn,
+  const updateLogin = res => {
+    setIsLoggedIn(res.isLoggedIn);
+    setUserInfo({
       userName: res.userName,
       email: res.email,
       imageUrl: res.imageUrl
     });
     // data to send
     let data = {
-      email: this.state.email,
-      username: this.state.userName,
+      email: userInfo.email,
+      username: userInfo.userName,
+      img: userInfo.imageUrl,
       active: true,
-      adm: false,
-      img: this.state.imageUrl
+      adm: false
     };
-    this.saveUser(data);
+    saveUser(data);
   };
 
-  getAllUsers = async () => {
-    let response = await Users();
-    this.setState({
-      users: response
-    });
-  };
-
-  componentDidMount() {
-    // user connected to server
-    console.log("Url es:", process.env.REACT_APP_SOCKECT_URL);
+  useEffect(() => {
     const socket = socketIOClient(`${process.env.REACT_APP_SOCKECT_URL}`);
+    const getAllUsers = async () => {
+      let response = await Users();
+      setUsers({ ...users, users: response });
+    };
+    // user connected to server
     socket.on("connect", () => {
       console.log("conectado al server");
-      this.getAllUsers();
+      getAllUsers();
     });
     // real users in room
     socket.on("closeUserresp", resp => {
-      if (resp) this.getAllUsers();
+      if (resp) getAllUsers();
     });
     // real existing rooms
     socket.on("renderRoom", resp => {
-      if (resp) this.getAllUsers();
+      if (resp) getAllUsers();
     });
-  }
+    getAllUsers();
+  }, [users]);
 
-  render() {
-    return (
-      <React.Fragment>
-        <header className="mb-auto">
-          <NavBar isLoggedIn={this.updateLogin} />
-        </header>
-        <Jumbotron />
-        <ChatRooms
-          isLoggedIn={this.state.isLoggedIn}
-          username={this.state.userName}
-          img={this.state.imageUrl}
-          email={this.state.email}
-          users={this.state.users}
-        />
-      </React.Fragment>
-    );
-  }
-}
+  return (
+    <React.Fragment>
+      <header className="mb-auto">
+        <NavBar isLoggedIn={updateLogin} />
+      </header>
+      <Jumbotron />
+      <ChatRooms
+        isLoggedIn={isLoggedIn}
+        username={userInfo.userName}
+        img={userInfo.imageUrl}
+        email={userInfo.email}
+        users={users}
+      />
+    </React.Fragment>
+  );
+};
 
 export default App;

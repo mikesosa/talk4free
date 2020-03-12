@@ -1,14 +1,11 @@
 import React from "react";
 import ConnectionStatus from "./ConnectionStatus";
 import Publisher from "./Publisher";
-// import Subscriber from "./Subscriber";
 import CheckBox from "./CheckBox";
 import { Button } from "react-bootstrap";
 import { FaPhone } from "react-icons/fa";
-
 import { OTSession, OTStreams, OTSubscriber } from "opentok-react";
-// import { Button } from "react-bootstrap";
-// import axios from "axios";
+import socketIOClient from "socket.io-client";
 import "./Video.scss";
 
 export default class Video extends React.Component {
@@ -41,9 +38,18 @@ export default class Video extends React.Component {
     this.setState({ error: `Failed to connect: ${err.message}` });
   };
 
+  onUnload = e => {
+    // the method that will be used for both add and remove event
+    e.preventDefault();
+    e.returnValue = "TEST";
+  };
+
+  componentDidMount() {
+    window.addEventListener("beforeunload", this.onUnload);
+  }
+
   componentWillUnmount() {
-    console.log("Session unmounted!");
-    // aqui es dinde se rreeferesci y to ca llamar oa a q se borre todo
+    window.removeEventListener("beforeunload", this.onUnload);
   }
 
   setAudio = audio => {

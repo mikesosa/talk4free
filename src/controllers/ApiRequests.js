@@ -17,7 +17,6 @@ const Users = async () => {
 /* =================================     Add a user if not exist in db     ===================================== */
 
 const AddUserinDb = async data => {
-  console.log("esta es la data que llega", data);
   await axios({
     method: "POST",
     url: `${process.env.REACT_APP_API_URL}/api/users`,

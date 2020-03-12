@@ -23,28 +23,33 @@ const App = props => {
     if (data.email !== "") {
       const alreadyExist = await checkUser(userInfo.email);
       if (!alreadyExist) {
+        console.log("el email es nuevo entonces guardar");
         await AddUserinDb(data);
       }
     }
   };
 
   const updateLogin = res => {
-    setIsLoggedIn(res.isSignedIn);
     setUserInfo({
       userName: res.userName,
       email: res.email,
       imageUrl: res.imageUrl
     });
-    // data to send
-    let data = {
-      email: userInfo.email,
-      username: userInfo.userName,
-      img: userInfo.imageUrl,
-      active: true,
-      adm: false
-    };
-    saveUser(data);
+    setIsLoggedIn(res.isSignedIn);
   };
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      let data = {
+        email: userInfo.email,
+        username: userInfo.userName,
+        img: userInfo.imageUrl,
+        active: true,
+        adm: false
+      };
+      saveUser(data);
+    }
+  }, [isLoggedIn]);
 
   useEffect(() => {
     const socket = socketIOClient(`${process.env.REACT_APP_SOCKECT_URL}`);

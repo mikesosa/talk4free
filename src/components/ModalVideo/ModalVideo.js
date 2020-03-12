@@ -1,27 +1,11 @@
 import React, { useState } from "react";
 import { Modal, Row, Col } from "react-bootstrap";
 import Video from "./Video/Video";
-import axios from "axios";
 import socketIOClient from "socket.io-client";
+import { decreaseUserFromRoom } from "../../controllers/ApiRequests";
 
 const ModalVideo = props => {
   const [show, setShow] = useState(true);
-
-  /* ====================== decrease one user ============================*/
-  const decreaseUserFromRoom = async roomId => {
-    const url = `${process.env.REACT_APP_API_URL}/api/rooms/decrease/${roomId}`;
-    try {
-      await axios({
-        method: "PUT",
-        headers: {
-          token: process.env.REACT_APP_ZAFRA_KEY
-        },
-        url: url
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const handleClose = () => {
     // Delete one user from the room

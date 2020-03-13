@@ -22,6 +22,7 @@ export default class Video extends React.Component {
     token: this.props.token,
     userId: this.props.userId,
     roomId: this.props.roomId,
+    socket: socketIOClient(`${process.env.REACT_APP_SOCKECT_URL}`),
     // Child Components
     audio: true,
     video: false,
@@ -46,27 +47,21 @@ export default class Video extends React.Component {
   };
 
   test = async () => {
-    const socket = socketIOClient(`${process.env.REACT_APP_SOCKECT_URL}`);
-    socket.emit("closeRoom", true);
-    socket.emit("closeUserSignal", true);
-    socket.emit("Reloaded", "Entrooooo");
+    await decreaseUserFromRoom(this.state.roomId);
+    await removeUserFromRoom(this.state.roomId, this.state.userId);
   };
-
-  onUnload = async e => {
-    // the method that will be used for both add and remove event
-    e.preventDefault();
-    e.returnValue = "TEST";
-    removeUserFromRoom(this.state.roomId, this.state.userId);
-    decreaseUserFromRoom(this.state.roomId);
-    await this.test();
-  };
-
   componentDidMount() {
-    window.addEventListener("beforeunload", this.onUnload);
+    window.onbeforeunload = async () => {
+      await this.test();
+      return "";
+    };
   }
 
   componentWillUnmount() {
-    window.removeEventListener("beforeunload", this.onUnload);
+    window.onbeforeunload = async () => {
+      await this.test();
+      return "";
+    };
   }
 
   setAudio = audio => {

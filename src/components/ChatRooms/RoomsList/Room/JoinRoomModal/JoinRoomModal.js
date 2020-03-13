@@ -84,6 +84,9 @@ class JoinRoomModal extends React.Component {
           userId={this.state.userId}
           onUpdate={this.props.onUpdate}
           handleClose={this.handleClose}
+          email={this.props.email}
+          username2={this.props.username}
+          img={this.props.img}
         />
       );
     }

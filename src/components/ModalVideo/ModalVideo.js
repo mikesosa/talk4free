@@ -29,6 +29,10 @@ const ModalVideo = props => {
           roomId={props.roomId}
           userId={props.userId}
           onHangUp={handleClose}
+          email={props.email}
+          username={props.username}
+          username2={props.username2}
+          img={props.img}
         />
       );
     } else {

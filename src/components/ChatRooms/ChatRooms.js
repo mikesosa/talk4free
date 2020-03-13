@@ -1,9 +1,11 @@
 import React from "react";
+import "./ChatRooms.scss";
 import { Container, Button } from "react-bootstrap";
 import CreateRoomModal from "./CreateRoomModal/CreateRoomModal";
 import RoomsList from "./RoomsList/RoomsList";
 import socketIOClient from "socket.io-client";
 import { Rooms } from "../../controllers/ApiRequests";
+import { FaPlus } from "react-icons/fa";
 
 class ChatRooms extends React.Component {
   state = {
@@ -59,6 +61,8 @@ class ChatRooms extends React.Component {
             rooms={this.state.rooms}
             isLoggedIn={this.props.isLoggedIn}
             email={this.props.email}
+            username={this.props.username}
+            img={this.props.img}
             users={this.props.users}
             onUpdate={this.getRooms}
           />
@@ -72,15 +76,16 @@ class ChatRooms extends React.Component {
     return (
       <section>
         <Container>
-          <div className="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+          <div className="chatRooms">
             <h1 className="display-4">Chat Rooms</h1>
             <p className="lead">
-              Quickly build an effective pricing table for your potential
-              customers with this Bootstrap example. It’s built with default
-              Bootstrap components and utilities with little customization.
+              Here you can Join or Create a Room. Just setup the language and
+              the limit of participants you want to allow in you conversation.
+              Rembember not to share banned content{" "}
+              <a href="#Sdsd">more details</a>
             </p>
             <Button variant="primary" onClick={this.createRoom}>
-              Create a Room
+              Create a Room <FaPlus />
             </Button>
             <CreateRoomModal
               show={this.state.showCreateRoomModal}

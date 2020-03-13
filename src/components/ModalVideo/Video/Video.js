@@ -69,6 +69,7 @@ export default class Video extends React.Component {
   };
 
   setVideo = video => {
+    console.log("setenado video");
     this.setState({ video });
   };
 
@@ -96,11 +97,14 @@ export default class Video extends React.Component {
             audio={this.state.audio}
             video={this.state.video}
             videoSource={this.state.videoSource}
+            email={this.props.email}
+            username={this.props.username}
+            img={this.props.img}
           />
           <OTStreams style={{ display: "flex" }}>
             <OTSubscriber
               properties={{
-                name: this.props.name,
+                name: this.props.username2,
                 style: {
                   audioLevelDisplayMode: "on",
                   buttonDisplayMode: "off",

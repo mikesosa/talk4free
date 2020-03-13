@@ -1,5 +1,7 @@
 import React from "react";
 import { GoogleLogin, GoogleLogout } from "react-google-login";
+import { FaSignInAlt } from "react-icons/fa";
+
 import "./NavBar.scss";
 import {
   Container,
@@ -99,10 +101,12 @@ class NavBar extends React.Component {
                 <Button
                   variant="primary"
                   className="ml-5"
+                  id="signInBtn"
                   onClick={renderProps.onClick}
                   disabled={renderProps.disabled}
                 >
                   {this.state.isSignedIn ? this.state.userName : "Sign In"}
+                  <FaSignInAlt />
                 </Button>
               </React.Fragment>
             )}
@@ -117,10 +121,13 @@ class NavBar extends React.Component {
     return (
       <Navbar bg="dark" variant="dark" fixed="top">
         <Container>
-          <Navbar.Brand href="#home">Talk4Free</Navbar.Brand>
+          <Navbar.Brand href="#home">
+            <Image src={require("./logo5x5.png")} />
+            Talk4Free
+          </Navbar.Brand>
           <Nav className="ml-auto">
             <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#features">Features</Nav.Link>
+            <Nav.Link href="#features">Rooms</Nav.Link>
             <Nav.Link href="#pricing">Pricing</Nav.Link>
           </Nav>
           {checkLogin()}

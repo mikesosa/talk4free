@@ -49,7 +49,7 @@ const App = props => {
       };
       saveUser(data);
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, userInfo.email, userInfo.imageUrl, userInfo.userName]);
 
   useEffect(() => {
     const socket = socketIOClient(`${process.env.REACT_APP_SOCKECT_URL}`);
@@ -91,7 +91,7 @@ const App = props => {
       <header className="mb-auto">
         <NavBar isLoggedIn={updateLogin} />
       </header>
-      <Jumbotron />
+      <Jumbotron isLoggedIn={isLoggedIn} />
       {renderChats()}
     </React.Fragment>
   );

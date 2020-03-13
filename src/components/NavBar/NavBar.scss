@@ -7,6 +7,14 @@
   .navbar-brand {
     font-weight: 600;
     font-size: 2rem !important;
+    transition: 0.3s;
+    img {
+      width: 3rem;
+      margin: 0px 10px;
+    }
+    &:hover {
+      transform: translateY(-5px);
+    }
   }
   button {
     display: flex;
@@ -14,8 +22,9 @@
     padding-left: 20px;
     padding-right: 20px;
     font-weight: 600;
-    i {
-      margin-right: 5px;
+    align-items: center;
+    svg {
+      margin-left: 5px;
     }
   }
   .dropdown-toggle {

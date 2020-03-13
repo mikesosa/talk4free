@@ -158,6 +158,9 @@ function CreateRoomModal(props) {
         roomId={roomId}
         userId={userId}
         onUpdate={props.onUpdate}
+        email={props.email}
+        username={props.username}
+        img={props.img}
         handleClose={handleClose}
       />
     );

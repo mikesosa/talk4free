@@ -30,6 +30,8 @@ class Room extends React.Component {
           level={this.props.room.lvl}
           sessionId={this.props.room.session_id}
           email={this.props.email}
+          username={this.props.username}
+          img={this.props.img}
           onUpdate={this.props.onUpdate}
         />
       );

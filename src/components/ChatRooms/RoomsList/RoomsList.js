@@ -16,8 +16,10 @@ class RoomsList extends React.Component {
                 key={index}
                 room={room}
                 users={users}
-                isLoggedIn={this.props.isLoggedIn}
                 email={this.props.email}
+                username={this.props.username}
+                img={this.props.img}
+                isLoggedIn={this.props.isLoggedIn}
                 onUpdate={this.props.onUpdate}
               />
             );

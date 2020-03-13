@@ -24,7 +24,7 @@ class Publisher extends React.Component {
         {this.props.error ? <div id="error">{this.props.error}</div> : null}
         <OTPublisher
           properties={{
-            name: "Mike",
+            name: this.props.username,
             style: {
               audioLevelDisplayMode: "on",
               buttonDisplayMode: "off",

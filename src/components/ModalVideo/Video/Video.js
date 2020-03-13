@@ -2,6 +2,8 @@ import React from "react";
 import ConnectionStatus from "./ConnectionStatus";
 import Publisher from "./Publisher";
 import CheckBox from "./CheckBox";
+import socketIOClient from "socket.io-client";
+
 import { Button } from "react-bootstrap";
 import { FaPhone } from "react-icons/fa";
 import { OTSession, OTStreams, OTSubscriber } from "opentok-react";
@@ -43,12 +45,20 @@ export default class Video extends React.Component {
     this.setState({ error: `Failed to connect: ${err.message}` });
   };
 
+  test = async () => {
+    const socket = socketIOClient(`${process.env.REACT_APP_SOCKECT_URL}`);
+    socket.emit("closeRoom", true);
+    socket.emit("closeUserSignal", true);
+    socket.emit("Reloaded", "Entrooooo");
+  };
+
   onUnload = async e => {
     // the method that will be used for both add and remove event
     e.preventDefault();
     e.returnValue = "TEST";
-    await removeUserFromRoom(this.state.roomId, this.state.userId);
-    await decreaseUserFromRoom(this.state.roomId);
+    removeUserFromRoom(this.state.roomId, this.state.userId);
+    decreaseUserFromRoom(this.state.roomId);
+    await this.test();
   };
 
   componentDidMount() {

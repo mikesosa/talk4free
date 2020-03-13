@@ -81,6 +81,7 @@ class JoinRoomModal extends React.Component {
           sessionId={this.props.sessionId}
           token={this.state.userToken}
           roomId={this.state.roomId}
+          userId={this.state.userId}
           onUpdate={this.props.onUpdate}
           handleClose={this.handleClose}
         />

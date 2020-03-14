@@ -64,19 +64,33 @@ export default class Video extends React.Component {
 
   setAudio = audio => {
     this.setState({ audio });
+
+    // con esto escucho
+    this.state.otSession.current.sessionHelper.session.on('signal:msg', e => console.log(e, e.data))
+
+
+    // con esto envio un signal
     this.state.otSession.current.sessionHelper.session.signal(
       {
         type: "msg",
-        data: "hello"
+        data: "hello lindo"
       },
       function(error) {
         if (error) {
           console.log("Error sending signal:", error.name, error.message);
         } else {
-          console.log("send");
+          console.log("sent");
         }
       }
     );
+
+    // session.on('signal:msg', function(event) {
+    //   var msg = document.createElement('p');
+    //   msg.innerText = event.data;
+    //   msg.className = event.from.connectionId === session.connection.connectionId ? 'mine' : 'theirs';
+    //   msgHistory.appendChild(msg);
+    //   msg.scrollIntoView();
+    // });
   };
 
   setVideo = video => {
@@ -90,6 +104,7 @@ export default class Video extends React.Component {
   };
 
   render() {
+
     return (
       <React.Fragment>
         <ConnectionStatus connected={this.state.connected} />

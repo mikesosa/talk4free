@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Row, Col } from "react-bootstrap";
 import Video from "./Video/Video";
-import Chat from "./Chat/Chat";
+// import Chat from "./Chat/Chat";
 import socketIOClient from "socket.io-client";
 import { decreaseUserFromRoom } from "../../controllers/ApiRequests";
 
@@ -59,7 +59,7 @@ const ModalVideo = props => {
             <Modal.Title>Chat</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Chat />
+            {/* <Chat /> */}
           </Modal.Body>
         </Col>
       </Row>

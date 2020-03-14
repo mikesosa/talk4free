@@ -25,7 +25,8 @@ export default class Video extends React.Component {
     // Child Components
     audio: true,
     video: false,
-    videoSource: "camera"
+    videoSource: "camera",
+    otSession: React.createRef()
   };
   sessionEvents = {
     sessionConnected: () => {
@@ -63,10 +64,22 @@ export default class Video extends React.Component {
 
   setAudio = audio => {
     this.setState({ audio });
+    this.state.otSession.current.sessionHelper.session.signal(
+      {
+        type: "msg",
+        data: "hello"
+      },
+      function(error) {
+        if (error) {
+          console.log("Error sending signal:", error.name, error.message);
+        } else {
+          console.log("send");
+        }
+      }
+    );
   };
 
   setVideo = video => {
-    console.log("setenado video");
     this.setState({ video });
   };
 
@@ -77,11 +90,11 @@ export default class Video extends React.Component {
   };
 
   render() {
-    console.log("props from video", this.props);
     return (
       <React.Fragment>
         <ConnectionStatus connected={this.state.connected} />
         <OTSession
+          ref={this.state.otSession}
           apiKey={this.props.apiKey}
           sessionId={this.props.sessionId}
           token={this.props.token}
@@ -90,31 +103,33 @@ export default class Video extends React.Component {
           style={{ diplay: "flex", flexDirection: "column" }}
         >
           {this.state.error ? <div id="error">{this.state.error}</div> : null}
-          <Publisher
-            error={this.state.error}
-            audio={this.state.audio}
-            video={this.state.video}
-            videoSource={this.state.videoSource}
-            email={this.props.email}
-            username={
-              this.props.username ? this.props.username : this.props.username2
-            }
-            img={this.props.img}
-          />
-          <OTStreams style={{ display: "flex" }}>
-            <OTSubscriber
-              properties={{
-                // name: this.props.username2,
-                style: {
-                  audioLevelDisplayMode: "on",
-                  buttonDisplayMode: "off",
-                  nameDisplayMode: "on",
-                  backgroundImageURI: this.props.imgUrl
-                },
-                inserMode: "after"
-              }}
+          <div className="publisher">
+            <Publisher
+              error={this.state.error}
+              audio={this.state.audio}
+              video={this.state.video}
+              videoSource={this.state.videoSource}
+              email={this.props.email}
+              username={
+                this.props.username ? this.props.username : this.props.username2
+              }
+              img={this.props.img}
             />
-          </OTStreams>
+            <OTStreams style={{ display: "flex" }}>
+              <OTSubscriber
+                properties={{
+                  // name: this.props.username2,
+                  style: {
+                    audioLevelDisplayMode: "on",
+                    buttonDisplayMode: "off",
+                    nameDisplayMode: "on",
+                    backgroundImageURI: this.props.imgUrl
+                  },
+                  inserMode: "after"
+                }}
+              />
+            </OTStreams>
+          </div>
         </OTSession>
         {/* Take out the buttons so they will be only for one component */}
         <div className="controls">

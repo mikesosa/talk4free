@@ -19,7 +19,7 @@ class Publisher extends React.Component {
 
   render() {
     return (
-      <div className="publisher">
+      <React.Fragment>
         Publisher
         {this.props.error ? <div id="error">{this.props.error}</div> : null}
         <OTPublisher
@@ -53,7 +53,7 @@ class Publisher extends React.Component {
             <FaPhone />
           </Button>
         </div> */}
-      </div>
+      </React.Fragment>
     );
   }
 }

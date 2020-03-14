@@ -22,7 +22,6 @@ export default class Video extends React.Component {
     token: this.props.token,
     userId: this.props.userId,
     roomId: this.props.roomId,
-    socket: socketIOClient(`${process.env.REACT_APP_SOCKECT_URL}`),
     // Child Components
     audio: true,
     video: false,
@@ -46,22 +45,20 @@ export default class Video extends React.Component {
     this.setState({ error: `Failed to connect: ${err.message}` });
   };
 
-  test = async () => {
-    await decreaseUserFromRoom(this.state.roomId);
-    await removeUserFromRoom(this.state.roomId, this.state.userId);
+  componentCleanup = () => {
+    removeUserFromRoom(this.state.roomId, this.state.userId);
+    decreaseUserFromRoom(this.state.roomId);
+    const socket = socketIOClient(`${process.env.REACT_APP_SOCKECT_URL}`);
+    socket.emit("closeVideo", "hahaha");
   };
+
   componentDidMount() {
-    window.onbeforeunload = async () => {
-      await this.test();
-      return "";
-    };
+    window.addEventListener("beforeunload", this.componentCleanup);
   }
 
   componentWillUnmount() {
-    window.onbeforeunload = async () => {
-      await this.test();
-      return "";
-    };
+    this.componentCleanup();
+    window.removeEventListener("beforeunload", this.componentCleanup);
   }
 
   setAudio = audio => {
@@ -80,6 +77,7 @@ export default class Video extends React.Component {
   };
 
   render() {
+    console.log("props from video", this.props);
     return (
       <React.Fragment>
         <ConnectionStatus connected={this.state.connected} />
@@ -98,13 +96,15 @@ export default class Video extends React.Component {
             video={this.state.video}
             videoSource={this.state.videoSource}
             email={this.props.email}
-            username={this.props.username}
+            username={
+              this.props.username ? this.props.username : this.props.username2
+            }
             img={this.props.img}
           />
           <OTStreams style={{ display: "flex" }}>
             <OTSubscriber
               properties={{
-                name: this.props.username2,
+                // name: this.props.username2,
                 style: {
                   audioLevelDisplayMode: "on",
                   buttonDisplayMode: "off",

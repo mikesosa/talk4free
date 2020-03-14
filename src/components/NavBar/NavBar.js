@@ -113,6 +113,7 @@ class NavBar extends React.Component {
             buttonText="Login"
             onSuccess={this.responseGoogle}
             onFailure={this.responseGoogle}
+            isSignedIn={true}
             cookiePolicy={"single_host_origin"}
           />
         );

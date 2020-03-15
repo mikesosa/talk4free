@@ -17,7 +17,6 @@ class Room extends React.Component {
     } else {
       alert("Please sign in");
     }
-    console.log("showJoinRoomModal en rooms.js:", this.state.showModal);
   };
 
   render() {

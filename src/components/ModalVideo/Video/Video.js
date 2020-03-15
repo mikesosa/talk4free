@@ -54,6 +54,7 @@ export default class Video extends React.Component {
   };
 
   componentDidMount() {
+    this.props.session(this.state.otSession);
     window.addEventListener("beforeunload", this.componentCleanup);
   }
 
@@ -66,24 +67,24 @@ export default class Video extends React.Component {
     this.setState({ audio });
 
     // con esto escucho
-    this.state.otSession.current.sessionHelper.session.on("signal:msg", e =>
-      console.log(e, e.data)
-    );
+    // this.state.otSession.current.sessionHelper.session.on("signal:msg", e =>
+    //   console.log(e, e.data)
+    // );
 
-    // con esto envio un signal
-    this.state.otSession.current.sessionHelper.session.signal(
-      {
-        type: "msg",
-        data: "hello lindo"
-      },
-      function(error) {
-        if (error) {
-          console.log("Error sending signal:", error.name, error.message);
-        } else {
-          console.log("sent");
-        }
-      }
-    );
+    // // con esto envio un signal
+    // this.state.otSession.current.sessionHelper.session.signal(
+    //   {
+    //     type: "msg",
+    //     data: "hello lindo"
+    //   },
+    //   function(error) {
+    //     if (error) {
+    //       console.log("Error sending signal:", error.name, error.message);
+    //     } else {
+    //       console.log("sent");
+    //     }
+    //   }
+    // );
 
     // session.on('signal:msg', function(event) {
     //   var msg = document.createElement('p');

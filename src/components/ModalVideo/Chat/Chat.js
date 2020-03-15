@@ -1,44 +1,70 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import "./Chat.scss";
 
-export default function Chat() {
-  const [message, setMessage] = useState("");
-  const { register, handleSubmit, errors } = useForm();
+const Chat = props => {
+  const [message, setMessage] = useState("nada");
+  const [session, setSession] = useState(null);
+  const { register, handleSubmit } = useForm();
   const onSubmit = (data, e) => {
-    e.preventDefault();
-    setMessage("");
-    console.log(data, e);
-    session.signal();
+    document.getElementById("message").value = "";
+    session.signal(
+      {
+        type: "msg",
+        data: data.message
+      },
+      function(error) {
+        if (error) {
+          console.log("Error sending signal:", error.name, error.message);
+        } else {
+          console.log("sent");
+        }
+      }
+    );
   };
 
-  // useEffect(() => {
-  //   console.log("asdasda");
-  //   form.addEventListener('submit', function(event) {
-  //     event.preventDefault();
-
-  //       session.signal({
-  //           type: 'msg',
-  //           data: msgTxt.value
-  //         }, function(error) {
-  //         if (error) {
-  //           console.log('Error sending signal:', error.name, error.message);
-  //         } else {
-  //           msgTxt.value = '';
-  //         }
-  //       });
-  //     });
-  //   });
-  // }, []);
+  useEffect(() => {
+    if (props.session) {
+      if (props.session.current) {
+        setSession(props.session.current.sessionHelper.session);
+        if (session) {
+          session.on("signal:msg", res => setMessage(res.data));
+        }
+      }
+    }
+  }, [props, message, session]);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <input
-        name="exampleRequired"
-        placeholder={message}
-        ref={register({ required: true })}
-      />
-      {errors.exampleRequired && <span>This field is required</span>}
-      <input type="submit" />
-    </form>
+    <div className="chat-popup" id="myForm">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="form-container"
+        autoComplete="off"
+      >
+        <h1>Chat</h1>
+        <span style={{ color: "red" }}>{message}</span>
+        <br></br>
+
+        <label htmlFor="message">
+          <b>Message</b>
+        </label>
+        <input
+          placeholder="Type message.."
+          name="message"
+          id="message"
+          ref={register()}
+          required
+        />
+
+        <button type="submit" className="btn">
+          Send
+        </button>
+        {/* <button type="button" class="btn cancel" onclick="closeForm()">
+          Close
+        </button> */}
+      </form>
+    </div>
   );
-}
+};
+
+export default Chat;

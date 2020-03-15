@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Modal, Row, Col } from "react-bootstrap";
 import Video from "./Video/Video";
-// import Chat from "./Chat/Chat";
+import Chat from "./Chat/Chat";
 import socketIOClient from "socket.io-client";
 // import { decreaseUserFromRoom } from "../../controllers/ApiRequests";
 
 const ModalVideo = props => {
   const [show, setShow] = useState(true);
+  const [session, setSession] = useState(null);
 
   const handleClose = () => {
     // Delete one user from the room
@@ -19,6 +20,9 @@ const ModalVideo = props => {
     props.handleClose();
   };
 
+  const handleSession = data => {
+    setSession(data);
+  };
   const handleOTSession = () => {
     if (show) {
       //If not published, make it published.
@@ -34,6 +38,7 @@ const ModalVideo = props => {
           username={props.username}
           username2={props.username2}
           img={props.img}
+          session={handleSession}
         />
       );
     } else {
@@ -55,10 +60,12 @@ const ModalVideo = props => {
           {handleOTSession()}
         </Col>
         <Col md={4} className="chat">
-          <Modal.Header>
+          {/* <Modal.Header>
             <Modal.Title>Chat</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>{/* <Chat /> */}</Modal.Body>
+          </Modal.Header> */}
+          <Modal.Body>
+            <Chat session={session} />
+          </Modal.Body>
         </Col>
       </Row>
     </Modal>

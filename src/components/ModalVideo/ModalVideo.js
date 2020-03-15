@@ -3,7 +3,7 @@ import { Modal, Row, Col } from "react-bootstrap";
 import Video from "./Video/Video";
 // import Chat from "./Chat/Chat";
 import socketIOClient from "socket.io-client";
-import { decreaseUserFromRoom } from "../../controllers/ApiRequests";
+// import { decreaseUserFromRoom } from "../../controllers/ApiRequests";
 
 const ModalVideo = props => {
   const [show, setShow] = useState(true);

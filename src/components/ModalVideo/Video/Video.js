@@ -50,7 +50,7 @@ export default class Video extends React.Component {
     removeUserFromRoom(this.state.roomId, this.state.userId);
     decreaseUserFromRoom(this.state.roomId);
     const socket = socketIOClient(`${process.env.REACT_APP_SOCKECT_URL}`);
-    socket.emit("closeVideo", "hahaha");
+    socket.emit("closeVideo", `${this.state.userId}`);
   };
 
   componentDidMount() {
@@ -66,8 +66,9 @@ export default class Video extends React.Component {
     this.setState({ audio });
 
     // con esto escucho
-    this.state.otSession.current.sessionHelper.session.on('signal:msg', e => console.log(e, e.data))
-
+    this.state.otSession.current.sessionHelper.session.on("signal:msg", e =>
+      console.log(e, e.data)
+    );
 
     // con esto envio un signal
     this.state.otSession.current.sessionHelper.session.signal(
@@ -104,7 +105,6 @@ export default class Video extends React.Component {
   };
 
   render() {
-
     return (
       <React.Fragment>
         <ConnectionStatus connected={this.state.connected} />

@@ -10,7 +10,7 @@ const ModalVideo = props => {
 
   const handleClose = () => {
     // Delete one user from the room
-    decreaseUserFromRoom(props.roomId);
+    // decreaseUserFromRoom(props.roomId);
     const socket = socketIOClient(`${process.env.REACT_APP_SOCKECT_URL}`);
     socket.emit("closeUserSignal", true);
     socket.emit("closeRoom", true);
@@ -58,9 +58,7 @@ const ModalVideo = props => {
           <Modal.Header>
             <Modal.Title>Chat</Modal.Title>
           </Modal.Header>
-          <Modal.Body>
-            {/* <Chat /> */}
-          </Modal.Body>
+          <Modal.Body>{/* <Chat /> */}</Modal.Body>
         </Col>
       </Row>
     </Modal>

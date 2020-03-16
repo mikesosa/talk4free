@@ -88,26 +88,7 @@ const UserId = async email => {
 /*================================================   add user to Room ========================================================== */
 
 const addUserToRoom = async (roomId, userId) => {
-  console.log("se esta incrementando");
   const url = `${process.env.REACT_APP_API_URL}/api/users/join/${roomId}/${userId}`;
-  try {
-    axios({
-      method: "PUT",
-      headers: {
-        token: process.env.REACT_APP_ZAFRA_KEY
-      },
-      url: url
-    });
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-/*===============================================    Remove user from Room =========================================================== */
-
-const removeUserFromRoom = async (roomId, userId) => {
-  const url = `${process.env.REACT_APP_API_URL}/api/users/out/${roomId}/${userId}`;
-  try {
     await axios({
       method: "PUT",
       headers: {
@@ -115,9 +96,19 @@ const removeUserFromRoom = async (roomId, userId) => {
       },
       url: url
     });
-  } catch (error) {
-    console.log(error);
-  }
+};
+
+/*===============================================    Remove user from Room =========================================================== */
+
+const removeUserFromRoom = async (roomId, userId) => {
+  const url = `${process.env.REACT_APP_API_URL}/api/users/out/${roomId}/${userId}`;
+    await axios({
+      method: "PUT",
+      headers: {
+        token: process.env.REACT_APP_ZAFRA_KEY
+      },
+      url: url
+    });
 };
 
 /* ==================================================== Get room Id =============================================================*/
@@ -132,8 +123,6 @@ const getRoomId = async ss_id => {
   const rooms = result.data;
   if (rooms.length > 0) {
     for (let index = 0; index < rooms.length; index++) {
-      console.log(`in array rooms ` +rooms[index].session_id);
-      console.log(`ss_id ` + ss_id);
       if (rooms[index].session_id === ss_id) {
         return rooms[index].id;
       }
@@ -144,8 +133,7 @@ const getRoomId = async ss_id => {
 
 /* ==================================================== Save Room ================================================================ */
 const saveSession = async (data, session_id, userId) => {
-  try {
-    axios({
+    await axios({
       method: "POST",
       url: `${process.env.REACT_APP_API_URL}/api/rooms`,
       headers: {
@@ -160,15 +148,11 @@ const saveSession = async (data, session_id, userId) => {
         created_by: userId
       }
     });
-  } catch (error) {
-    console.log(error);
-  }
 };
 
 // ====================== Decrease one user from Room =============================
 const decreaseUserFromRoom = async roomId => {
   const url = `${process.env.REACT_APP_API_URL}/api/rooms/decrease/${roomId}`;
-  try {
     await axios({
       method: "PUT",
       headers: {
@@ -176,15 +160,11 @@ const decreaseUserFromRoom = async roomId => {
       },
       url: url
     });
-  } catch (error) {
-    console.log(error);
-  }
 };
 
 // ====================== Decrease one user from Room =============================
 const increaseUserFromRoom = async roomId => {
   const url = `${process.env.REACT_APP_API_URL}/api/rooms/increase/${roomId}`;
-  try {
     await axios({
       method: "PUT",
       headers: {
@@ -192,9 +172,6 @@ const increaseUserFromRoom = async roomId => {
       },
       url: url
     });
-  } catch (error) {
-    console.log(error);
-  }
 };
 
 /*==================================== Check if a user can join in the room ============================= */

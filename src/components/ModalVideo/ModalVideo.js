@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Modal, Row, Col } from "react-bootstrap";
+import { Modal, Col } from "react-bootstrap";
 import Video from "./Video/Video";
 import Chat from "./Chat/Chat";
 import socketIOClient from "socket.io-client";
@@ -55,19 +55,19 @@ const ModalVideo = props => {
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
-      <Row>
-        <Col md={8} className="video">
+      <Modal.Body className="row" style={{ padding: "0px", margin: "0px" }}>
+        <Col md={7} className="video">
           {handleOTSession()}
         </Col>
-        <Col md={4} className="chat">
-          {/* <Modal.Header>
-            <Modal.Title>Chat</Modal.Title>
-          </Modal.Header> */}
-          <Modal.Body>
-            <Chat session={session} />
-          </Modal.Body>
+        <Col md={5} className="chat">
+          <Chat
+            session={session}
+            username={props.username}
+            username2={props.username2}
+            img={props.img}
+          />
         </Col>
-      </Row>
+      </Modal.Body>
     </Modal>
   );
 };

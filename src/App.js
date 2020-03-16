@@ -19,16 +19,6 @@ const App = props => {
     return CheckIfUser(email);
   };
 
-  const saveUser = async data => {
-    if (data.email !== "") {
-      const alreadyExist = await checkUser(userInfo.email);
-      if (!alreadyExist) {
-        console.log("el email es nuevo entonces guardar");
-        await AddUserinDb(data);
-      }
-    }
-  };
-
   const updateLogin = res => {
     setUserInfo({
       userName: res.userName,
@@ -39,6 +29,16 @@ const App = props => {
   };
 
   useEffect(() => {
+    const saveUser = async data => {
+      if (data.email !== "") {
+        const alreadyExist = await checkUser(userInfo.email);
+        if (!alreadyExist) {
+          console.log("el email es nuevo entonces guardar");
+          await AddUserinDb(data);
+        }
+      }
+    };
+
     if (isLoggedIn) {
       let data = {
         email: userInfo.email,

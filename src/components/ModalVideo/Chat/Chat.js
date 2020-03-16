@@ -90,7 +90,7 @@ const Chat = props => {
     return chatsDiv.map((ele, i) => {
       const side = `msg ${ele.side}-msg`;
       return (
-        <div className={side}>
+        <div key={i} className={side}>
           <div
             className="msg-img"
             style={{ backgroundImage: `url(${ele.img})` }}

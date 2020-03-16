@@ -6,7 +6,7 @@ import Languages from "../../../languagesEmojis";
 import { useForm } from "react-hook-form";
 import CreateSessionId from "../../../controllers/CreateSessionId";
 import opentok from "../../../controllers/opentok";
-import socketIOClient from "socket.io-client";
+// import socketIOClient from "socket.io-client";
 import {
   UserId,
   addUserToRoom,
@@ -16,7 +16,7 @@ import {
 } from "../../../controllers/ApiRequests";
 
 function CreateRoomModal(props) {
-  const socket = socketIOClient(`${process.env.REACT_APP_SOCKECT_URL}`);
+  // const socket = socketIOClient(`${process.env.REACT_APP_SOCKECT_URL}`);
   const [completed, setCompleted] = useState(false);
   const [sessionId, setSessionId] = useState(null);
   const [userToken, setUserToken] = useState(null);
@@ -29,21 +29,19 @@ function CreateRoomModal(props) {
     const session_id = await CreateSessionId();
     const user_token = await opentok.generateToken(session_id);
     const user_id = await UserId(props.email);
-    console.log(`data ` + data);
-    console.log(`session_id ` + session_id);
-    console.log(`user_id` + user_id);
     await saveSession(data, session_id, user_id);
     const room_id = await getRoomId(session_id);
-    console.log(`room_id ` + room_id + ` user_id ` + user_id);
     await addUserToRoom(room_id, user_id);
-    socket.emit("createRoom", true);
+    // props.socket.emit("closeUserSignal", true);
+    props.socket.emit("renderRooms", true);
+
     // Setting states
     setSessionId(session_id);
     setUserToken(user_token);
     setUserId(user_id);
     setRoomId(room_id);
     setCompleted(true);
-    props.onUpdate();
+    // aqui actializa rooms y usuarios
   };
 
   const handleClose = async () => {
@@ -165,6 +163,7 @@ function CreateRoomModal(props) {
         username={props.username}
         img={props.img}
         handleClose={handleClose}
+        socket={props.socket}
       />
     );
   }

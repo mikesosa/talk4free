@@ -3,38 +3,50 @@ import "./ChatRooms.scss";
 import { Container, Button } from "react-bootstrap";
 import CreateRoomModal from "./CreateRoomModal/CreateRoomModal";
 import RoomsList from "./RoomsList/RoomsList";
-import socketIOClient from "socket.io-client";
-import { Rooms } from "../../controllers/ApiRequests";
+// import socket from "../../controllers/socket";
+// import { Rooms } from "../../controllers/ApiRequests";
 import { FaPlus } from "react-icons/fa";
 
 class ChatRooms extends React.Component {
   state = {
-    rooms: "",
+    rooms: this.props.rooms,
     showCreateRoomModal: false
   };
 
-  getRooms = async () => {
-    // console.log(this.state.rooms);
-    let res = await Rooms();
-    this.setState({
-      rooms: res,
-      fetched: true
-    });
-  };
+  // getRooms = async () => {
+  //   // console.log(this.state.rooms);
+  //   let res = await Rooms();
+  //   this.setState({
+  //     rooms: res,
+  //     fetched: true
+  //   });
+  //   this.props.onUpdate();
+  // };
 
   componentDidMount() {
-    const socket = socketIOClient(`${process.env.REACT_APP_SOCKECT_URL}`);
-    socket.on("connect", () => {
-      this.getRooms();
+    this.setState({
+      rooms: this.props.rooms
     });
-    // remove room from all users
-    socket.on("closeRoomResp", resp => {
-      if (resp) this.getRooms();
-    });
-    // create room for all users
-    socket.on("renderRoom", resp => {
-      if (resp) this.getRooms();
-    });
+    // // Getting all active rooms
+    // this.props.socket.on("connect", () => {
+    //   this.getRooms();
+    // });
+    // // remove room from all users
+    // this.props.socket.on("closeRoomResp", resp => {
+    //   if (resp) this.getRooms();
+    // });
+    // // create room for all users
+    // this.props.socket.on("renderRoom", resp => {
+    //   if (resp) this.getRooms();
+    // });
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.rooms !== prevProps.rooms) {
+      this.setState({
+        rooms: this.props.rooms
+      });
+    }
   }
 
   createRoom = () => {
@@ -52,10 +64,13 @@ class ChatRooms extends React.Component {
   render() {
     const fetchRooms = () => {
       // If there are rooms render roomslist if not... show a message
-      if (
-        typeof this.state.rooms === "object" &&
-        Object.keys(this.state.rooms.data).length > 0
-      ) {
+      // if (
+      //   typeof this.state.rooms === "object" &&
+      //   Object.keys(this.state.rooms.data).length > 0
+      // ) {
+
+      if (this.state.rooms[0] && this.state.rooms[0].data.length > 0) {
+        // if (this.state.rooms[0].data) {
         return (
           <RoomsList
             rooms={this.state.rooms}
@@ -64,15 +79,17 @@ class ChatRooms extends React.Component {
             username={this.props.username}
             img={this.props.img}
             users={this.props.users}
-            onUpdate={this.getRooms}
+            socket={this.props.socket}
           />
         );
+        // }
       } else {
         return (
           <p className="text-center">No rooms available, please create one!</p>
         );
       }
     };
+
     return (
       <section>
         <Container>
@@ -93,7 +110,7 @@ class ChatRooms extends React.Component {
               email={this.props.email}
               username={this.props.username}
               img={this.props.img}
-              onUpdate={this.getRooms}
+              socket={this.props.socket}
             />
           </div>
           {fetchRooms()}

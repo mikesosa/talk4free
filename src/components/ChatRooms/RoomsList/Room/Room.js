@@ -32,6 +32,7 @@ class Room extends React.Component {
           username={this.props.username}
           img={this.props.img}
           onUpdate={this.props.onUpdate}
+          socket={this.props.socket}
         />
       );
     } else {

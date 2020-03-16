@@ -2,7 +2,7 @@ import React from "react";
 import { Modal, Button, Badge } from "react-bootstrap";
 import ModalVideo from "../../../../ModalVideo/ModalVideo";
 import opentok from "../../../../../controllers/opentok";
-import socketIOClient from "socket.io-client";
+// import socketIOClient from "socket.io-client";
 import {
   UserId,
   addUserToRoom,
@@ -27,7 +27,7 @@ class JoinRoomModal extends React.Component {
     const is_able = await joinInRoomId(roomId);
     if (is_able) {
       console.log("Joining...");
-      const socket = socketIOClient(`${process.env.REACT_APP_SOCKECT_URL}`);
+      // const socket = socketIOClient(`${process.env.REACT_APP_SOCKECT_URL}`);
       const user_token = await opentok.generateToken(this.props.sessionId);
       await addUserToRoom(roomId, user_id);
       await increaseUserFromRoom(roomId);
@@ -38,8 +38,12 @@ class JoinRoomModal extends React.Component {
         userId: user_id,
         roomId: roomId
       });
-      socket.emit("closeUserSignal", true);
-      this.props.onUpdate();
+      // this.props.socket.emit("closeUserSignal", true);
+      // Yo michael sosa anadi esto
+      // this.props.socket.emit("createRoom", true);
+      this.props.socket.emit("renderRooms", true);
+
+      // this.props.onUpdate();
     }
   };
 
@@ -87,6 +91,7 @@ class JoinRoomModal extends React.Component {
           email={this.props.email}
           username2={this.props.username}
           img={this.props.img}
+          socket={this.props.socket}
         />
       );
     }

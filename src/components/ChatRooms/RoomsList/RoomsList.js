@@ -7,7 +7,7 @@ class RoomsList extends React.Component {
     return (
       <React.Fragment>
         <Row className="justify-content-between">
-          {this.props.rooms.data.map((room, index) => {
+          {this.props.rooms[0].data.map((room, index) => {
             const users = this.props.users.filter(
               user => user.room_id === room.id
             );
@@ -21,6 +21,7 @@ class RoomsList extends React.Component {
                 img={this.props.img}
                 isLoggedIn={this.props.isLoggedIn}
                 onUpdate={this.props.onUpdate}
+                socket={this.props.socket}
               />
             );
           })}

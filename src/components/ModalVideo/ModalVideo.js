@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Modal, Col } from "react-bootstrap";
 import Video from "./Video/Video";
 import Chat from "./Chat/Chat";
-import socketIOClient from "socket.io-client";
+// import socketIOClient from "socket.io-client";
 // import { decreaseUserFromRoom } from "../../controllers/ApiRequests";
 
 const ModalVideo = props => {
@@ -12,9 +12,9 @@ const ModalVideo = props => {
   const handleClose = () => {
     // Delete one user from the room
     // decreaseUserFromRoom(props.roomId);
-    const socket = socketIOClient(`${process.env.REACT_APP_SOCKECT_URL}`);
-    socket.emit("closeUserSignal", true);
-    socket.emit("closeRoom", true);
+    // const socket = socketIOClient(`${process.env.REACT_APP_SOCKECT_URL}`);
+    // props.socket.emit("closeUserSignal", true);
+    // props.socket.emit("closeRoom", true);
     // Check if session is conected
     setShow(false);
     props.handleClose();
@@ -39,6 +39,7 @@ const ModalVideo = props => {
           username2={props.username2}
           img={props.img}
           session={handleSession}
+          socket={props.socket}
         />
       );
     } else {

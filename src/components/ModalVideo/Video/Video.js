@@ -2,7 +2,7 @@ import React from "react";
 import ConnectionStatus from "./ConnectionStatus";
 import Publisher from "./Publisher";
 import CheckBox from "./CheckBox";
-import socketIOClient from "socket.io-client";
+// import socketIOClient from "socket.io-client";
 
 import { Button } from "react-bootstrap";
 import { FaPhone } from "react-icons/fa";
@@ -49,8 +49,7 @@ export default class Video extends React.Component {
   componentCleanup = () => {
     removeUserFromRoom(this.state.roomId, this.state.userId);
     decreaseUserFromRoom(this.state.roomId);
-    const socket = socketIOClient(`${process.env.REACT_APP_SOCKECT_URL}`);
-    socket.emit("closeVideo", `${this.state.userId}`);
+    this.props.socket.emit("renderRooms", true);
   };
 
   componentDidMount() {

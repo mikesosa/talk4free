@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import NavBar from "../src/components/NavBar/NavBar";
 import ChatRooms from "./components/ChatRooms/ChatRooms";
 import Jumbotron from "./components/Jumbotron/Jumbotron";
-import socketIOClient from "socket.io-client";
+import socket from "./controllers/socket";
+import { Rooms } from "./controllers/ApiRequests";
 import "./App.scss";
 import { Users, AddUserinDb, CheckIfUser } from "./controllers/ApiRequests";
 
 const App = props => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [rooms, setRooms] = useState("");
   const [users, setUsers] = useState({});
   const [userInfo, setUserInfo] = useState({
     userName: "",
@@ -21,10 +23,8 @@ const App = props => {
 
   const saveUser = async data => {
     if (data.email !== "") {
-      console.log(`data de usuario ${data}`);
       const alreadyExist = await checkUser(userInfo.email);
       if (!alreadyExist) {
-        console.log("el email es nuevo entonces guardar");
         await AddUserinDb(data);
       }
     }
@@ -38,6 +38,22 @@ const App = props => {
     });
     setIsLoggedIn(res.isSignedIn);
   };
+
+  // ========================================================================
+
+  const getAllUsers = async () => {
+    let response = await Users();
+    setUsers({ users: response });
+    await getRooms();
+  };
+
+  const getRooms = async () => {
+    // console.log(this.state.rooms);
+    let res = await Rooms();
+
+    setRooms([...rooms, res]);
+  };
+  // ========================================================================
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -53,22 +69,17 @@ const App = props => {
   }, [isLoggedIn, userInfo.email, userInfo.imageUrl, userInfo.userName]);
 
   useEffect(() => {
-    const socket = socketIOClient(`${process.env.REACT_APP_SOCKECT_URL}`);
-    const getAllUsers = async () => {
-      let response = await Users();
-      setUsers({ users: response });
-    };
     // user connected to server
     socket.on("connect", () => {
       console.log("Connected to Server");
       getAllUsers();
     });
     // real users in room
-    socket.on("closeUserresp", resp => {
-      if (resp) getAllUsers();
-    });
+    // socket.on("closeUserresp", resp => {
+    //   if (resp) getAllUsers();
+    // });
     // real existing rooms
-    socket.on("renderRoom", resp => {
+    socket.on("renderRooms", resp => {
       if (resp) getAllUsers();
     });
   }, []);
@@ -82,6 +93,8 @@ const App = props => {
           img={userInfo.imageUrl}
           email={userInfo.email}
           users={users.users}
+          socket={socket}
+          rooms={rooms}
         />
       );
     }

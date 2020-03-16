@@ -27,7 +27,11 @@ const Jumbotron = props => {
               <a
                 href="#test"
                 className="btn btn-primary my-2"
-                onClick={props.isLoggedIn ? console.log("") : signInHandler}
+                onClick={() => {
+                  if (props.isLoggedIn) {
+                    return signInHandler;
+                  }
+                }}
               >
                 Join & Talk Now! <FaSignInAlt />
               </a>

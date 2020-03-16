@@ -29,17 +29,20 @@ function CreateRoomModal(props) {
     const session_id = await CreateSessionId();
     const user_token = await opentok.generateToken(session_id);
     const user_id = await UserId(props.email);
+    console.log(`data ` + data);
+    console.log(`session_id ` + session_id);
+    console.log(`user_id` + user_id);
     await saveSession(data, session_id, user_id);
     const room_id = await getRoomId(session_id);
+    console.log(`room_id ` + room_id + ` user_id ` + user_id);
     await addUserToRoom(room_id, user_id);
-
+    socket.emit("createRoom", true);
     // Setting states
     setSessionId(session_id);
     setUserToken(user_token);
     setUserId(user_id);
     setRoomId(room_id);
     setCompleted(true);
-    socket.emit("createRoom", true);
     props.onUpdate();
   };
 

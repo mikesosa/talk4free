@@ -21,6 +21,7 @@ const App = props => {
 
   const saveUser = async data => {
     if (data.email !== "") {
+      console.log(`data de usuario ${data}`);
       const alreadyExist = await checkUser(userInfo.email);
       if (!alreadyExist) {
         console.log("el email es nuevo entonces guardar");

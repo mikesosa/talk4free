@@ -132,6 +132,8 @@ const getRoomId = async ss_id => {
   const rooms = result.data;
   if (rooms.length > 0) {
     for (let index = 0; index < rooms.length; index++) {
+      console.log(`in array rooms ` +rooms[index].session_id);
+      console.log(`ss_id ` + ss_id);
       if (rooms[index].session_id === ss_id) {
         return rooms[index].id;
       }

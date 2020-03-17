@@ -125,7 +125,6 @@ export default class Video extends React.Component {
             <OTStreams style={{ display: "flex" }}>
               <OTSubscriber
                 properties={{
-                  // name: this.props.username2,
                   style: {
                     audioLevelDisplayMode: "on",
                     buttonDisplayMode: "off",

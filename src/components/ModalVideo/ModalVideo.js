@@ -24,7 +24,7 @@ const ModalVideo = props => {
 
   const handleOTSession = () => {
     if (show) {
-      //If not published, make it published.
+      // If not published, make it published.
       return (
         <Video
           apiKey={process.env.REACT_APP_OPENTOK_API_KEY}

@@ -12,19 +12,16 @@ class Publisher extends React.Component {
   onError = err => {
     this.setState({ error: `Failed to publish: ${err.message}` });
   };
-  //   setAudio()
-  //   setVideo()
-  //   setVideoSource()
-  //   onError()
 
   render() {
     return (
       <React.Fragment>
-        Publisher
         {this.props.error ? <div id="error">{this.props.error}</div> : null}
         <OTPublisher
           properties={{
             name: this.props.username,
+            width: "100%",
+            height: "20rem",
             style: {
               audioLevelDisplayMode: "on",
               buttonDisplayMode: "off",

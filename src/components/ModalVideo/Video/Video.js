@@ -99,7 +99,6 @@ export default class Video extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <ConnectionStatus connected={this.state.connected} />
         <OTSession
           ref={this.state.otSession}
           apiKey={this.props.apiKey}
@@ -122,16 +121,17 @@ export default class Video extends React.Component {
               }
               img={this.props.img}
             />
-            <OTStreams style={{ display: "flex" }}>
+            <OTStreams>
               <OTSubscriber
                 properties={{
+                  width: "100%",
                   style: {
                     audioLevelDisplayMode: "on",
                     buttonDisplayMode: "off",
                     nameDisplayMode: "on",
                     backgroundImageURI: this.props.imgUrl
                   },
-                  inserMode: "after"
+                  inserMode: "before"
                 }}
               />
             </OTStreams>

@@ -2,8 +2,6 @@ import React from "react";
 import ConnectionStatus from "./ConnectionStatus";
 import Publisher from "./Publisher";
 import CheckBox from "./CheckBox";
-// import socketIOClient from "socket.io-client";
-
 import { Button } from "react-bootstrap";
 import { FaPhone } from "react-icons/fa";
 import { OTSession, OTStreams, OTSubscriber } from "opentok-react";
@@ -12,6 +10,8 @@ import {
   removeUserFromRoom,
   decreaseUserFromRoom
 } from "../../../controllers/ApiRequests";
+
+// ========================================================================
 
 export default class Video extends React.Component {
   state = {
@@ -28,6 +28,9 @@ export default class Video extends React.Component {
     videoSource: "camera",
     otSession: React.createRef()
   };
+
+  // ========================================================================
+
   sessionEvents = {
     sessionConnected: () => {
       this.setState({ connected: true });
@@ -42,9 +45,14 @@ export default class Video extends React.Component {
       console.log("Stream destroyed!", event);
     }
   };
+
+  // ========================================================================
+
   onError = err => {
     this.setState({ error: `Failed to connect: ${err.message}` });
   };
+
+  // ========================================================================
 
   componentCleanup = () => {
     removeUserFromRoom(this.state.roomId, this.state.userId);
@@ -52,57 +60,41 @@ export default class Video extends React.Component {
     this.props.socket.emit("renderRooms", true);
   };
 
+  // ========================================================================
+
   componentDidMount() {
     this.props.session(this.state.otSession);
     window.addEventListener("beforeunload", this.componentCleanup);
   }
+
+  // ========================================================================
 
   componentWillUnmount() {
     this.componentCleanup();
     window.removeEventListener("beforeunload", this.componentCleanup);
   }
 
+  // ========================================================================
+
   setAudio = audio => {
     this.setState({ audio });
-
-    // con esto escucho
-    // this.state.otSession.current.sessionHelper.session.on("signal:msg", e =>
-    //   console.log(e, e.data)
-    // );
-
-    // // con esto envio un signal
-    // this.state.otSession.current.sessionHelper.session.signal(
-    //   {
-    //     type: "msg",
-    //     data: "hello lindo"
-    //   },
-    //   function(error) {
-    //     if (error) {
-    //       console.log("Error sending signal:", error.name, error.message);
-    //     } else {
-    //       console.log("sent");
-    //     }
-    //   }
-    // );
-
-    // session.on('signal:msg', function(event) {
-    //   var msg = document.createElement('p');
-    //   msg.innerText = event.data;
-    //   msg.className = event.from.connectionId === session.connection.connectionId ? 'mine' : 'theirs';
-    //   msgHistory.appendChild(msg);
-    //   msg.scrollIntoView();
-    // });
   };
+
+  // ========================================================================
 
   setVideo = video => {
     this.setState({ video });
   };
+
+  // ========================================================================
 
   changeVideoSource = videoSource => {
     this.state.videoSource !== "camera"
       ? this.setState({ videoSource: "camera" })
       : this.setState({ videoSource: "screen" });
   };
+
+  // ========================================================================
 
   render() {
     return (

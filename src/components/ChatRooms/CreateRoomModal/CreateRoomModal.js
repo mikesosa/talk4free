@@ -6,7 +6,6 @@ import Languages from "../../../languagesEmojis";
 import { useForm } from "react-hook-form";
 import CreateSessionId from "../../../controllers/CreateSessionId";
 import opentok from "../../../controllers/opentok";
-// import socketIOClient from "socket.io-client";
 import {
   UserId,
   addUserToRoom,
@@ -16,13 +15,11 @@ import {
 } from "../../../controllers/ApiRequests";
 
 function CreateRoomModal(props) {
-  // const socket = socketIOClient(`${process.env.REACT_APP_SOCKECT_URL}`);
   const [completed, setCompleted] = useState(false);
   const [sessionId, setSessionId] = useState(null);
   const [userToken, setUserToken] = useState(null);
   const [userId, setUserId] = useState("");
   const [roomId, setRoomId] = useState("");
-
   const { register, handleSubmit, errors } = useForm();
 
   const onSubmit = async data => {
@@ -32,7 +29,6 @@ function CreateRoomModal(props) {
     await saveSession(data, session_id, user_id);
     const room_id = await getRoomId(session_id);
     await addUserToRoom(room_id, user_id);
-    // props.socket.emit("closeUserSignal", true);
     props.socket.emit("renderRooms", true);
 
     // Setting states
@@ -41,8 +37,9 @@ function CreateRoomModal(props) {
     setUserId(user_id);
     setRoomId(room_id);
     setCompleted(true);
-    // aqui actializa rooms y usuarios
   };
+
+  // ========================================================================
 
   const handleClose = async () => {
     // if there is a session goin on
@@ -55,6 +52,9 @@ function CreateRoomModal(props) {
       props.handleClose();
     }
   };
+
+  // ========================================================================
+
   // Rendering the form or video in the modal
   const renderForm = () => {
     return (
@@ -66,7 +66,6 @@ function CreateRoomModal(props) {
           <Form onSubmit={handleSubmit(onSubmit)}>
             <Form.Row>
               <Form.Group as={Col}>
-                {/* <Form.Label>Language</Form.Label> */}
                 <Form.Control
                   as="select"
                   name="lang"
@@ -86,7 +85,6 @@ function CreateRoomModal(props) {
             </Form.Row>
             <Form.Row>
               <Form.Group as={Col} controlId="formGridEmail">
-                {/* <Form.Label>Level</Form.Label> */}
                 <Form.Control
                   as="select"
                   name="level"
@@ -100,7 +98,6 @@ function CreateRoomModal(props) {
                 {errors.level && <small>Please choose a level</small>}
               </Form.Group>
               <Form.Group as={Col} controlId="formGridEmail">
-                {/* <Form.Label>Max People</Form.Label> */}
                 <Form.Control
                   as="select"
                   name="maxPeople"
@@ -128,6 +125,8 @@ function CreateRoomModal(props) {
       </React.Fragment>
     );
   };
+
+  // ========================================================================
 
   if (!completed) {
     return (

@@ -17,9 +17,13 @@ const App = props => {
     imageUrl: ""
   });
 
+  // ========================================================================
+
   const checkUser = async email => {
     return CheckIfUser(email);
   };
+
+  // ========================================================================
 
   const saveUser = async data => {
     if (data.email !== "") {
@@ -29,6 +33,8 @@ const App = props => {
       }
     }
   };
+
+  // ========================================================================
 
   const updateLogin = res => {
     setUserInfo({
@@ -48,11 +54,10 @@ const App = props => {
   };
 
   const getRooms = async () => {
-    // console.log(this.state.rooms);
     let res = await Rooms();
-
     setRooms([...rooms, res]);
   };
+
   // ========================================================================
 
   useEffect(() => {
@@ -68,21 +73,21 @@ const App = props => {
     }
   }, [isLoggedIn, userInfo.email, userInfo.imageUrl, userInfo.userName]);
 
+  // ========================================================================
+
   useEffect(() => {
     // user connected to server
     socket.on("connect", () => {
       console.log("Connected to Server");
       getAllUsers();
     });
-    // real users in room
-    // socket.on("closeUserresp", resp => {
-    //   if (resp) getAllUsers();
-    // });
-    // real existing rooms
+    // Rendering rooms with users
     socket.on("renderRooms", resp => {
       if (resp) getAllUsers();
     });
   }, []);
+
+  // ========================================================================
 
   const renderChats = () => {
     if (Object.keys(users).length !== 0) {
@@ -99,6 +104,8 @@ const App = props => {
       );
     }
   };
+
+  // ========================================================================
 
   return (
     <React.Fragment>

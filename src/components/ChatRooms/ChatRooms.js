@@ -3,8 +3,6 @@ import "./ChatRooms.scss";
 import { Container, Button } from "react-bootstrap";
 import CreateRoomModal from "./CreateRoomModal/CreateRoomModal";
 import RoomsList from "./RoomsList/RoomsList";
-// import socket from "../../controllers/socket";
-// import { Rooms } from "../../controllers/ApiRequests";
 import { FaPlus } from "react-icons/fa";
 
 class ChatRooms extends React.Component {
@@ -13,33 +11,15 @@ class ChatRooms extends React.Component {
     showCreateRoomModal: false
   };
 
-  // getRooms = async () => {
-  //   // console.log(this.state.rooms);
-  //   let res = await Rooms();
-  //   this.setState({
-  //     rooms: res,
-  //     fetched: true
-  //   });
-  //   this.props.onUpdate();
-  // };
+  // ========================================================================
 
   componentDidMount() {
     this.setState({
       rooms: this.props.rooms
     });
-    // // Getting all active rooms
-    // this.props.socket.on("connect", () => {
-    //   this.getRooms();
-    // });
-    // // remove room from all users
-    // this.props.socket.on("closeRoomResp", resp => {
-    //   if (resp) this.getRooms();
-    // });
-    // // create room for all users
-    // this.props.socket.on("renderRoom", resp => {
-    //   if (resp) this.getRooms();
-    // });
   }
+
+  // ========================================================================
 
   componentDidUpdate(prevProps) {
     if (this.props.rooms !== prevProps.rooms) {
@@ -48,6 +28,8 @@ class ChatRooms extends React.Component {
       });
     }
   }
+
+  // ========================================================================
 
   createRoom = () => {
     // Check if user is logged
@@ -61,16 +43,11 @@ class ChatRooms extends React.Component {
     }
   };
 
+  // ========================================================================
+
   render() {
     const fetchRooms = () => {
-      // If there are rooms render roomslist if not... show a message
-      // if (
-      //   typeof this.state.rooms === "object" &&
-      //   Object.keys(this.state.rooms.data).length > 0
-      // ) {
-
       if (this.state.rooms[0] && this.state.rooms[0].data.length > 0) {
-        // if (this.state.rooms[0].data) {
         return (
           <RoomsList
             rooms={this.state.rooms}
@@ -82,13 +59,14 @@ class ChatRooms extends React.Component {
             socket={this.props.socket}
           />
         );
-        // }
       } else {
         return (
           <p className="text-center">No rooms available, please create one!</p>
         );
       }
     };
+
+    // ========================================================================
 
     return (
       <section>

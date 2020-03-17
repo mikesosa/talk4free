@@ -2,7 +2,6 @@ import React from "react";
 import { Modal, Button, Badge } from "react-bootstrap";
 import ModalVideo from "../../../../ModalVideo/ModalVideo";
 import opentok from "../../../../../controllers/opentok";
-// import socketIOClient from "socket.io-client";
 import {
   UserId,
   addUserToRoom,
@@ -20,6 +19,8 @@ class JoinRoomModal extends React.Component {
     userToken: null
   };
 
+  // ========================================================================
+
   onSubmit = async () => {
     // verify if user can join
     const user_id = await UserId(this.props.email);
@@ -27,7 +28,6 @@ class JoinRoomModal extends React.Component {
     const is_able = await joinInRoomId(roomId);
     if (is_able) {
       console.log("Joining...");
-      // const socket = socketIOClient(`${process.env.REACT_APP_SOCKECT_URL}`);
       const user_token = await opentok.generateToken(this.props.sessionId);
       await addUserToRoom(roomId, user_id);
       await increaseUserFromRoom(roomId);
@@ -38,19 +38,19 @@ class JoinRoomModal extends React.Component {
         userId: user_id,
         roomId: roomId
       });
-      // this.props.socket.emit("closeUserSignal", true);
-      // Yo michael sosa anadi esto
-      // this.props.socket.emit("createRoom", true);
-      this.props.socket.emit("renderRooms", true);
 
-      // this.props.onUpdate();
+      this.props.socket.emit("renderRooms", true);
     }
   };
+
+  // ========================================================================
 
   handleClose = async () => {
     await removeUserFromRoom(this.state.roomId, this.state.userId);
     this.props.handleClose();
   };
+
+  // ========================================================================
 
   render() {
     if (!this.state.joined) {

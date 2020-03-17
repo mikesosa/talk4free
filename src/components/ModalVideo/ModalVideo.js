@@ -2,27 +2,26 @@ import React, { useState } from "react";
 import { Modal, Col } from "react-bootstrap";
 import Video from "./Video/Video";
 import Chat from "./Chat/Chat";
-// import socketIOClient from "socket.io-client";
-// import { decreaseUserFromRoom } from "../../controllers/ApiRequests";
 
 const ModalVideo = props => {
   const [show, setShow] = useState(true);
   const [session, setSession] = useState(null);
 
+  // ========================================================================
+
   const handleClose = () => {
-    // Delete one user from the room
-    // decreaseUserFromRoom(props.roomId);
-    // const socket = socketIOClient(`${process.env.REACT_APP_SOCKECT_URL}`);
-    // props.socket.emit("closeUserSignal", true);
-    // props.socket.emit("closeRoom", true);
-    // Check if session is conected
     setShow(false);
     props.handleClose();
   };
 
+  // ========================================================================
+
   const handleSession = data => {
     setSession(data);
   };
+
+  // ========================================================================
+
   const handleOTSession = () => {
     if (show) {
       //If not published, make it published.
@@ -47,6 +46,8 @@ const ModalVideo = props => {
       return <p>Loading...</p>;
     }
   };
+
+  // ========================================================================
 
   return (
     <Modal

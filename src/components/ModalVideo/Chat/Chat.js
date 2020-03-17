@@ -4,7 +4,7 @@ import "./Chat.scss";
 
 const Chat = props => {
   const userInfo = {
-    name: props.username2,
+    name: props.username2 ? props.username2 : props.username,
     img: props.img
   };
   const { register, handleSubmit } = useForm();
@@ -13,12 +13,13 @@ const Chat = props => {
   // ============================================================
   const onSubmit = data => {
     const msg = data.message;
+
     session.signal(
       {
         type: "msg",
         data: {
           msg: msg,
-          username: props.username2,
+          username: props.username2 ? props.username2 : props.username,
           img: props.img
         }
       },
@@ -67,7 +68,6 @@ const Chat = props => {
 
       const msgData = { name, img, side, text };
 
-      console.log("ENtro a a append left");
       setChatsDiv(prevArray => [...prevArray, msgData]);
       msgerChat.scrollTop += 500;
     };
@@ -78,12 +78,12 @@ const Chat = props => {
         const username = res.data.username;
         const img = res.data.img;
         // If the sender username is diffrent from the actual then append
-        if (username !== undefined && username !== props.username2) {
+        if (username !== undefined && username !== userInfo.name) {
           appendMessageL(username, img, "left", msg);
         }
       });
     }
-  }, [session, props.username2]);
+  }, [session, userInfo.name]);
 
   // ==========================================================
   const renderMessages = () => {

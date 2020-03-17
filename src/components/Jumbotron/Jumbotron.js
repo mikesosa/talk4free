@@ -13,7 +13,7 @@ const Jumbotron = props => {
       <Container>
         <Row className="mt-5">
           <Col md="6">
-            <h1>Practice lenguages at anytime.</h1>
+            <h1>Practice languages at anytime.</h1>
             <p className="lead mt-5 mb-5">
               Talk4Free is created to talk to people around the world in many
               languages such as English, Mandarin, Spanish, French, German,

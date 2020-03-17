@@ -1,5 +1,4 @@
 import React from "react";
-import ConnectionStatus from "./ConnectionStatus";
 import Publisher from "./Publisher";
 import CheckBox from "./CheckBox";
 import { Button } from "react-bootstrap";
@@ -97,6 +96,7 @@ export default class Video extends React.Component {
   // ========================================================================
 
   render() {
+    this.props.status(this.state.connected);
     return (
       <React.Fragment>
         <OTSession
@@ -150,7 +150,12 @@ export default class Video extends React.Component {
             initialChecked={this.state.video}
             onChange={this.setVideo}
           />
-          <Button onClick={this.props.onHangUp}>
+          <CheckBox
+            label="Chat"
+            initialChecked={true}
+            onChange={this.props.showChat}
+          />
+          <Button className="hangupIcon" onClick={this.props.onHangUp}>
             <FaPhone />
           </Button>
         </div>

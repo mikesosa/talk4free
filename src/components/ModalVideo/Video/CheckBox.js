@@ -1,6 +1,6 @@
 import React from "react";
 import { uniqueId } from "lodash";
-import { FaVideo, FaMicrophone, FaLaptop } from "react-icons/fa";
+import { FaVideo, FaMicrophone, FaLaptop, FaRocketchat } from "react-icons/fa";
 
 class CheckBox extends React.Component {
   state = {
@@ -33,6 +33,8 @@ class CheckBox extends React.Component {
       case "Screen":
         return <FaLaptop />;
       // break;
+      case "Chat":
+        return <FaRocketchat />;
       default:
         return "none";
     }

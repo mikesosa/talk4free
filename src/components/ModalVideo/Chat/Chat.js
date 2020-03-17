@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import ConnectionStatus from "./ConnectionStatus";
+
 import { useForm } from "react-hook-form";
 import "./Chat.scss";
 
@@ -114,7 +116,7 @@ const Chat = props => {
       <section className="msger">
         <header className="msger-header">
           <div className="msger-header-title">
-            <i className="fas fa-comment-alt"></i> SimpleChat
+            <ConnectionStatus connected={props.status} />
           </div>
           <div className="msger-header-options">
             <span>

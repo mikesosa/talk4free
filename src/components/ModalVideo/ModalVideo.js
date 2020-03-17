@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, Col } from "react-bootstrap";
 import Video from "./Video/Video";
 import Chat from "./Chat/Chat";
@@ -6,6 +6,11 @@ import Chat from "./Chat/Chat";
 const ModalVideo = props => {
   const [show, setShow] = useState(true);
   const [session, setSession] = useState(null);
+  const [status, setStatus] = useState(false);
+  const [showChat, setShowChat] = useState({
+    display: "flex",
+    col: 7
+  });
 
   // ========================================================================
 
@@ -18,6 +23,28 @@ const ModalVideo = props => {
 
   const handleSession = data => {
     setSession(data);
+  };
+
+  // ========================================================================
+
+  const handleChat = () => {
+    if (showChat.display === "flex") {
+      setShowChat({
+        display: "none",
+        col: 12
+      });
+    } else {
+      setShowChat({
+        display: "flex",
+        col: 7
+      });
+    }
+  };
+
+  // ========================================================================
+
+  const handleStatus = data => {
+    setStatus(data);
   };
 
   // ========================================================================
@@ -39,6 +66,8 @@ const ModalVideo = props => {
           img={props.img}
           session={handleSession}
           socket={props.socket}
+          showChat={handleChat}
+          status={handleStatus}
         />
       );
     } else {
@@ -49,6 +78,10 @@ const ModalVideo = props => {
 
   // ========================================================================
 
+  // useEffect(() => {
+  //   console.log("Este es:", showChat);
+  // }, [showChat]);
+
   return (
     <Modal
       show={show}
@@ -56,17 +89,20 @@ const ModalVideo = props => {
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
+      className="modalCall"
     >
       <Modal.Body className="row" style={{ padding: "0px", margin: "0px" }}>
-        <Col md={7} className="video">
+        <Col md={showChat.col} className="video">
           {handleOTSession()}
         </Col>
-        <Col md={5} className="chat">
+
+        <Col md={5} className="chat" style={{ display: showChat.display }}>
           <Chat
             session={session}
             username={props.username}
             username2={props.username2}
             img={props.img}
+            status={status}
           />
         </Col>
       </Modal.Body>

@@ -1,4 +1,8 @@
-.modal {
+.modalCall {
+  .modal-content {
+    background: transparent !important;
+    border: none;
+  }
   .video {
     display: flex;
     flex-direction: column;
@@ -6,27 +10,12 @@
     padding: 0px;
     .publisher {
       text-align: center;
-
-      // &:nth-child(1) div:nth-child(2) div:nth-child(n) {
-      //   display: flex;
-      //   // opacity: 0.5;
-      //   // div:nth-child(n) {
-      //   //   display: block;
-      //   //   min-width: 50%;
-      //   // }
-      // }
-
       .OTPublisherContainer {
-        // width: 100% !important;
-        // height: 20rem !important;
         .OT_name {
           margin-left: 24px;
           display: flex;
           justify-content: center;
         }
-        // width: 20rem !important;
-        // height: 20rem !important;
-        // margin: auto;
       }
     }
 
@@ -45,20 +34,44 @@
       margin-top: auto;
       display: flex;
       justify-content: center;
-      button {
+      background: transparent;
+
+      .hangupIcon {
         border-radius: 25px;
         transition: 0.2s;
         width: 50px;
         height: 50px;
         margin-top: 10px;
+        margin-left: 10px;
         svg {
           transform: rotate(224deg);
         }
-
         &:hover {
           transform: translateY(-5px);
         }
       }
+
+      .chatIcon {
+        border-radius: 25px;
+        transition: 0.2s;
+        width: 50px;
+        height: 50px;
+        margin-top: 10px;
+        margin-left: 10px;
+        font-size: 20px;
+        background-color: #efefef;
+        color: black;
+        border: none;
+        svg {
+          margin-top: -5px;
+          margin-left: 2px;
+        }
+        &:hover {
+          transform: translateY(-5px);
+          background-color: #dad7d7;
+        }
+      }
+
       .controlsBtn {
         margin: 10px;
         background-color: #efefef;

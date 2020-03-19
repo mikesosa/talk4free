@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Modal, Col } from "react-bootstrap";
 import Video from "./Video/Video";
 import Chat from "./Chat/Chat";
@@ -78,10 +78,6 @@ const ModalVideo = props => {
 
   // ========================================================================
 
-  // useEffect(() => {
-  //   console.log("Este es:", showChat);
-  // }, [showChat]);
-
   return (
     <Modal
       show={show}
@@ -103,6 +99,7 @@ const ModalVideo = props => {
             username2={props.username2}
             img={props.img}
             status={status}
+            roomDetails={props.roomDetails}
           />
         </Col>
       </Modal.Body>

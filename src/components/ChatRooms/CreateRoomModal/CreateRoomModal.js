@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./CreateRoomModal.scss";
 import { Modal, Button, Form, Col, Row } from "react-bootstrap";
 import ModalVideo from "../../ModalVideo/ModalVideo";
-import Languages from "../../../languagesEmojis";
+import Languages from "../../../languages";
 import { useForm } from "react-hook-form";
 import CreateSessionId from "../../../controllers/CreateSessionId";
 import opentok from "../../../controllers/opentok";
@@ -18,8 +18,10 @@ function CreateRoomModal(props) {
   const [completed, setCompleted] = useState(false);
   const [sessionId, setSessionId] = useState(null);
   const [userToken, setUserToken] = useState(null);
+  const [flag, setFlag] = useState(null);
   const [userId, setUserId] = useState("");
   const [roomId, setRoomId] = useState("");
+  const [roomDetails, setRoomDetails] = useState({});
   const { register, handleSubmit, errors } = useForm();
 
   const onSubmit = async data => {
@@ -32,11 +34,17 @@ function CreateRoomModal(props) {
     props.socket.emit("renderRooms", true);
 
     // Setting states
+    setRoomDetails({
+      lang: data.lang,
+      maxPeople: data.maxPeople,
+      level: data.level
+    });
     setSessionId(session_id);
     setUserToken(user_token);
     setUserId(user_id);
     setRoomId(room_id);
     setCompleted(true);
+    setFlag(null);
   };
 
   // ========================================================================
@@ -44,12 +52,26 @@ function CreateRoomModal(props) {
   const handleClose = async () => {
     // if there is a session goin on
     if (completed) {
-      await removeUserFromRoom(roomId, userId);
       props.handleClose();
       setCompleted(false);
+      setFlag(null);
       // If no sessions just close the modal
     } else {
       props.handleClose();
+      setFlag(null);
+    }
+  };
+
+  // ========================================================================
+
+  const handleChange = e => {
+    let fl = "";
+    if (e.target.value) {
+      fl = require(`../../../img/${e.target.value}.png`);
+      setFlag(fl);
+    } else {
+      fl = require("../../../img/none.png");
+      setFlag(fl);
     }
   };
 
@@ -70,6 +92,13 @@ function CreateRoomModal(props) {
                   as="select"
                   name="lang"
                   ref={register({ required: true })}
+                  style={{
+                    backgroundImage: `url(${flag})`,
+                    backgroundRepeat: "no-repeat",
+                    backgroundSize: "25px",
+                    backgroundPosition: "95% 9px"
+                  }}
+                  onChange={handleChange}
                 >
                   <option value="">Choose a language</option>
                   {Languages.map((lang, index) => {
@@ -113,7 +142,7 @@ function CreateRoomModal(props) {
               </Form.Group>
             </Form.Row>
             <Form.Row style={{ justifyContent: "center" }}>
-              <Button variant="secondary" onClick={props.handleClose}>
+              <Button variant="secondary" onClick={handleClose}>
                 Cancel
               </Button>
               <Button variant="primary" type="submit" className="ml-3 ">
@@ -163,6 +192,7 @@ function CreateRoomModal(props) {
         img={props.img}
         handleClose={handleClose}
         socket={props.socket}
+        roomDetails={roomDetails}
       />
     );
   }

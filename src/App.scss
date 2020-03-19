@@ -1,0 +1,26 @@
+.pricing {
+  margin-top: 6rem;
+  margin-bottom: 3rem;
+
+  .lead {
+    margin: 1rem 10rem;
+  }
+  .card {
+    height: fit-content;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 2rem;
+    margin: 10px;
+    min-width: 23% !important;
+    max-width: 23% !important;
+    box-shadow: 0.5rem 0.5rem 0 rgba(233, 236, 239, 0.5);
+    padding-top: 20px;
+    transition: 0.3s;
+    &:hover {
+      box-shadow: 0.5rem 0.5rem 0 rgba(233, 236, 239, 1.2);
+      transform: translateY(-10px);
+    }
+    .btn {
+      border-radius: 2rem;
+    }
+  }
+}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ConnectionStatus from "./ConnectionStatus";
-
+import { Badge } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import "./Chat.scss";
 
@@ -12,6 +12,8 @@ const Chat = props => {
   const { register, handleSubmit } = useForm();
   const [chatsDiv, setChatsDiv] = useState([]);
   const [session, setSession] = useState(null);
+  const flag = require(`../../../img/${props.roomDetails.lang}.png`);
+
   // ============================================================
   const onSubmit = data => {
     const msg = data.message;
@@ -117,11 +119,20 @@ const Chat = props => {
         <header className="msger-header">
           <div className="msger-header-title">
             <ConnectionStatus connected={props.status} />
-          </div>
-          <div className="msger-header-options">
-            <span>
-              <i className="fas fa-cog"></i>
-            </span>
+            <Badge
+              variant="warning"
+              style={{
+                paddingRight: "2.5rem",
+                backgroundImage: `url(${flag})`,
+                backgroundRepeat: "no-repeat",
+                backgroundSize: "22px",
+                backgroundPosition: "90% 6px"
+              }}
+            >
+              {props.roomDetails.lang}
+            </Badge>
+            {/* <p className="level">{props.roomDetails.level}</p> */}
+            {/* <p>{props.roomDetails.maxPeople}</p> */}
           </div>
         </header>
 

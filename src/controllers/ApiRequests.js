@@ -89,26 +89,26 @@ const UserId = async email => {
 
 const addUserToRoom = async (roomId, userId) => {
   const url = `${process.env.REACT_APP_API_URL}/api/users/join/${roomId}/${userId}`;
-    await axios({
-      method: "PUT",
-      headers: {
-        token: process.env.REACT_APP_ZAFRA_KEY
-      },
-      url: url
-    });
+  await axios({
+    method: "PUT",
+    headers: {
+      token: process.env.REACT_APP_ZAFRA_KEY
+    },
+    url: url
+  });
 };
 
-/*===============================================    Remove user from Room =========================================================== */
+/*=============================================== Remove user from Room =========================================================== */
 
 const removeUserFromRoom = async (roomId, userId) => {
   const url = `${process.env.REACT_APP_API_URL}/api/users/out/${roomId}/${userId}`;
-    await axios({
-      method: "PUT",
-      headers: {
-        token: process.env.REACT_APP_ZAFRA_KEY
-      },
-      url: url
-    });
+  await axios({
+    method: "PUT",
+    headers: {
+      token: process.env.REACT_APP_ZAFRA_KEY
+    },
+    url: url
+  });
 };
 
 /* ==================================================== Get room Id =============================================================*/
@@ -133,45 +133,45 @@ const getRoomId = async ss_id => {
 
 /* ==================================================== Save Room ================================================================ */
 const saveSession = async (data, session_id, userId) => {
-    await axios({
-      method: "POST",
-      url: `${process.env.REACT_APP_API_URL}/api/rooms`,
-      headers: {
-        token: process.env.REACT_APP_ZAFRA_KEY
-      },
-      data: {
-        session_id: session_id,
-        lang: data.lang,
-        lvl: data.level,
-        max_user: data.maxPeople,
-        active: true,
-        created_by: userId
-      }
-    });
+  await axios({
+    method: "POST",
+    url: `${process.env.REACT_APP_API_URL}/api/rooms`,
+    headers: {
+      token: process.env.REACT_APP_ZAFRA_KEY
+    },
+    data: {
+      session_id: session_id,
+      lang: data.lang,
+      lvl: data.level,
+      max_user: data.maxPeople,
+      active: true,
+      created_by: userId
+    }
+  });
 };
 
 // ====================== Decrease one user from Room =============================
 const decreaseUserFromRoom = async roomId => {
   const url = `${process.env.REACT_APP_API_URL}/api/rooms/decrease/${roomId}`;
-    await axios({
-      method: "PUT",
-      headers: {
-        token: process.env.REACT_APP_ZAFRA_KEY
-      },
-      url: url
-    });
+  await axios({
+    method: "PUT",
+    headers: {
+      token: process.env.REACT_APP_ZAFRA_KEY
+    },
+    url: url
+  });
 };
 
 // ====================== Decrease one user from Room =============================
 const increaseUserFromRoom = async roomId => {
   const url = `${process.env.REACT_APP_API_URL}/api/rooms/increase/${roomId}`;
-    await axios({
-      method: "PUT",
-      headers: {
-        token: process.env.REACT_APP_ZAFRA_KEY
-      },
-      url: url
-    });
+  await axios({
+    method: "PUT",
+    headers: {
+      token: process.env.REACT_APP_ZAFRA_KEY
+    },
+    url: url
+  });
 };
 
 /*==================================== Check if a user can join in the room ============================= */

@@ -1,0 +1,46 @@
+footer {
+  background-color: #0d2128;
+  padding: 1rem 1rem;
+  .navbar-brand {
+    font-weight: 600;
+    font-size: 25px !important;
+    transition: 0.3s;
+    color: #fff;
+    img {
+      width: 3rem;
+      margin: 0px 10px;
+    }
+    &:hover {
+      transform: translateY(-5px);
+      color: rgba(255, 255, 255, 0.5);
+    }
+  }
+  .info {
+    margin-top: 1rem;
+    color: rgba(255, 255, 255, 0.5);
+    cursor: context-menu;
+  }
+  .creds {
+    padding-top: 1rem;
+    color: rgba(255, 255, 255, 0.5);
+
+    p {
+      transition: 0.3s;
+      &:hover {
+        transform: translateY(-5px);
+        cursor: context-menu;
+      }
+      a {
+        color: #fff;
+        font-weight: 500;
+        &:hover {
+          text-decoration: none;
+          font-weight: 700;
+        }
+        svg {
+          color: rgba(255, 255, 255, 0.5);
+        }
+      }
+    }
+  }
+}

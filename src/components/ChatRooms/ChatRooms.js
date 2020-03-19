@@ -69,15 +69,15 @@ class ChatRooms extends React.Component {
     // ========================================================================
 
     return (
-      <section>
+      <section style={{ marginBottom: "50px" }}>
         <Container>
-          <div className="chatRooms">
+          <div className="chatRooms" id="rooms">
             <h1 className="display-4">Chat Rooms</h1>
             <p className="lead">
               Here you can Join or Create a Room. Just setup the language and
               the limit of participants you want to allow in you conversation.
-              Rembember not to share banned content{" "}
-              <a href="#Sdsd">more details</a>
+              Remenber not to share banned content{" "}
+              <a href="#test">more details</a>
             </p>
             <Button variant="primary" onClick={this.createRoom}>
               Create a Room <FaPlus />

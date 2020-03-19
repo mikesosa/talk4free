@@ -7,6 +7,10 @@ $theme-colors: (
 
 $border-radius: 2rem;
 
+.btn-lg {
+  border-radius: 2rem !important;
+}
+
 .jumbotron {
   background-color: #0d2128 !important;
   color: #fff;

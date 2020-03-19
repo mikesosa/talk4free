@@ -1,6 +1,7 @@
 import React from "react";
 import { GoogleLogin, GoogleLogout } from "react-google-login";
 import { FaSignInAlt } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 import "./NavBar.scss";
 import {
@@ -120,20 +121,28 @@ class NavBar extends React.Component {
       }
     };
     return (
-      <Navbar bg="dark" variant="dark" fixed="top">
-        <Container>
-          <Navbar.Brand href="#home">
-            <Image src={require("./logo5x5.png")} />
-            Talk4Free
-          </Navbar.Brand>
-          <Nav className="ml-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#features">Rooms</Nav.Link>
-            <Nav.Link href="#pricing">Pricing</Nav.Link>
-          </Nav>
-          {checkLogin()}
-        </Container>
-      </Navbar>
+      <header className="mb-auto">
+        <Navbar bg="dark" variant="dark" fixed="top">
+          <Container>
+            <a href={process.env.REACT_APP_FRONT_URL} className="navbar-brand">
+              <Image src={require("./logo5x5.png")} />
+              Talk4Free
+            </a>
+            <Nav className="ml-auto">
+              <Nav.Link href={process.env.REACT_APP_FRONT_URL + "/about"}>
+                About
+              </Nav.Link>
+              {/* <Nav.Link href={process.env.REACT_APP_FRONT_URL + "#rooms"}>
+                Rooms
+              </Nav.Link> */}
+              <Link to="/pricing" className="nav-link">
+                Pricing
+              </Link>
+            </Nav>
+            {checkLogin()}
+          </Container>
+        </Navbar>
+      </header>
     );
   }
 }

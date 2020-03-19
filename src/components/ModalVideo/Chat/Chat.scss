@@ -15,6 +15,7 @@
   font-family: Helvetica, sans-serif;
   height: auto;
   transition: 5s;
+  max-height: 518px;
 }
 
 .msger {
@@ -37,6 +38,18 @@
   border-bottom: var(--border);
   background: #eee;
   color: #666;
+  .msger-header-title {
+    margin: auto;
+    display: flex;
+    align-items: baseline;
+    .badge {
+      padding: 7px 13px;
+      margin-left: 10px;
+    }
+    .level {
+      margin: 0px;
+    }
+  }
 }
 
 .msger-chat {

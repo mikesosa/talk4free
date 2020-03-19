@@ -5,7 +5,7 @@ import opentok from "../../../../../controllers/opentok";
 import {
   UserId,
   addUserToRoom,
-  removeUserFromRoom,
+  // removeUserFromRoom,
   getRoomId,
   increaseUserFromRoom,
   joinInRoomId
@@ -16,7 +16,12 @@ class JoinRoomModal extends React.Component {
     joined: false,
     userId: null,
     roomId: null,
-    userToken: null
+    userToken: null,
+    roomDetails: {
+      lang: this.props.lang,
+      level: this.props.level,
+      maxPeople: this.props.maxPeople
+    }
   };
 
   // ========================================================================
@@ -25,30 +30,42 @@ class JoinRoomModal extends React.Component {
     // verify if user can join
     const user_id = await UserId(this.props.email);
     const roomId = await getRoomId(this.props.sessionId);
-    const is_able = await joinInRoomId(roomId);
-    if (is_able) {
-      console.log("Joining...");
-      const user_token = await opentok.generateToken(this.props.sessionId);
-      await addUserToRoom(roomId, user_id);
-      await increaseUserFromRoom(roomId);
+    // const is_able = await joinInRoomId(roomId);
+    // if (is_able) {
+    console.log("Joining...");
+    const user_token = await opentok.generateToken(this.props.sessionId);
+    await addUserToRoom(roomId, user_id);
+    await increaseUserFromRoom(roomId);
 
-      this.setState({
-        joined: true,
-        userToken: user_token,
-        userId: user_id,
-        roomId: roomId
-      });
+    this.setState({
+      joined: true,
+      userToken: user_token,
+      userId: user_id,
+      roomId: roomId
+    });
 
-      this.props.socket.emit("renderRooms", true);
-    }
+    this.props.socket.emit("renderRooms", true);
+    // }
   };
 
   // ========================================================================
 
   handleClose = async () => {
-    await removeUserFromRoom(this.state.roomId, this.state.userId);
+    this.setState({
+      joined: false,
+      userId: null,
+      roomId: null,
+      userToken: null
+    });
     this.props.handleClose();
+    // this.props.socket.emit("renderRooms", true);
   };
+
+  componentDidUpdate(prevProps) {
+    if (this.props.show !== prevProps.show) {
+      console.log("qpsa", this.props.show);
+    }
+  }
 
   // ========================================================================
 
@@ -69,7 +86,7 @@ class JoinRoomModal extends React.Component {
             <p>Woohoo, you're aboout to join this call!</p>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={this.props.handleClose}>
+            <Button variant="secondary" onClick={this.handleClose}>
               Cancel
             </Button>
             <Button variant="primary" onClick={this.onSubmit}>
@@ -92,6 +109,7 @@ class JoinRoomModal extends React.Component {
           username2={this.props.username}
           img={this.props.img}
           socket={this.props.socket}
+          roomDetails={this.state.roomDetails}
         />
       );
     }

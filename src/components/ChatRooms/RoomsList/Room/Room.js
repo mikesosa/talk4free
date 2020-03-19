@@ -6,25 +6,72 @@ import "./Room.scss";
 
 class Room extends React.Component {
   state = {
-    showModal: false
+    showModal: false,
+    flag: require(`../../../../img/${this.props.room.lang}.png`)
   };
 
   showJoinRoomModal = () => {
+    console.log("MOSTRAT MODAL?", this.state.showModal);
     if (this.props.isLoggedIn) {
-      this.setState({
-        showModal: !this.state.showModal
-      });
+      if (this.props.room.active_users < this.props.room.max_user) {
+        this.setState({
+          showModal: true
+        });
+      }
     } else {
       alert("Please sign in");
     }
   };
 
+  handleClose = () => {
+    this.setState({
+      showModal: false
+    });
+  };
+
   render() {
-    if (this.state.showModal) {
-      return (
+    return (
+      <React.Fragment>
+        <Col className="text-center room-box">
+          <Row className="room-box-header">
+            <p>
+              <Badge
+                variant="warning"
+                style={{
+                  paddingRight: "2.5rem",
+                  backgroundImage: `url(${this.state.flag})`,
+                  backgroundRepeat: "no-repeat",
+                  backgroundSize: "22px",
+                  backgroundPosition: "90% 4px"
+                }}
+              >
+                {this.props.room.lang}
+              </Badge>
+              {this.props.room.lvl}
+            </p>
+          </Row>
+          <Row className="room-box-body">
+            <ParticipantsList participants={this.props.users} />
+          </Row>
+          <Row className="room-box-footer">
+            <Button
+              variant={
+                this.props.room.active_users < this.props.room.max_user
+                  ? "primary"
+                  : "disabled"
+              }
+              onClick={this.showJoinRoomModal}
+            >
+              <i className="material-icons">perm_phone_msg</i>
+              {this.props.room.active_users < this.props.room.max_user
+                ? "Join now!"
+                : "Room is Full"}
+            </Button>
+          </Row>
+        </Col>
         <JoinRoomModal
           show={this.state.showModal}
-          handleClose={this.showJoinRoomModal}
+          handleClose={this.handleClose}
           lang={this.props.room.lang}
           level={this.props.room.lvl}
           sessionId={this.props.room.session_id}
@@ -33,28 +80,10 @@ class Room extends React.Component {
           img={this.props.img}
           onUpdate={this.props.onUpdate}
           socket={this.props.socket}
+          maxPeople={this.props.room.max_user}
         />
-      );
-    } else {
-      return (
-        <Col className="text-center room-box">
-          <Row className="room-box-header">
-            <p>
-              <Badge variant="warning">{this.props.room.lang}</Badge>
-              {this.props.room.lvl}
-            </p>
-          </Row>
-          <Row className="room-box-body">
-            <ParticipantsList participants={this.props.users} />
-          </Row>
-          <Row className="room-box-footer">
-            <Button variant="primary" onClick={this.showJoinRoomModal}>
-              <i className="material-icons">perm_phone_msg</i>Join now!
-            </Button>
-          </Row>
-        </Col>
-      );
-    }
+      </React.Fragment>
+    );
   }
 }
 

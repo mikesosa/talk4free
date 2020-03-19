@@ -24,17 +24,16 @@ const Jumbotron = props => {
               up people around the world.
             </p>
             <div className="callToActions">
-              <a
-                href="#test"
+              <button
                 className="btn btn-primary my-2"
                 onClick={() => {
-                  if (props.isLoggedIn) {
-                    return signInHandler;
+                  if (!props.isLoggedIn) {
+                    return signInHandler();
                   }
                 }}
               >
                 Join & Talk Now! <FaSignInAlt />
-              </a>
+              </button>
               <a type="btn" href="#test" className="btn btn-secondary">
                 Rules & Penalies <FaSkull />
               </a>

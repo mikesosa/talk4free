@@ -3,11 +3,11 @@
   .nav-link {
     font-weight: 800;
   }
-
   .navbar-brand {
     font-weight: 600;
     font-size: 2rem !important;
     transition: 0.3s;
+
     img {
       width: 3rem;
       margin: 0px 10px;
@@ -16,6 +16,17 @@
       transform: translateY(-5px);
     }
   }
+  .navbar-collapse {
+    .navbar-nav {
+      margin-right: 15px !important;
+    }
+    .dropdown {
+      // display: none;
+      .dropdown-menu {
+      }
+    }
+  }
+
   button {
     display: flex;
     font-size: 16px;

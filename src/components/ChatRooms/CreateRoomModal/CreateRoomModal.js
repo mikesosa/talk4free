@@ -9,7 +9,6 @@ import opentok from "../../../controllers/opentok";
 import {
   UserId,
   addUserToRoom,
-  removeUserFromRoom,
   getRoomId,
   saveSession
 } from "../../../controllers/ApiRequests";
@@ -161,18 +160,16 @@ function CreateRoomModal(props) {
     return (
       <Modal show={props.show} onHide={handleClose} id="CreateRoomModal">
         <Row>
-          <Col md={4} className="info">
-            <Row>
-              <div
-                className="participant"
-                style={{ backgroundImage: `url(${props.img})` }}
-              ></div>
-              <h4>Remember</h4>
-              <p>
-                You will get banned if sharing bad topics{" "}
-                <a href="#Sdsd">Click here for more details</a>
-              </p>
-            </Row>
+          <Col md={4} sm={12} className="info">
+            <div
+              className="participant"
+              style={{ backgroundImage: `url(${props.img})` }}
+            ></div>
+            <h4>Remember</h4>
+            <p>
+              You will get banned if sharing bad topics{" "}
+              <a href="#Sdsd">Click here for more details</a>
+            </p>
           </Col>
           <Col md={8}>{renderForm()}</Col>
         </Row>

@@ -7,9 +7,10 @@ import {
   addUserToRoom,
   // removeUserFromRoom,
   getRoomId,
-  increaseUserFromRoom,
-  joinInRoomId
+  increaseUserFromRoom
+  // joinInRoomId
 } from "../../../../../controllers/ApiRequests";
+import "./JoinRoomModal.scss";
 
 class JoinRoomModal extends React.Component {
   state = {
@@ -17,6 +18,7 @@ class JoinRoomModal extends React.Component {
     userId: null,
     roomId: null,
     userToken: null,
+    flag: require(`../../../../../img/${this.props.lang}.png`),
     roomDetails: {
       lang: this.props.lang,
       level: this.props.level,
@@ -32,7 +34,6 @@ class JoinRoomModal extends React.Component {
     const roomId = await getRoomId(this.props.sessionId);
     // const is_able = await joinInRoomId(roomId);
     // if (is_able) {
-    console.log("Joining...");
     const user_token = await opentok.generateToken(this.props.sessionId);
     await addUserToRoom(roomId, user_id);
     await increaseUserFromRoom(roomId);
@@ -61,29 +62,38 @@ class JoinRoomModal extends React.Component {
     // this.props.socket.emit("renderRooms", true);
   };
 
-  componentDidUpdate(prevProps) {
-    if (this.props.show !== prevProps.show) {
-      console.log("qpsa", this.props.show);
-    }
-  }
-
   // ========================================================================
 
   render() {
     if (!this.state.joined) {
       return (
-        <Modal show={this.props.show} onHide={this.handleClose}>
-          <Modal.Header closeButton>
+        <Modal
+          size="sm"
+          show={this.props.show}
+          onHide={this.handleClose}
+          className="modalJoin"
+        >
+          <Modal.Header>
             <Modal.Title>
-              {" "}
               <p>
-                <Badge variant="warning">{this.props.lang}</Badge>
+                <Badge
+                  variant="warning"
+                  style={{
+                    paddingRight: "2.5rem",
+                    backgroundImage: `url(${this.state.flag})`,
+                    backgroundRepeat: "no-repeat",
+                    backgroundSize: "22px",
+                    backgroundPosition: "90% 5px"
+                  }}
+                >
+                  {this.props.lang}
+                </Badge>
                 {this.props.level}
               </p>
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <p>Woohoo, you're aboout to join this call!</p>
+            <p>Woohoo, you're aboout to join this Room!</p>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={this.handleClose}>

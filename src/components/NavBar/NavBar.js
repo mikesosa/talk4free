@@ -54,7 +54,7 @@ class NavBar extends React.Component {
           <React.Fragment>
             <Dropdown>
               <Dropdown.Toggle
-                className="ml-5"
+                // className="ml-5"
                 variant="primary"
                 id="dropdown-basic"
               >
@@ -70,7 +70,7 @@ class NavBar extends React.Component {
                 )}
               </Dropdown.Toggle>
 
-              <Dropdown.Menu className="ml-5">
+              <Dropdown.Menu>
                 <Dropdown.Item>
                   {" "}
                   <GoogleLogout
@@ -101,7 +101,7 @@ class NavBar extends React.Component {
               <React.Fragment>
                 <Button
                   variant="primary"
-                  className="ml-5"
+                  // className="ml-5"
                   id="signInBtn"
                   onClick={renderProps.onClick}
                   disabled={renderProps.disabled}
@@ -122,24 +122,27 @@ class NavBar extends React.Component {
     };
     return (
       <header className="mb-auto">
-        <Navbar bg="dark" variant="dark" fixed="top">
+        <Navbar bg="dark" variant="dark" fixed="top" expand="lg">
           <Container>
-            <a href={process.env.REACT_APP_FRONT_URL} className="navbar-brand">
+            <Navbar.Brand href={process.env.REACT_APP_FRONT_URL}>
               <Image src={require("./logo5x5.png")} />
               Talk4Free
-            </a>
-            <Nav className="ml-auto">
-              <Nav.Link href={process.env.REACT_APP_FRONT_URL + "/about"}>
-                About
-              </Nav.Link>
-              {/* <Nav.Link href={process.env.REACT_APP_FRONT_URL + "#rooms"}>
+            </Navbar.Brand>
+            <Navbar.Toggle aria-controls="talk4free-nav" />
+            <Navbar.Collapse id="talk4free-nav">
+              <Nav className="ml-auto">
+                <Nav.Link href={process.env.REACT_APP_FRONT_URL + "/about"}>
+                  About
+                </Nav.Link>
+                {/* <Nav.Link href={process.env.REACT_APP_FRONT_URL + "#rooms"}>
                 Rooms
               </Nav.Link> */}
-              <Link to="/pricing" className="nav-link">
-                Pricing
-              </Link>
-            </Nav>
-            {checkLogin()}
+                <Link to="/pricing" className="nav-link">
+                  Pricing
+                </Link>
+              </Nav>
+              {checkLogin()}
+            </Navbar.Collapse>
           </Container>
         </Navbar>
       </header>

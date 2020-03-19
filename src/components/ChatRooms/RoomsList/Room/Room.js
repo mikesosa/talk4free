@@ -11,7 +11,6 @@ class Room extends React.Component {
   };
 
   showJoinRoomModal = () => {
-    console.log("MOSTRAT MODAL?", this.state.showModal);
     if (this.props.isLoggedIn) {
       if (this.props.room.active_users < this.props.room.max_user) {
         this.setState({
@@ -32,7 +31,7 @@ class Room extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <Col className="text-center room-box">
+        <Col md={3} sm={6} className="text-center room-box">
           <Row className="room-box-header">
             <p>
               <Badge
@@ -62,9 +61,8 @@ class Room extends React.Component {
               }
               onClick={this.showJoinRoomModal}
             >
-              <i className="material-icons">perm_phone_msg</i>
               {this.props.room.active_users < this.props.room.max_user
-                ? "Join now!"
+                ? "Join Now!"
                 : "Room is Full"}
             </Button>
           </Row>

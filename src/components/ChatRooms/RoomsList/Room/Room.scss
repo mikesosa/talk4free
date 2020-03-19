@@ -5,11 +5,16 @@
   margin: 10px;
   min-width: 23% !important;
   max-width: 23% !important;
-  box-shadow: 0.5rem 0.5rem 0 rgba(233, 236, 239, 0.5);
-  padding-top: 20px;
+  // box-shadow: 0.5rem 0.5rem 0 rgba(233, 236, 239, 0.5);
+  // box-shadow: 10px 10px 4px 0px rgba(0, 0, 0, 0.44);
+  box-shadow: 10px 10px 4px 0px rgba(0, 0, 0, 0.2);
+
+  padding: 0px;
   transition: 0.3s;
   &:hover {
-    box-shadow: 0.5rem 0.5rem 0 rgba(233, 236, 239, 1.2);
+    // box-shadow: 0.5rem 0.5rem 0 rgba(233, 236, 239, 1.2);
+    box-shadow: 10px 10px 4px 0px rgba(0, 0, 0, 0.42);
+
     transform: translateY(-10px);
   }
   .room-box-header {
@@ -58,5 +63,12 @@
         margin-right: 5px;
       }
     }
+  }
+}
+
+@media (max-width: 768px) {
+  .room-box {
+    max-width: 70% !important;
+    margin: 10px auto;
   }
 }

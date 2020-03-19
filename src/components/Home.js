@@ -40,7 +40,6 @@ const Home = props => {
   // ========================================================================
 
   const getAllUsers = async () => {
-    console.log("Renderizando todos los usuarios");
     let response = await Users();
     setUsers({ users: response });
     await getRooms();
@@ -49,8 +48,6 @@ const Home = props => {
   // ========================================================================
 
   const getRooms = async () => {
-    console.log("Renderizando todos las rooms");
-
     let res = await Rooms();
     setRooms([...rooms, res]);
   };

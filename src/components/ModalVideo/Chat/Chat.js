@@ -138,7 +138,11 @@ const Chat = props => {
 
         <main className="msger-chat">{renderMessages()}</main>
 
-        <form className="msger-inputarea" onSubmit={handleSubmit(onSubmit)}>
+        <form
+          autocomplete="off"
+          className="msger-inputarea"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <input
             type="text"
             className="msger-input"

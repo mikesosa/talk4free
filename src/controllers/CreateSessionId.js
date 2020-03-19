@@ -35,7 +35,6 @@ const CreateSessionId = async () => {
   } catch (e) {
     console.log(e);
   }
-  // console.log(sessionId);
   return sessionId;
 };
 

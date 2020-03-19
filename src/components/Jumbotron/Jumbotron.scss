@@ -9,6 +9,8 @@
       display: inherit;
       align-items: center;
       padding: 8px 20px;
+      margin: 0px 10px;
+
       svg {
         margin-left: 5px;
       }
@@ -26,6 +28,28 @@
       //   overflow: hidden;
       &:hover {
         transform: translateY(-20px);
+      }
+    }
+  }
+}
+@media (max-width: 600px) {
+  .jumbotron {
+    h1 {
+      font-size: 60px !important;
+    }
+    p {
+      font-size: 18px !important;
+    }
+    .introImage {
+      display: none !important;
+    }
+    .callToActions {
+      flex-direction: column;
+      a {
+        margin: 10px !important;
+        svg {
+          // display: none;
+        }
       }
     }
   }

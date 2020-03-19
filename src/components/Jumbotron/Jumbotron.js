@@ -35,11 +35,7 @@ const Jumbotron = props => {
               >
                 Join & Talk Now! <FaSignInAlt />
               </a>
-              <a
-                type="btn"
-                href="#test"
-                className="btn btn-secondary my-2 ml-4"
-              >
+              <a type="btn" href="#test" className="btn btn-secondary">
                 Rules & Penalies <FaSkull />
               </a>
             </div>

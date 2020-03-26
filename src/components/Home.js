@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import AdminPanel from "./AdminPanel/AdminPanel";
 import ChatRooms from "./ChatRooms/ChatRooms";
 import Jumbotron from "./Jumbotron/Jumbotron";
 import socket from "../controllers/socket";
@@ -8,6 +9,7 @@ import { Users, AddUserinDb, CheckIfUser } from "../controllers/ApiRequests";
 const Home = props => {
   const [rooms, setRooms] = useState("");
   const [users, setUsers] = useState({});
+  const [isAdmin, setIsAdmin] = useState(false);
 
   // ========================================================================
 
@@ -60,17 +62,12 @@ const Home = props => {
         email: props.userInfo.email,
         username: props.userInfo.userName,
         img: props.userInfo.imageUrl,
-        active: true,
-        adm: false
+        active: true
       };
       saveUser(data);
+      setIsAdmin(props.isAdmin);
     }
-  }, [
-    props.isLoggedIn,
-    props.userInfo.email,
-    props.userInfo.imageUrl,
-    props.userInfo.userName
-  ]);
+  }, [props]);
 
   // ========================================================================
 
@@ -108,7 +105,15 @@ const Home = props => {
 
   return (
     <React.Fragment>
-      <Jumbotron isLoggedIn={props.isLoggedIn} />
+      {!isAdmin && <Jumbotron isLoggedIn={props.isLoggedIn} />}
+      {isAdmin && (
+        <AdminPanel
+          userInfo={props.userInfo}
+          activeUsers={users}
+          rooms={rooms}
+          socket={socket}
+        />
+      )}
       {renderChats()}
     </React.Fragment>
   );

@@ -2,6 +2,7 @@ import React from "react";
 import { GoogleLogin, GoogleLogout } from "react-google-login";
 import { FaSignInAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { sendEmail } from "../../controllers/ApiRequests";
 
 import "./NavBar.scss";
 import {
@@ -21,7 +22,7 @@ class NavBar extends React.Component {
     imageUrl: ""
   };
 
-  responseGoogle = res => {
+  responseGoogle = async res => {
     if (res.profileObj.name) {
       this.setState({
         isSignedIn: true,
@@ -31,6 +32,7 @@ class NavBar extends React.Component {
       });
     }
     this.props.isLoggedIn(this.state);
+    await sendEmail(res);
   };
 
   logout = () => {

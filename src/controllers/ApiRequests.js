@@ -1,5 +1,16 @@
 import axios from "axios";
 
+/* =================================     SEND EMAIL    ===================================== */
+
+const sendEmail = async data => {
+  await axios({
+    method: "POST",
+    url: `${process.env.REACT_APP_MAILER_URL}/send`,
+    data
+  });
+  return true;
+};
+
 /* =================================     get users with rooms     ===================================== */
 const Users = async () => {
   let res = await axios({
@@ -11,6 +22,18 @@ const Users = async () => {
   });
   let users = res.data.filter(user => user.room_id !== null);
   res.data = users;
+  return res.data;
+};
+
+/* =================================     All the users in DB     ===================================== */
+const AllUsers = async () => {
+  let res = await axios({
+    method: "GET",
+    headers: {
+      token: process.env.REACT_APP_ZAFRA_KEY
+    },
+    url: `${process.env.REACT_APP_API_URL}/api/users`
+  });
   return res.data;
 };
 
@@ -49,6 +72,27 @@ const CheckIfUser = async email => {
   return false;
 };
 
+/* =================================  Return type of user (Admin/Client)  ===================================== */
+
+const checkTypeUser = async email => {
+  const result = await axios({
+    method: "GET",
+    headers: {
+      token: process.env.REACT_APP_ZAFRA_KEY
+    },
+    url: `${process.env.REACT_APP_API_URL}/api/users`
+  });
+  const users = result.data;
+  if (users.length > 0) {
+    for (let index = 0; index < users.length; index++) {
+      if (users[index].email === email && users[index].adm === 1) {
+        return true;
+      }
+    }
+  }
+  return false;
+};
+
 /*================================================   get all active rooms   ========================================================== */
 
 const Rooms = async () => {
@@ -62,6 +106,19 @@ const Rooms = async () => {
   let activerooms = res.data.filter(elem => elem.active !== 0);
   res.data = activerooms;
   return res;
+};
+
+/*================================================   get all  rooms   ========================================================== */
+
+const AllRooms = async () => {
+  let res = await axios({
+    method: "GET",
+    headers: {
+      token: process.env.REACT_APP_ZAFRA_KEY
+    },
+    url: `${process.env.REACT_APP_API_URL}/api/rooms`
+  });
+  return res.data;
 };
 
 /*================================================   get User ID  ========================================================== */
@@ -150,7 +207,21 @@ const saveSession = async (data, session_id, userId) => {
   });
 };
 
+// ====================== Deactivate Room =============================
+
+const deactivateRoom = async roomId => {
+  const url = `${process.env.REACT_APP_API_URL}/api/rooms/deactive/${roomId}`;
+  await axios({
+    method: "PUT",
+    headers: {
+      token: process.env.REACT_APP_ZAFRA_KEY
+    },
+    url: url
+  });
+};
+
 // ====================== Decrease one user from Room =============================
+
 const decreaseUserFromRoom = async roomId => {
   const url = `${process.env.REACT_APP_API_URL}/api/rooms/decrease/${roomId}`;
   await axios({
@@ -162,7 +233,7 @@ const decreaseUserFromRoom = async roomId => {
   });
 };
 
-// ====================== Decrease one user from Room =============================
+// ====================== increase one user from Room =============================
 const increaseUserFromRoom = async roomId => {
   const url = `${process.env.REACT_APP_API_URL}/api/rooms/increase/${roomId}`;
   await axios({
@@ -190,15 +261,20 @@ const joinInRoomId = async roomId => {
 
 export {
   Users,
+  AllUsers,
   AddUserinDb,
   CheckIfUser,
+  checkTypeUser,
   Rooms,
+  AllRooms,
   UserId,
   addUserToRoom,
   removeUserFromRoom,
+  deactivateRoom,
   getRoomId,
   saveSession,
   decreaseUserFromRoom,
   increaseUserFromRoom,
-  joinInRoomId
+  joinInRoomId,
+  sendEmail
 };

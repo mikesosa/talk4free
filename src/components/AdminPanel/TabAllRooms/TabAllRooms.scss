@@ -1,0 +1,42 @@
+.allRoomsTable {
+  text-align: center;
+  font-size: 12px;
+  thead {
+    th {
+      vertical-align: middle !important;
+      padding: 0px 10px;
+      input {
+        font-size: 13px;
+        padding: 0 10px;
+        text-align: center;
+        max-height: 25px;
+      }
+    }
+  }
+  tbody {
+    tr {
+      td {
+        vertical-align: middle;
+        padding: 0px 15px;
+        .roomLed {
+          color: #adb5bd;
+        }
+        .roomActive {
+          color: greenyellow;
+        }
+      }
+    }
+  }
+}
+.react-bootstrap-table-pagination {
+  div:first-child {
+    display: none !important;
+  }
+  .react-bootstrap-table-pagination-list {
+    margin: auto;
+    ul {
+      display: flex;
+      justify-content: center;
+    }
+  }
+}

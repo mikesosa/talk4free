@@ -7,12 +7,13 @@ import "./TabAllRooms.scss";
 
 const TabAllRooms = props => {
   const [newRooms, setNewRooms] = useState([]);
-  const rooms = props.rooms;
+  const rooms = props.rooms.reverse();
   const allUsers = props.allUsers;
 
   const createNewArr = async () => {
     let usersInRoom;
     rooms.map(room => {
+      console.log("alreves", room);
       let names = [];
 
       if (typeof room.users !== "object") {
@@ -58,7 +59,8 @@ const TabAllRooms = props => {
     {
       dataField: "id",
       text: "ID",
-      filter: textFilter()
+      filter: textFilter(),
+      sort: true
     },
     {
       dataField: "active",
@@ -100,6 +102,13 @@ const TabAllRooms = props => {
     sizePerPage: 5
   });
 
+  const defaultSorted = [
+    {
+      dataField: "id",
+      order: "desc"
+    }
+  ];
+
   return (
     <BootstrapTable
       keyField="id"
@@ -108,6 +117,7 @@ const TabAllRooms = props => {
       filter={filterFactory()}
       classes="allRoomsTable"
       pagination={pagination}
+      defaultSorted={defaultSorted}
     />
   );
 };

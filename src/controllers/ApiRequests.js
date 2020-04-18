@@ -5,7 +5,10 @@ import axios from "axios";
 const sendEmail = async data => {
   await axios({
     method: "POST",
-    url: `${process.env.REACT_APP_MAILER_URL}/send`,
+    headers: {
+      token: process.env.REACT_APP_ZAFRA_KEY
+    },
+    url: `${process.env.REACT_APP_API_URL}/api/sendEmail`,
     data
   });
   return true;

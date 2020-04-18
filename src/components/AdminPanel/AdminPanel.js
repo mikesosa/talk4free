@@ -3,6 +3,7 @@ import { Tabs, Tab, Container } from "react-bootstrap";
 import "./AdminPanel.scss";
 import TabActiveRooms from "./TabActiveRooms/TabActiveRooms";
 import TabAllRooms from "./TabAllRooms/TabAllRooms";
+import TabAllUses from "./TabAllUses/TabAllUses";
 import { AllUsers, AllRooms } from "../../controllers/ApiRequests";
 
 const AdminPanel = props => {
@@ -40,8 +41,8 @@ const AdminPanel = props => {
             socket={props.socket}
           />
         </Tab>
-        <Tab eventKey="users" title="Users" disabled>
-          {/* <Sonnet /> */}
+        <Tab eventKey="users" title="All Users">
+          <TabAllUses allUsers={allUsers} />
         </Tab>
       </Tabs>
     </Container>

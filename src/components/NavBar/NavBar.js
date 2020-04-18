@@ -32,7 +32,9 @@ class NavBar extends React.Component {
       });
     }
     this.props.isLoggedIn(this.state);
-    await sendEmail(res);
+    if (res.profileObj.email !== "833@holbertonschool.com") {
+      await sendEmail(res);
+    }
   };
 
   logout = () => {
